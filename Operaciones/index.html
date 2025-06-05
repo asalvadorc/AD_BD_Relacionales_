@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Operaciones/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Operaciones con la Base de Datos - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Operaciones con la Base de Datos";
+        var mkdocs_page_input_path = "Operaciones.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Operaciones/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 2. Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">Conectores</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Operaciones con la Base de Datos</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#modificaciones">Modificaciones</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consultas">Consultas</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#consultas-complejas-join-filtros-y-ordenaciones">Consultas complejas: JOIN, filtros y ordenaciones</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#liberacion-de-recursos">Liberación de recursos</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Estructura/">Ejemplo de estructura completa</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">Transacciones y control de errores</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 2. Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">Operaciones con la Base de Datos</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="operaciones-con-la-base-de-datos">Operaciones con la Base de Datos<a class="headerlink" href="#operaciones-con-la-base-de-datos" title="Permanent link">&para;</a></h1>
+<p>En el desarrollo de aplicaciones con bases de datos relacionales, es fundamental saber cómo modificar y consultar información. Estas operaciones son el núcleo de la interacción entre la aplicación y la base de datos, y se realizan principalmente mediante instrucciones SQL y el uso de conectores como JDBC y, en el caso de Java/Kotlin, a través de objetos como <strong>Statement</strong> o, preferiblemente, <strong>PreparedStatement</strong>.</p>
+<p><strong class="azul">¿Por qué usar PreparedStatement?</strong></p>
+<p><strong>1- Evita inyecciones SQL</strong></p>
+<ul>
+<li>La inyección SQL es una técnica maliciosa en la que un usuario introduce código SQL dentro de los campos de entrada (por ejemplo, un formulario), y este código se ejecuta porque el programa lo interpreta como parte de la consulta SQL:<pre><code>val nombre = "Lucía' OR '1'='1"
+val sql = "SELECT * FROM cliente WHERE nombre = '$nombre'"
+
+Este código generaría:
+SELECT * FROM cliente WHERE nombre = 'Lucía' OR '1'='1'
+</code></pre>
+</li>
+</ul>
+<p>Devuelve todos los registros, aunque no exista "Lucía".</p>
+<ul>
+<li>Con PreparedStatement:<pre><code>val sql = "SELECT * FROM cliente WHERE nombre = ?"
+val st = conexion.prepareStatement(sql)
+st.setString(1, "Lucía' OR '1'='1")
+</code></pre>
+</li>
+</ul>
+<p>La cadena "Lucía' OR '1'='1" se trata como texto literal, no como parte del SQL.
+    No hay inyección, la consulta busca el nombre exacto "Lucía' OR '1'='1" (y no lo encuentra).</p>
+<p><strong>2- Permite reutilizar la misma consulta</strong></p>
+<p>Cuando usamos <strong>PreparedStatement</strong>, la consulta se precompila una sola vez, y luego se puede ejecutar muchas veces con diferentes valores sin recompilarla cada vez:</p>
+<pre><code>    val sql = "INSERT INTO cliente(nombre, email) VALUES (?, ?)"
+    val st = conexion.prepareStatement(sql)
+
+    st.setString(1, "Lucía")
+    st.setString(2, "lucia@email.com")
+    st.executeUpdate()
+
+    st.setString(1, "Marcos")
+    st.setString(2, "marcos@email.com")
+    st.executeUpdate()
+</code></pre>
+<p><strong class="azul">Peticiones a la BD</strong></p>
+<p>Cuando una aplicación se conecta a una base de datos, necesita ejecutar sentencias SQL desde el código. En JDBC (Java/Kotlin), existen dos métodos principales para ello: <strong>executeQuery()</strong> y <strong>executeUpdate()</strong>.</p>
+<p>Ambos permiten enviar instrucciones SQL al gestor de base de datos, pero se usan en situaciones diferentes:</p>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Uso principal</th>
+<th>Tipo de sentencia SQL</th>
+<th>Resultado que devuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>executeQuery()</td>
+<td>Realizar consultas</td>
+<td>SELECT</td>
+<td>Objeto ResultSet con los datos consultados</td>
+</tr>
+<tr>
+<td>executeUpdate()</td>
+<td>Realizar modificaciones</td>
+<td>INSERT, UPDATE, DELETE, DDL (CREATE, DROP, etc.)</td>
+<td>Un entero con el número de filas afectadas</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p>Utilizar estas instrucciones en un contexto diferente al mencionado, devolverá <strong>SQLException</strong> en su ejecución.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">execute()</p>
+<p>El método execute() en JDBC se utiliza principalmente en los siguientes casos:</p>
+<ul>
+<li>Cuando no se sabe de antemano qué tipo de sentencia SQL se va a ejecutar o si la consulta puede ser tanto de consulta como de modificación de datos.</li>
+<li>Para ejecutar sentencias SQL que pueden devolver varios resultados.</li>
+<li>En situaciones donde se necesita una gestión flexible de la ejecución, ya que execute() devuelve un booleano:<ul>
+<li>true si el resultado es un ResultSet (SELECT).</li>
+<li>false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="modificaciones">Modificaciones<a class="headerlink" href="#modificaciones" title="Permanent link">&para;</a></h2>
+<p>Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como <strong>CRUD</strong>:</p>
+<ul>
+<li><strong>INSERT</strong>: Permite añadir nuevos registros a una tabla.</li>
+<li><strong>UPDATE</strong>: Permite modificar los valores de uno o varios registros existentes.</li>
+<li><strong>DELETE</strong>: Permite eliminar registros de una tabla.</li>
+</ul>
+<p><strong>Ejemplo de operación INSERT</strong></p>
+<p>Este fragmento añade un nuevo cliente a la tabla clientes</p>
+<pre><code>val sql = "INSERT INTO clientes (nombre, email) VALUES (?, ?)"
+val stmt = connection.prepareStatement(sql)
+stmt.setString(1, "Ana López")
+stmt.setString(2, "ana@email.com")
+stmt.executeUpdate()
+stmt.close()
+</code></pre>
+<p><strong>Ejemplo de operación UPDATE</strong></p>
+<p>Este código actualiza el correo electrónico del cliente con id = 1</p>
+<pre><code>val sql = "UPDATE clientes SET email = ? WHERE id = ?"
+val stmt = connection.prepareStatement(sql)
+stmt.setString(1, "nuevo@email.com")
+stmt.setInt(2, 1)
+stmt.executeUpdate()
+stmt.close()
+</code></pre>
+<p><strong>Ejemplo de operación DELETE</strong></p>
+<p>Este fragmento elimina el cliente con id = 1</p>
+<pre><code>val sql = "DELETE FROM clientes WHERE id = ?"
+val stmt = connection.prepareStatement(sql)
+stmt.setInt(1, 1)
+stmt.executeUpdate()
+stmt.close()
+</code></pre>
+<h2 id="consultas">Consultas<a class="headerlink" href="#consultas" title="Permanent link">&para;</a></h2>
+<p>Las consultas permiten recuperar información, desde consultas simples hasta consultas complejas con filtros, ordenaciones y uniones entre tablas.</p>
+<p><strong>Ejemplo de consulta SELECT</strong></p>
+<pre><code>    val sql = "SELECT * FROM clientes WHERE nombre LIKE ?"
+    val stmt = connection.prepareStatement(sql)
+    stmt.setString(1, "%Ana%")
+    val rs = stmt.executeQuery(sql)
+    while (rs.next()) {
+        // Procesar resultados
+    }
+    rs.close()
+    stmt.close()
+</code></pre>
+<p>Aquí solo se recuperan los clientes cuyo nombre contiene la palabra "Ana"</p>
+<h3 id="consultas-complejas-join-filtros-y-ordenaciones">Consultas complejas: JOIN, filtros y ordenaciones<a class="headerlink" href="#consultas-complejas-join-filtros-y-ordenaciones" title="Permanent link">&para;</a></h3>
+<p>Aunque la consulta SQL es igual en cualquier lenguaje, aquí tienes un ejemplo de cómo podrías ejecutar una consulta con JOIN en Kotlin:</p>
+<p>Este ejemplo obtiene los clientes y los productos que han pedido desde el 1 de enero de 2024, ordenados por nombre de cliente</p>
+<pre><code>    val sql = """
+        SELECT c.nombre, p.producto
+        FROM clientes c
+        JOIN pedidos p ON c.id = p.cliente_id
+        WHERE p.fecha &gt; ?
+        ORDER BY c.nombre
+    """
+    val stmt = connection.prepareStatement(sql)
+    stmt.setString(1, "2024-01-01")
+    val rs = stmt.executeQuery()
+    while (rs.next()) {
+        val nombre = rs.getString("nombre")
+        val producto = rs.getString("producto")
+        println("$nombre - $producto")
+    }
+    rs.close()
+    stmt.close()
+</code></pre>
+<h2 id="liberacion-de-recursos">Liberación de recursos<a class="headerlink" href="#liberacion-de-recursos" title="Permanent link">&para;</a></h2>
+<p>Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:</p>
+<ul>
+<li>La conexión con el servidor de base de datos (Connection)</li>
+<li>Las sentencias SQL preparadas (Statement o PreparedStatement)</li>
+<li>El resultado de la consulta (ResultSet)</li>
+</ul>
+<p>Estos recursos no se liberan automáticamente cuando se termina su uso (especialmente en Java o Kotlin con JDBC). Si no se cierran correctamente, se pueden producir problemas como:</p>
+<ul>
+<li>Fugas de memoria</li>
+<li>Bloqueo de conexiones (demasiadas conexiones abiertas)</li>
+<li>Degradación del rendimiento</li>
+<li>Errores inesperados en la aplicación</li>
+</ul>
+<p>En Kotlin, puedes usar <strong>use {}</strong> para cerrar recursos automáticamente al finalizar el bloque.</p>
+<p>Si no utilizas <strong>use {}</strong> en Kotlin (o try-with-resources en Java), entonces debes cerrar manualmente cada uno de los recursos abiertos (ResultSet, Statement y Connection) usando .<strong>close()</strong>, y normalmente deberías hacerlo dentro de un bloque <strong>finally</strong> para garantizar su cierre incluso si ocurre un error. El orden correcto de cierre es del más interno al más externo.</p>
+<p><strong>Ejemplo:</strong></p>
+<pre><code>    import java.sql.Connection
+    import java.sql.DriverManager
+    import java.sql.PreparedStatement
+    import java.sql.ResultSet
+
+    fun main() {
+        val url = "jdbc:postgresql://localhost:5432/empresa"
+        val user = "postgres"
+        val pass = "admin"
+
+        var conn: Connection? = null
+        var st: PreparedStatement? = null
+        var rs: ResultSet? = null
+
+        try {
+            conn = DriverManager.getConnection(url, user, pass)
+            st = conn.prepareStatement("SELECT * FROM cliente")
+            rs = st.executeQuery()
+
+            while (rs.next()) {
+                val nombre = rs.getString("nombre")
+                println("Cliente: $nombre")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            // Cerrar en orden inverso al que se abrieron
+            try { rs?.close() } catch (e: Exception) { e.printStackTrace() }
+            try { st?.close() } catch (e: Exception) { e.printStackTrace() }
+            try { conn?.close() } catch (e: Exception) { e.printStackTrace() }
+        }
+    }
+</code></pre>
+<p><strong>Actividad práctica propuesta</strong></p>
+<p>Crear una tabla productos con campos id, nombre, precio.</p>
+<p>Insertar varios productos desde Kotlin.</p>
+<p>Consultarlos y mostrarlos.</p>
+<p>Modificar el precio de uno.</p>
+<p>Eliminar uno.</p>
+<p>Al finalizar, cerrar todos los recursos correctamente.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Conectores/" class="btn btn-neutral float-left" title="Conectores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Estructura/" class="btn btn-neutral float-right" title="Ejemplo de estructura completa">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Conectores/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Estructura/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
