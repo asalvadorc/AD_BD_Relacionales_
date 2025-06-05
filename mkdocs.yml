@@ -1,0 +1,29 @@
+site_url : https://asalvadorc.github.io/AD_BD_Relacionales_
+
+site_name: AD - Accés a Dades
+
+extra_css:
+  - css/extra.css
+
+theme: 
+  name: readthedocs
+  highlightjs: true
+  logo: assets/logocaminas.png
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: True 
+  - tables    
+  - attr_list
+
+nav:
+
+- UD 2. Bases de Datos Relacionales:
+  - RA y CE: RA_CE.md
+  - Introducción: Introduccion.md
+  - Conectores: Conectores.md
+  - Operaciones con la Base de Datos: Operaciones.md
+  - Ejemplo de estructura completa: Estructura.md
+  - Transacciones y control de errores: Transacciones.md
+  
