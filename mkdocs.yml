@@ -26,4 +26,5 @@ nav:
   - Operaciones con la Base de Datos: Operaciones.md
   - Ejemplo de estructura completa: Estructura.md
   - Transacciones y control de errores: Transacciones.md
+  - Procedimientos almacenados: Procedimientos.md
   
