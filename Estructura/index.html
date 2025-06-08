@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Estructura/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Ejemplo de estructura completa - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Ejemplo de estructura completa";
+        var mkdocs_page_input_path = "Estructura.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Estructura/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 2. Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">Operaciones con la Base de Datos</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Ejemplo de estructura completa</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ejemplo-con-postgres">Ejemplo con Postgres</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ejemplo-con-sqlite">Ejemplo con SQLite</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">Procedimientos almacenados</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 2. Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">Ejemplo de estructura completa</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="estructura-de-un-ejemplo-completo-crud-con-postgres-y-sqlite">Estructura de un ejemplo completo CRUD con Postgres y SQLite<a class="headerlink" href="#estructura-de-un-ejemplo-completo-crud-con-postgres-y-sqlite" title="Permanent link">&para;</a></h1>
+<p>Para estructurar un ejemplo completo de CRUD en Kotlin con PostgreSQL y SQLite, sigue estos pasos clave, adaptando las configuraciones según el gestor de bases de datos elegido. El ejemplo incluye conexión JDBC, operaciones básicas y buenas prácticas:</p>
+<p><strong>Estructura Recomendada del Proyecto</strong></p>
+<pre><code>/src/main/kotlin/
+├── model/
+│   └── Producto.kt
+├── database/
+│   └── Database.kt
+├── dao/
+│   └── ProductoDao.kt
+└── Main.kt
+</code></pre>
+<h2 id="ejemplo-con-postgres">Ejemplo con Postgres<a class="headerlink" href="#ejemplo-con-postgres" title="Permanent link">&para;</a></h2>
+<p><strong class="azul">1- Configuración de Dependencias (Gradle)</strong></p>
+<pre><code>    // build.gradle.kts (para PostgreSQL)
+    dependencies {
+        implementation("org.postgresql:postgresql:42.6.0")
+    }
+</code></pre>
+<p><strong class="azul">2- Modelo de Datos (Clase POJO)</strong></p>
+<pre><code>    data class Producto(
+        val id: Int? = null,
+        val nombre: String,
+        val precio: Double,
+        val stock: Int
+    )
+</code></pre>
+<p><strong class="azul">3- Clase de Conexión a la Base de Datos</strong></p>
+<pre><code>    import java.sql.DriverManager
+
+    object Database {
+
+        private const val URL =  "jdbc:postgresql://localhost:5432/tienda"
+        private const val USER = "root"
+        private const val PASSWORD = ""
+
+        fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+    }
+</code></pre>
+<p><strong class="azul">4- Operaciones CRUD</strong></p>
+<p><strong>Create (INSERT)</strong></p>
+<pre><code>fun crearProducto(producto: Producto) {
+    Database.getConnection().use { conn -&gt;
+        val sql = "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        conn.prepareStatement(sql).apply {
+            setString(1, producto.nombre)
+            setDouble(2, producto.precio)
+            setInt(3, producto.stock)
+            executeUpdate()
+        }
+    }
+}
+</code></pre>
+<p><strong>Read (SELECT)</strong></p>
+<pre><code>    fun obtenerProductos(): List&lt;Producto&gt; {
+        return Database.getConnection().use { conn -&gt;
+            val sql = "SELECT * FROM productos"
+            val stmt = conn.createStatement()
+            val rs = stmt.executeQuery(sql)
+
+            mutableListOf&lt;Producto&gt;().apply {
+                while (rs.next()) {
+                    add(Producto(
+                        id = rs.getInt("id"),
+                        nombre = rs.getString("nombre"),
+                        precio = rs.getDouble("precio"),
+                        stock = rs.getInt("stock")
+                    ))
+                }
+            }
+        }
+    }
+</code></pre>
+<p><strong>Update (UPDATE)</strong></p>
+<pre><code>    fun actualizarProducto(id: Int, producto: Producto) {
+        Database.getConnection().use { conn -&gt;
+            val sql = """
+                UPDATE productos 
+                SET nombre = ?, precio = ?, stock = ? 
+                WHERE id = ?
+            """.trimIndent()
+
+            conn.prepareStatement(sql).apply {
+                setString(1, producto.nombre)
+                setDouble(2, producto.precio)
+                setInt(3, producto.stock)
+                setInt(4, id)
+                executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong>Delete (DELETE)</strong></p>
+<pre><code>    fun eliminarProducto(id: Int) {
+        Database.getConnection().use { conn -&gt;
+            val sql = "DELETE FROM productos WHERE id = ?"
+            conn.prepareStatement(sql).apply {
+                setInt(1, id)
+                executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="azul">5- Aplicación</strong></p>
+<pre><code>    fun main() {
+        // Crear producto
+        crearProducto(Producto(nombre = "Laptop", precio = 1200.0, stock = 10))
+
+        // Obtener todos los productos
+        val productos = obtenerProductos()
+        productos.forEach { println(it) }
+
+        // Actualizar producto (ID 1)
+        actualizarProducto(1, Producto(nombre = "Laptop Pro", precio = 1500.0, stock = 5))
+
+        // Eliminar producto (ID 1)
+        eliminarProducto(1)
+    }
+</code></pre>
+<h2 id="ejemplo-con-sqlite">Ejemplo con SQLite<a class="headerlink" href="#ejemplo-con-sqlite" title="Permanent link">&para;</a></h2>
+<ul>
+<li>No hay usuario ni contraseña en SQLite por defecto.</li>
+<li>La base de datos es un solo archivo fácil de copiar o mover.</li>
+<li>SQLite es ideal para aplicaciones locales, móviles o de bajo tráfico.</li>
+</ul>
+<p>Si la conexión es a una BD SQlite los cambios serían los siguientes:</p>
+<p><strong class="azul">1- Dependencias y Driver</strong></p>
+<p>Dependencia del driver en <strong>build.gradle.kts</strong>:</p>
+<pre><code>    dependencies {
+        implementation("org.xerial:sqlite-jdbc:3.44.1.0") // Driver JDBC para SQLite
+    }
+</code></pre>
+<p><strong class="azul">2- URL de conexión</strong></p>
+<pre><code>    object Database {
+        private const val URL = "jdbc:sqlite:mi_base_de_datos.db"
+        fun getConnection() = DriverManager.getConnection(URL)
+    }
+</code></pre>
+<p><strong class="azul">3- Tipos de datos y creación de tabla</strong></p>
+<p>SQLite es más flexible con los tipos de datos que Postgres, pero sigue siendo buena práctica definir tipos claros.
+Al crear la tabla, puedes usar:</p>
+<pre><code>    fun crearTabla() {
+        Database.getConnection().use { conn -&gt;
+            conn.createStatement().executeUpdate("""
+                CREATE TABLE IF NOT EXISTS productos (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nombre TEXT NOT NULL,
+                    precio REAL NOT NULL,
+                    stock INTEGER NOT NULL
+                )
+            """)
+        }
+    }
+</code></pre>
+<ul>
+<li>AUTOINCREMENT es específico de SQLite.</li>
+<li>TEXT, REAL y INTEGER son los tipos básicos de SQLite.</li>
+</ul>
+<div class="admonition note">
+<p>Las operaciones <strong>CRUD</strong> en Kotlin no cambian significativamente, solo asegúrate de que las consultas SQL usen la sintaxis de SQLite (por ejemplo, AUTOINCREMENT en vez de SERIAL o AUTO_INCREMENT).</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Operaciones/" class="btn btn-neutral float-left" title="Operaciones con la Base de Datos"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Transacciones/" class="btn btn-neutral float-right" title="Transacciones y control de errores">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Operaciones/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Transacciones/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

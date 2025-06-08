@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Procedimientos/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Procedimientos almacenados - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Procedimientos almacenados";
+        var mkdocs_page_input_path = "Procedimientos.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Procedimientos/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 2. Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">Operaciones con la Base de Datos</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Estructura/">Ejemplo de estructura completa</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Procedimientos almacenados</a>
+    <ul class="current">
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 2. Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">Procedimientos almacenados</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="procedimientos-almacenados">Procedimientos almacenados<a class="headerlink" href="#procedimientos-almacenados" title="Permanent link">&para;</a></h1>
+<p>En una base de datos relacional, además de tablas y consultas, podemos encontrar procedimientos almacenados (stored procedures), que son bloques de código SQL que se guardan y ejecutan directamente dentro del sistema gestor de base de datos (SGBD).</p>
+<p>Un procedimiento almacenado (o función en PostgreSQL) es un bloque de código SQL que se guarda en la base de datos para su posterior reutilización. Funciona como un pequeño programa que encapsula lógica de negocio y operaciones complejas (consultas, validaciones, cálculos, actualizaciones, etc.), permitiendo ejecutarlas de forma sencilla mediante una llamada desde SQL o desde una aplicación cliente como Kotlin.</p>
+<p>Se utilizan para:</p>
+<ul>
+<li>centralizar la lógica de negocio en la base de datos</li>
+<li>reducir el tráfico entre la aplicación y la base de datos</li>
+<li>mejorar el rendimiento y evitar duplicación de código</li>
+<li>facilitar el mantenimiento y la seguridad</li>
+</ul>
+<p>Tanto las funciones (<strong>FUNCTION</strong>) como los procedimientos (<strong>PROCEDURE</strong>) permiten encapsular lógica SQL en el servidor de base de datos.
+La diferencia principal es que:</p>
+<ul>
+<li>Las funciones devuelven valores</li>
+<li>Los procedimientos no devuelven nada directamente, pero pueden realizar operaciones como INSERT, UPDATE o controlar transacciones.</li>
+</ul>
+<p><strong class="azul">Sintaxis básica</strong></p>
+<ul>
+<li>
+<p><strong>Función</strong>:</p>
+<pre><code>CREATE OR REPLACE FUNCTION nombre_funcion(parametros)
+RETURNS tipo
+AS $$
+BEGIN
+    -- código SQL
+    RETURN valor;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre>
+</li>
+<li>
+<p><strong>Procedimiento</strong>:</p>
+<pre><code>CREATE OR REPLACE PROCEDURE nombre_procedimiento(parametros)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- acciones sin devolver datos
+END;
+$$;
+</code></pre>
+</li>
+</ul>
+<p>Cuando trabajamos con PostgreSQL desde una aplicación Kotlin, es importante saber cómo llamar correctamente a cada tipo de lógica almacenada en la base de datos. Dependiendo de si usamos una función o un procedimiento, y del tipo de resultado que devuelve, la llamada con JDBC cambia ligeramente:</p>
+<p><strong class="azul">Ejemplo 1: Función que devuelve un valor</strong></p>
+<ul>
+<li>Se llama con: SELECT nombre_función(?)</li>
+<li>Se usa un PreparedStatement</li>
+<li>Se obtiene el resultado desde el ResultSet</li>
+</ul>
+<p><strong>SQL</strong></p>
+<pre><code>CREATE OR REPLACE FUNCTION obtener_email(id_cliente INT)
+RETURNS VARCHAR AS $$
+DECLARE
+    resultado_email VARCHAR;
+BEGIN
+    SELECT email INTO resultado_email FROM cliente WHERE id = id_cliente;
+    RETURN resultado_email;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre>
+<p><strong>Kotlin</strong></p>
+<pre><code>val sql = "SELECT obtener_email(?)"
+val st = conexion.prepareStatement(sql)
+st.setInt(1, 1)
+val rs = st.executeQuery()
+
+if (rs.next()) {
+    val email = rs.getString(1)
+    println("Email: $email")
+}
+</code></pre>
+<p><strong class="azul">Ejemplo 2: Función que devuelve varias columnas (RETURNS TABLE)</strong></p>
+<ul>
+<li>También se llama con: SELECT * FROM nombre_función(?)</li>
+<li>Se usa un PreparedStatement</li>
+<li>El ResultSet contiene varias columnas o filas</li>
+</ul>
+<p><strong>SQL</strong></p>
+<pre><code>CREATE OR REPLACE FUNCTION datos_cliente(id_cliente INT)
+RETURNS TABLE(nombre TEXT, email TEXT) AS $$
+BEGIN
+    RETURN QUERY SELECT nombre, email FROM cliente WHERE id = id_cliente;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre>
+<p><strong>Kotlin</strong></p>
+<pre><code>val sql = "SELECT * FROM datos_cliente(?)"
+val st = conexion.prepareStatement(sql)
+st.setInt(1, 1)
+val rs = st.executeQuery()
+
+while (rs.next()) {
+    val nombre = rs.getString("nombre")
+    val email = rs.getString("email")
+    println("Cliente: $nombre - $email")
+}
+</code></pre>
+<p><strong class="azul">Ejemplo 3: Procedimiento sin retorno (VOID)</strong></p>
+<ul>
+<li>Se llama con: {call nombre_procedimiento(?, ?)}</li>
+<li>Se usa un CallableStatement</li>
+<li>No se espera un ResultSet, solo se ejecuta</li>
+</ul>
+<p><strong>SQL</strong></p>
+<pre><code>CREATE OR REPLACE PROCEDURE insertar_cliente(nombre TEXT, email TEXT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO cliente(nombre, email) VALUES (nombre, email);
+END;
+$$;
+</code></pre>
+<p><strong>Kotlin</strong></p>
+<pre><code>val sql = "{call insertar_cliente(?, ?)}"
+val call = conexion.prepareCall(sql)
+call.setString(1, "Lucía")
+call.setString(2, "lucia@email.com")
+call.execute()
+println("Cliente insertado correctamente.")
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">En resumen</p>
+<table>
+<thead>
+<tr>
+<th>Tipo de lógica</th>
+<th>Llamada SQL en Kotlin</th>
+<th>Objeto JDBC</th>
+<th>Retorno esperado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FUNCTION (un valor)</td>
+<td>"SELECT funcion(?)"</td>
+<td>PreparedStatement</td>
+<td>1 valor</td>
+</tr>
+<tr>
+<td>FUNCTION (tabla)</td>
+<td>"SELECT * FROM funcion(?)"</td>
+<td>PreparedStatement</td>
+<td>Varias filas</td>
+</tr>
+<tr>
+<td>PROCEDURE (void)</td>
+<td>"{call procedimiento(?, ?)}"</td>
+<td>CallableStatement</td>
+<td>Ninguno</td>
+</tr>
+</tbody>
+</table>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Transacciones/" class="btn btn-neutral float-left" title="Transacciones y control de errores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Transacciones/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
