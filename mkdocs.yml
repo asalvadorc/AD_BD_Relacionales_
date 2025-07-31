@@ -23,8 +23,8 @@ nav:
   - RA y CE: RA_CE.md
   - Introducción: Introduccion.md
   - Conectores: Conectores.md
-  - Operaciones con la Base de Datos: Operaciones.md
-  - Ejemplo de estructura completa: Estructura.md
+  - Operaciones sobre BD: Operaciones.md
+  - Ejemplo completo en PostgreSQL: Estructura.md
   - Transacciones y control de errores: Transacciones.md
   - Procedimientos almacenados: Procedimientos.md
   

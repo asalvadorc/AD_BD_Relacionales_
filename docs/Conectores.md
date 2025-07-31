@@ -1,7 +1,8 @@
 # Conectores
 
-Un **conector** es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa.
+En la introducción ya vimos que un **conector** es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa.
 
+**JDBC** (Java Database Connectivity) es la API básica de Java para conectarse a bases de datos relacionales.
 
 Para que una aplicación (escrita en Kotlin, Java u otro lenguaje) pueda leer, insertar o modificar información almacenada en una base de datos relacional (BDR), debe establecer una conexión con ella. Esto implica una serie de **pasos técnicos** y el uso de componentes específicos:
 
@@ -46,7 +47,7 @@ Para que la conexión funcione, es necesario **añadir el conector** correspondi
             implementation("org.xerial:sqlite-jdbc:3.43.0.0") //SQLite
         }
 
-
+<!--
 - **En un proyecto Maven**
 
         <dependency>
@@ -71,7 +72,7 @@ Para que la conexión funcione, es necesario **añadir el conector** correspondi
         </dependency>
 
 
-
+-->
 
 **Ejemplo de conexión a Postgresql**
 
@@ -87,10 +88,7 @@ Para que la conexión funcione, es necesario **añadir el conector** correspondi
             // Conexión y prueba
             DriverManager.getConnection(url, user, pass).use { conn ->
                 println("Conexión establecida correctamente.")
-            }
-
-            conn.close()
-            
+            }        
         }
 
 **Ejemplo de conexión a SQLite**
@@ -99,14 +97,12 @@ Para que la conexión funcione, es necesario **añadir el conector** correspondi
 
         fun main() {
             // Ruta al archivo de base de datos SQLite
-            val url = "jdbc:sqlite:empresa.db"
+            val url = "jdbc:sqlite:Factura.db"
 
             // Conexión y prueba
             DriverManager.getConnection(url).use { conn ->
                 println("Conexión establecida correctamente con SQLite.")
             }
-
-            conn.close()
         }
 
 !!!Note "Recuerda"
@@ -123,4 +119,38 @@ Permite acceso a múltiples SGBD| Gestión manual de errores y recursos
 Uso directo de SQL|	Código más extenso en comparación con ORM
 
 
-## Desde IntellJ
+## Acceso a la BD desde IntellJ
+
+En el desarrollo de aplicaciones, especialmente aquellas que utilizan bases de datos relacionales como PostgreSQL, MySQL o SQLite, es fundamental tener una visión clara y rápida del estado de los datos. Poder visualizar la base de datos directamente desde el entorno de desarrollo (IDE) ofrece una ventaja significativa frente a trabajar con herramientas externas.
+
+IntelliJ IDEA incorpora una potente herramienta de gestión de bases de datos que permite:
+
+
+- 📂 Explorar la estructura de la base de datos (tablas, vistas, claves, relaciones…)
+- 🔎 Consultar datos en tiempo real con editores SQL integrados
+- 🛠️ Modificar tablas, añadir registros o ejecutar scripts SQL sin salir del proyecto
+- ⚡ Ver los cambios reflejados inmediatamente tras ejecutar una operación desde el código
+- ✅ Probar consultas antes de implementarlas en el programa
+
+La siguientes imágenes ilustran como configura esta herramienta:
+
+- 1- Copiamos el archivo con la base de datos en el proyecto (carpeta resources).
+
+- 2- Seleccionamos la opción **Database**.
+
+![ref](img/bd_1.jpg)
+
+
+- 3- Seleccionamos el **+**, y elegimos en **Data Source** la base de datos que corresponda. En el ejemplo trabajaremos con SQLite.
+
+![ref](img/bd_2.jpg)
+
+- 4- Seleccionamos **...** y buscamos el archivo de nuestra basededatos.db.  
+Podemos comprobar la conexión en **Test Concection**{.verde} antes de aceptar.  
+Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no estuviera instalado.
+
+![ref](img/bd_3.jpg)
+
+- 5- Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL.
+
+![ref](img/bd_4.jpg)

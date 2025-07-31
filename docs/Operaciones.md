@@ -1,48 +1,27 @@
-# Operaciones con la Base de Datos
+# Operaciones sobre BD
 
 
-En el desarrollo de aplicaciones con bases de datos relacionales, es fundamental saber cómo modificar y consultar información. Estas operaciones son el núcleo de la interacción entre la aplicación y la base de datos, y se realizan principalmente mediante instrucciones SQL y el uso de conectores como JDBC y, en el caso de Java/Kotlin, a través de objetos como **Statement** o, preferiblemente, **PreparedStatement**.
+En JDBC (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los objetos y métodos:
+
+- **Connection**, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)
+
+- Los objetos **PreparedStatement** y **CreateStatement** se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.
+
+- **ResultSet** es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.
+
+- Los métodos **executeQuery()** y **executeUpdate()** se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.
+
+**PreparedStatement VS CreateStatement**{.azul}
+
+| Si necesitas...                                     | Usa...            |
+|-----------------------------------------------------|-------------------|
+| Consultas sin parámetros                            | `Statement`       |
+| Consultas con datos del usuario                     | `PreparedStatement` |
+| Seguridad frente a inyecciones SQL                  | `PreparedStatement` |
+| Ejecutar muchas veces con distintos valores         | `PreparedStatement` |
+| Crear tablas o sentencias SQL complejas que no cambian | `Statement`
 
 
-**¿Por qué usar PreparedStatement?**{.azul}
-
-**1- Evita inyecciones SQL**
-
-- La inyección SQL es una técnica maliciosa en la que un usuario introduce código SQL dentro de los campos de entrada (por ejemplo, un formulario), y este código se ejecuta porque el programa lo interpreta como parte de la consulta SQL:
-  
-
-        val nombre = "Lucía' OR '1'='1"
-        val sql = "SELECT * FROM cliente WHERE nombre = '$nombre'"
-
-        Este código generaría:
-        SELECT * FROM cliente WHERE nombre = 'Lucía' OR '1'='1'
-
-Devuelve todos los registros, aunque no exista "Lucía".
-
-- Con PreparedStatement:
-
-        val sql = "SELECT * FROM cliente WHERE nombre = ?"
-        val st = conexion.prepareStatement(sql)
-        st.setString(1, "Lucía' OR '1'='1")
-
-La cadena "Lucía' OR '1'='1" se trata como texto literal, no como parte del SQL.
-    No hay inyección, la consulta busca el nombre exacto "Lucía' OR '1'='1" (y no lo encuentra).
-
-
-**2- Permite reutilizar la misma consulta**
-
-Cuando usamos **PreparedStatement**, la consulta se precompila una sola vez, y luego se puede ejecutar muchas veces con diferentes valores sin recompilarla cada vez:
-
-        val sql = "INSERT INTO cliente(nombre, email) VALUES (?, ?)"
-        val st = conexion.prepareStatement(sql)
-
-        st.setString(1, "Lucía")
-        st.setString(2, "lucia@email.com")
-        st.executeUpdate()
-
-        st.setString(1, "Marcos")
-        st.setString(2, "marcos@email.com")
-        st.executeUpdate()
 
 **Peticiones a la BD**{.azul}
 
@@ -67,7 +46,29 @@ executeUpdate()|Realizar modificaciones|	INSERT, UPDATE, DELETE, DDL (CREATE, DR
         - true si el resultado es un ResultSet (SELECT).
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
 
-## Modificaciones
+## CRUD - Esquema de la BD - SQlite
+
+En los siguientes apartados veremos cómo realizar operaciones **CRUD** (Crear, Leer, Actualizar y Borrar) sobre una base de datos utilizando **SQLite** como sistema de gestión y la base de datos de ejemplo **Factura.sqlite**, disponible en el apartado **recursos**.
+
+A lo largo del ejemplo se desarrollarán las siguientes operaciones sobre estas tablas:
+
+- **Crear**: insertar nuevos registros (por ejemplo, un nuevo artículo o cliente).
+- **Leer**: realizar consultas para mostrar información ya almacenada.
+- **Actualizar**: modificar registros existentes (como cambiar el precio de un artículo).
+- **Borrar**: eliminar registros de la base de datos.
+
+Este ejemplo práctico permitirá entender cómo se gestionan los datos desde una aplicación escrita en Kotlin conectada a una base de datos relacional ligera. Para ello, se trabajará con las tablas definidas en **Factura.sqlite**, entre las que se encuentran **article**, **client**, **factura** y **linia_fac**, tal y como se obverva en el esquema lógico y relacional de la siguiente imagen.
+
+
+![ref](img/bd_factura.jpg)|![ref](img/campos_bd_factura.jpg)
+
+
+!!!Note ""
+    **El archivo de BD Factura.sqlite** lo copiaremos en la carpeta resources del proyecto:
+
+![ref](img/factura.jpg)|
+
+### Modificaciones
 
 Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como **CRUD**:
 
@@ -76,82 +77,165 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 - **DELETE**: Permite eliminar registros de una tabla.
 
 
-**Ejemplo de operación INSERT**
+**Ejemplo_Insert.kt**: Este fragmento añade un nuevo articulo "00001" a la tabla articles
 
-Este fragmento añade un nuevo cliente a la tabla clientes
+    import java.sql.DriverManager
 
-    val sql = "INSERT INTO clientes (nombre, email) VALUES (?, ?)"
-    val stmt = connection.prepareStatement(sql)
-    stmt.setString(1, "Ana López")
-    stmt.setString(2, "ana@email.com")
-    stmt.executeUpdate()
-    stmt.close()
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            println("Ruta de la BD: ${dbFile.absolutePath}")
+
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+            DriverManager.getConnection(url).use { conn ->
+
+                val sql = "INSERT INTO article (cod_a, descrip) VALUES (?, ?)"
+                conn.prepareStatement(sql)
+
+                conn.prepareStatement(sql).use { stmt ->
+
+                    stmt.setString(1, "00001")
+                    stmt.setString(2, "articulo de prueba 1")
+                    stmt.executeUpdate()
+                    
+                }
+              }
+            }
 
 
 
-**Ejemplo de operación UPDATE**
 
-Este código actualiza el correo electrónico del cliente con id = 1
+**Ejemplo_Update.kt**: Este código actualiza la descripción del artículo "00001"
 
-    val sql = "UPDATE clientes SET email = ? WHERE id = ?"
-    val stmt = connection.prepareStatement(sql)
-    stmt.setString(1, "nuevo@email.com")
-    stmt.setInt(2, 1)
-    stmt.executeUpdate()
-    stmt.close()
+        import java.sql.DriverManager
 
-**Ejemplo de operación DELETE**
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            println("Ruta de la BD: ${dbFile.absolutePath}")
 
-Este fragmento elimina el cliente con id = 1
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
 
-    val sql = "DELETE FROM clientes WHERE id = ?"
-    val stmt = connection.prepareStatement(sql)
-    stmt.setInt(1, 1)
-    stmt.executeUpdate()
-    stmt.close()
+            DriverManager.getConnection(url).use { conn ->
 
-## Consultas    
+                val sql = "UPDATE article SET descrip = ? WHERE cod_a = ?"
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.setString(1, "descripción nueva")
+                    stmt.setString(2, "00001")
+                    stmt.executeUpdate()
+                    
+
+                }
+            }
+        }
+
+**Ejemplo_Delete.kt**: Este fragmento elimina el articulo "00001"
+
+        import java.sql.DriverManager
+
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            println("Ruta de la BD: ${dbFile.absolutePath}")
+
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+            DriverManager.getConnection(url).use { conn ->
+
+                val sql = "DELETE FROM article WHERE cod_a = ?"
+                conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, "00001")
+                stmt.executeUpdate()
+                
+                }
+            }
+        }
+
+### Consultas    
 
 Las consultas permiten recuperar información, desde consultas simples hasta consultas complejas con filtros, ordenaciones y uniones entre tablas.
 
-**Ejemplo de consulta SELECT**
+**Ejemplo_basico.kt**: Consulta la tabla article de la BD Factura.sqlite
 
-        val sql = "SELECT * FROM clientes WHERE nombre LIKE ?"
-        val stmt = connection.prepareStatement(sql)
-        stmt.setString(1, "%Ana%")
-        val rs = stmt.executeQuery(sql)
-        while (rs.next()) {
-            // Procesar resultados
+        import java.sql.DriverManager
+
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            println("Ruta de la BD: ${dbFile.absolutePath}") // Comprueba la ruta del archivo de la BD
+
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+            DriverManager.getConnection(url).use { conn ->
+
+                val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+
+                conn.prepareStatement(sql).use { stmt ->   //Envía la consulta
+
+                    stmt.executeQuery().use { rs ->        //Ejecuta la consulta
+
+                        println("Artículos disponibles:")   
+                        println("Código\tDescripción\tPrecio\tStock\tStock Mínimo")
+
+                        while (rs.next()) {                 //Obtiene el resultado de la consulta
+                            val codA = rs.getString("cod_a")
+                            val descrip = rs.getString("descrip")
+                            val preu = rs.getDouble("preu")
+                            val stock = rs.getInt("stock")
+                            val stockMin = rs.getInt("stock_min")
+
+                            println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+                        }
+
+                    }
+                }
+            }
         }
-        rs.close()
-        stmt.close()
 
-Aquí solo se recuperan los clientes cuyo nombre contiene la palabra "Ana"
+
 
 
 ### Consultas complejas: JOIN, filtros y ordenaciones
 
-Aunque la consulta SQL es igual en cualquier lenguaje, aquí tienes un ejemplo de cómo podrías ejecutar una consulta con JOIN en Kotlin:
+**Ejemplo_join.kt**: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.
 
-Este ejemplo obtiene los clientes y los productos que han pedido desde el 1 de enero de 2024, ordenados por nombre de cliente
+        import java.sql.DriverManager
 
-        val sql = """
-            SELECT c.nombre, p.producto
-            FROM clientes c
-            JOIN pedidos p ON c.id = p.cliente_id
-            WHERE p.fecha > ?
-            ORDER BY c.nombre
-        """
-        val stmt = connection.prepareStatement(sql)
-        stmt.setString(1, "2024-01-01")
-        val rs = stmt.executeQuery()
-        while (rs.next()) {
-            val nombre = rs.getString("nombre")
-            val producto = rs.getString("producto")
-            println("$nombre - $producto")
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+            DriverManager.getConnection(url).use { conn ->
+
+                val sql = """
+                    SELECT lf.num_f, lf.num_l, lf.cod_a, a.descrip, lf.quant, lf.preu
+                    FROM linia_fac lf
+                    JOIN article a ON lf.cod_a = a.cod_a
+                    ORDER BY lf.num_f, lf.num_l
+                """.trimIndent()
+
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.executeQuery().use { rs ->
+                        println("Líneas de factura:")
+                        println("Factura | Línea | Artículo | Descripción | Cantidad | Precio")
+
+                        while (rs.next()) {
+                            val numF = rs.getInt("num_f")
+                            val numL = rs.getInt("num_l")
+                            val codA = rs.getString("cod_a")
+                            val descrip = rs.getString("descrip")
+                            val quant = rs.getInt("quant")
+                            val preu = rs.getDouble("preu")
+
+                            println("$numF\t$numL\t$codA\t$descrip\t$quant\t$preu")
+                        }
+                    }
+                }
+            }
         }
-        rs.close()
-        stmt.close()
+
 
 ## Liberación de recursos
 
@@ -172,7 +256,46 @@ En Kotlin, puedes usar **use {}** para cerrar recursos automáticamente al final
 
 Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces debes cerrar manualmente cada uno de los recursos abiertos (ResultSet, Statement y Connection) usando .**close()**, y normalmente deberías hacerlo dentro de un bloque **finally** para garantizar su cierre incluso si ocurre un error. El orden correcto de cierre es del más interno al más externo.
 
-**Ejemplo:**
+**Ejemplos**{.azul} para cerrar recursos abiertos sin **use()**, de forma manual y con el bloque **try-catch-finally**
+
+**Ejemplo_cierre_manual.kt:** Cierra los recurso con close()
+
+
+        import java.sql.DriverManager
+        import java.sql.Connection
+        import java.sql.PreparedStatement
+        import java.sql.ResultSet
+
+        fun main() {
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+            val conn: Connection = DriverManager.getConnection(url)
+            val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+            val stmt: PreparedStatement = conn.prepareStatement(sql)
+            val rs: ResultSet = stmt.executeQuery()
+
+            println("Artículos:")
+            println("Código\tDescripción\tPrecio\tStock\tStock mín.")
+
+            while (rs.next()) {
+                val codA = rs.getString("cod_a")
+                val descrip = rs.getString("descrip")
+                val preu = rs.getDouble("preu")
+                val stock = rs.getInt("stock")
+                val stockMin = rs.getInt("stock_min")
+
+                println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+            }
+
+            rs.close()
+            stmt.close()
+            conn.close()
+        }
+
+
+**Ejemplo_cierre_try_catch.kt:** Cierra los reursos con try-catch-finally
 
         import java.sql.Connection
         import java.sql.DriverManager
@@ -180,44 +303,41 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
         import java.sql.ResultSet
 
         fun main() {
-            val url = "jdbc:postgresql://localhost:5432/empresa"
-            val user = "postgres"
-            val pass = "admin"
+            val dbPath = "src/main/resources/Factura.sqlite"
+            val dbFile = java.io.File(dbPath)
+            val url = "jdbc:sqlite:${dbFile.absolutePath}"
 
             var conn: Connection? = null
-            var st: PreparedStatement? = null
+            var stmt: PreparedStatement? = null
             var rs: ResultSet? = null
 
             try {
-                conn = DriverManager.getConnection(url, user, pass)
-                st = conn.prepareStatement("SELECT * FROM cliente")
-                rs = st.executeQuery()
+                conn = DriverManager.getConnection(url)
+                val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+                stmt = conn.prepareStatement(sql)
+                rs = stmt.executeQuery()
+
+                println("Artículos:")
+                println("Código\tDescripción\tPrecio\tStock\tStock mín.")
 
                 while (rs.next()) {
-                    val nombre = rs.getString("nombre")
-                    println("Cliente: $nombre")
+                    val codA = rs.getString("cod_a")
+                    val descrip = rs.getString("descrip")
+                    val preu = rs.getDouble("preu")
+                    val stock = rs.getInt("stock")
+                    val stockMin = rs.getInt("stock_min")
+
+                    println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
                 }
+
             } catch (e: Exception) {
-                e.printStackTrace()
+                println("Error al acceder a la base de datos: ${e.message}")
             } finally {
-                // Cerrar en orden inverso al que se abrieron
-                try { rs?.close() } catch (e: Exception) { e.printStackTrace() }
-                try { st?.close() } catch (e: Exception) { e.printStackTrace() }
-                try { conn?.close() } catch (e: Exception) { e.printStackTrace() }
+                try { rs?.close() } catch (e: Exception) { /* Ignorar */ }
+                try { stmt?.close() } catch (e: Exception) { /* Ignorar */ }
+                try { conn?.close() } catch (e: Exception) { /* Ignorar */ }
             }
         }
 
 
-**Actividad práctica propuesta**
 
-Crear una tabla productos con campos id, nombre, precio.
-
-Insertar varios productos desde Kotlin.
-
-Consultarlos y mostrarlos.
-
-Modificar el precio de uno.
-
-Eliminar uno.
-
-Al finalizar, cerrar todos los recursos correctamente.
