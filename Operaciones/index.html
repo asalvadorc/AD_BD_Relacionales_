@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Operaciones/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Operaciones sobre BD - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Operaciones sobre BD";
+        var mkdocs_page_input_path = "Operaciones.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Operaciones/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 2. Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">Conectores</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Operaciones sobre BD</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#crud-esquema-de-la-bd-sqlite">CRUD - Esquema de la BD - SQlite</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#modificaciones">Modificaciones</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#consultas">Consultas</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#consultas-complejas-join-filtros-y-ordenaciones">Consultas complejas: JOIN, filtros y ordenaciones</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#liberacion-de-recursos">Liberación de recursos</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Estructura/">Ejemplo completo en PostgreSQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">Procedimientos almacenados</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 2. Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">Operaciones sobre BD</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="operaciones-sobre-bd">Operaciones sobre BD<a class="headerlink" href="#operaciones-sobre-bd" title="Permanent link">&para;</a></h1>
+<p>En JDBC (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los objetos y métodos:</p>
+<ul>
+<li>
+<p><strong>Connection</strong>, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)</p>
+</li>
+<li>
+<p>Los objetos <strong>PreparedStatement</strong> y <strong>CreateStatement</strong> se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.</p>
+</li>
+<li>
+<p><strong>ResultSet</strong> es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.</p>
+</li>
+<li>
+<p>Los métodos <strong>executeQuery()</strong> y <strong>executeUpdate()</strong> se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.</p>
+</li>
+</ul>
+<p><strong class="azul">PreparedStatement VS CreateStatement</strong></p>
+<table>
+<thead>
+<tr>
+<th>Si necesitas...</th>
+<th>Usa...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consultas sin parámetros</td>
+<td><code>Statement</code></td>
+</tr>
+<tr>
+<td>Consultas con datos del usuario</td>
+<td><code>PreparedStatement</code></td>
+</tr>
+<tr>
+<td>Seguridad frente a inyecciones SQL</td>
+<td><code>PreparedStatement</code></td>
+</tr>
+<tr>
+<td>Ejecutar muchas veces con distintos valores</td>
+<td><code>PreparedStatement</code></td>
+</tr>
+<tr>
+<td>Crear tablas o sentencias SQL complejas que no cambian</td>
+<td><code>Statement</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">Peticiones a la BD</strong></p>
+<p>Cuando una aplicación se conecta a una base de datos, necesita ejecutar sentencias SQL desde el código. En JDBC (Java/Kotlin), existen dos métodos principales para ello: <strong>executeQuery()</strong> y <strong>executeUpdate()</strong>.</p>
+<p>Ambos permiten enviar instrucciones SQL al gestor de base de datos, pero se usan en situaciones diferentes:</p>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Uso principal</th>
+<th>Tipo de sentencia SQL</th>
+<th>Resultado que devuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>executeQuery()</td>
+<td>Realizar consultas</td>
+<td>SELECT</td>
+<td>Objeto ResultSet con los datos consultados</td>
+</tr>
+<tr>
+<td>executeUpdate()</td>
+<td>Realizar modificaciones</td>
+<td>INSERT, UPDATE, DELETE, DDL (CREATE, DROP, etc.)</td>
+<td>Un entero con el número de filas afectadas</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p>Utilizar estas instrucciones en un contexto diferente al mencionado, devolverá <strong>SQLException</strong> en su ejecución.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">execute()</p>
+<p>El método execute() en JDBC se utiliza principalmente en los siguientes casos:</p>
+<ul>
+<li>Cuando no se sabe de antemano qué tipo de sentencia SQL se va a ejecutar o si la consulta puede ser tanto de consulta como de modificación de datos.</li>
+<li>Para ejecutar sentencias SQL que pueden devolver varios resultados.</li>
+<li>En situaciones donde se necesita una gestión flexible de la ejecución, ya que execute() devuelve un booleano:<ul>
+<li>true si el resultado es un ResultSet (SELECT).</li>
+<li>false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="crud-esquema-de-la-bd-sqlite">CRUD - Esquema de la BD - SQlite<a class="headerlink" href="#crud-esquema-de-la-bd-sqlite" title="Permanent link">&para;</a></h2>
+<p>En los siguientes apartados veremos cómo realizar operaciones <strong>CRUD</strong> (Crear, Leer, Actualizar y Borrar) sobre una base de datos utilizando <strong>SQLite</strong> como sistema de gestión y la base de datos de ejemplo <strong>Factura.sqlite</strong>, disponible en el apartado <strong>recursos</strong>.</p>
+<p>A lo largo del ejemplo se desarrollarán las siguientes operaciones sobre estas tablas:</p>
+<ul>
+<li><strong>Crear</strong>: insertar nuevos registros (por ejemplo, un nuevo artículo o cliente).</li>
+<li><strong>Leer</strong>: realizar consultas para mostrar información ya almacenada.</li>
+<li><strong>Actualizar</strong>: modificar registros existentes (como cambiar el precio de un artículo).</li>
+<li><strong>Borrar</strong>: eliminar registros de la base de datos.</li>
+</ul>
+<p>Este ejemplo práctico permitirá entender cómo se gestionan los datos desde una aplicación escrita en Kotlin conectada a una base de datos relacional ligera. Para ello, se trabajará con las tablas definidas en <strong>Factura.sqlite</strong>, entre las que se encuentran <strong>article</strong>, <strong>client</strong>, <strong>factura</strong> y <strong>linia_fac</strong>, tal y como se obverva en el esquema lógico y relacional de la siguiente imagen.</p>
+<p><img alt="ref" src="../img/bd_factura.jpg" />|<img alt="ref" src="../img/campos_bd_factura.jpg" /></p>
+<div class="admonition note">
+<p><strong>El archivo de BD Factura.sqlite</strong> lo copiaremos en la carpeta resources del proyecto:</p>
+</div>
+<p><img alt="ref" src="../img/factura.jpg" />|</p>
+<h3 id="modificaciones">Modificaciones<a class="headerlink" href="#modificaciones" title="Permanent link">&para;</a></h3>
+<p>Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como <strong>CRUD</strong>:</p>
+<ul>
+<li><strong>INSERT</strong>: Permite añadir nuevos registros a una tabla.</li>
+<li><strong>UPDATE</strong>: Permite modificar los valores de uno o varios registros existentes.</li>
+<li><strong>DELETE</strong>: Permite eliminar registros de una tabla.</li>
+</ul>
+<p><strong>Ejemplo_Insert.kt</strong>: Este fragmento añade un nuevo articulo "00001" a la tabla articles</p>
+<pre><code>import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}")
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "INSERT INTO article (cod_a, descrip) VALUES (?, ?)"
+            conn.prepareStatement(sql)
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+
+                stmt.setString(1, "00001")
+                stmt.setString(2, "articulo de prueba 1")
+                stmt.executeUpdate()
+
+            }
+          }
+        }
+</code></pre>
+<p><strong>Ejemplo_Update.kt</strong>: Este código actualiza la descripción del artículo "00001"</p>
+<pre><code>    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}")
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "UPDATE article SET descrip = ? WHERE cod_a = ?"
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "descripción nueva")
+                stmt.setString(2, "00001")
+                stmt.executeUpdate()
+
+
+            }
+        }
+    }
+</code></pre>
+<p><strong>Ejemplo_Delete.kt</strong>: Este fragmento elimina el articulo "00001"</p>
+<pre><code>    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}")
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "DELETE FROM article WHERE cod_a = ?"
+            conn.prepareStatement(sql).use { stmt -&gt;
+            stmt.setString(1, "00001")
+            stmt.executeUpdate()
+
+            }
+        }
+    }
+</code></pre>
+<h3 id="consultas">Consultas<a class="headerlink" href="#consultas" title="Permanent link">&para;</a></h3>
+<p>Las consultas permiten recuperar información, desde consultas simples hasta consultas complejas con filtros, ordenaciones y uniones entre tablas.</p>
+<p><strong>Ejemplo_basico.kt</strong>: Consulta la tabla article de la BD Factura.sqlite</p>
+<pre><code>    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}") // Comprueba la ruta del archivo de la BD
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+
+            conn.prepareStatement(sql).use { stmt -&gt;   //Envía la consulta
+
+                stmt.executeQuery().use { rs -&gt;        //Ejecuta la consulta
+
+                    println("Artículos disponibles:")   
+                    println("Código\tDescripción\tPrecio\tStock\tStock Mínimo")
+
+                    while (rs.next()) {                 //Obtiene el resultado de la consulta
+                        val codA = rs.getString("cod_a")
+                        val descrip = rs.getString("descrip")
+                        val preu = rs.getDouble("preu")
+                        val stock = rs.getInt("stock")
+                        val stockMin = rs.getInt("stock_min")
+
+                        println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+                    }
+
+                }
+            }
+        }
+    }
+</code></pre>
+<h3 id="consultas-complejas-join-filtros-y-ordenaciones">Consultas complejas: JOIN, filtros y ordenaciones<a class="headerlink" href="#consultas-complejas-join-filtros-y-ordenaciones" title="Permanent link">&para;</a></h3>
+<p><strong>Ejemplo_join.kt</strong>: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.</p>
+<pre><code>    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = """
+                SELECT lf.num_f, lf.num_l, lf.cod_a, a.descrip, lf.quant, lf.preu
+                FROM linia_fac lf
+                JOIN article a ON lf.cod_a = a.cod_a
+                ORDER BY lf.num_f, lf.num_l
+            """.trimIndent()
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.executeQuery().use { rs -&gt;
+                    println("Líneas de factura:")
+                    println("Factura | Línea | Artículo | Descripción | Cantidad | Precio")
+
+                    while (rs.next()) {
+                        val numF = rs.getInt("num_f")
+                        val numL = rs.getInt("num_l")
+                        val codA = rs.getString("cod_a")
+                        val descrip = rs.getString("descrip")
+                        val quant = rs.getInt("quant")
+                        val preu = rs.getDouble("preu")
+
+                        println("$numF\t$numL\t$codA\t$descrip\t$quant\t$preu")
+                    }
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="liberacion-de-recursos">Liberación de recursos<a class="headerlink" href="#liberacion-de-recursos" title="Permanent link">&para;</a></h2>
+<p>Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:</p>
+<ul>
+<li>La conexión con el servidor de base de datos (Connection)</li>
+<li>Las sentencias SQL preparadas (Statement o PreparedStatement)</li>
+<li>El resultado de la consulta (ResultSet)</li>
+</ul>
+<p>Estos recursos no se liberan automáticamente cuando se termina su uso (especialmente en Java o Kotlin con JDBC). Si no se cierran correctamente, se pueden producir problemas como:</p>
+<ul>
+<li>Fugas de memoria</li>
+<li>Bloqueo de conexiones (demasiadas conexiones abiertas)</li>
+<li>Degradación del rendimiento</li>
+<li>Errores inesperados en la aplicación</li>
+</ul>
+<p>En Kotlin, puedes usar <strong>use {}</strong> para cerrar recursos automáticamente al finalizar el bloque.</p>
+<p>Si no utilizas <strong>use {}</strong> en Kotlin (o try-with-resources en Java), entonces debes cerrar manualmente cada uno de los recursos abiertos (ResultSet, Statement y Connection) usando .<strong>close()</strong>, y normalmente deberías hacerlo dentro de un bloque <strong>finally</strong> para garantizar su cierre incluso si ocurre un error. El orden correcto de cierre es del más interno al más externo.</p>
+<p><strong class="azul">Ejemplos</strong> para cerrar recursos abiertos sin <strong>use()</strong>, de forma manual y con el bloque <strong>try-catch-finally</strong></p>
+<p><strong>Ejemplo_cierre_manual.kt:</strong> Cierra los recurso con close()</p>
+<pre><code>    import java.sql.DriverManager
+    import java.sql.Connection
+    import java.sql.PreparedStatement
+    import java.sql.ResultSet
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        val conn: Connection = DriverManager.getConnection(url)
+        val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+        val stmt: PreparedStatement = conn.prepareStatement(sql)
+        val rs: ResultSet = stmt.executeQuery()
+
+        println("Artículos:")
+        println("Código\tDescripción\tPrecio\tStock\tStock mín.")
+
+        while (rs.next()) {
+            val codA = rs.getString("cod_a")
+            val descrip = rs.getString("descrip")
+            val preu = rs.getDouble("preu")
+            val stock = rs.getInt("stock")
+            val stockMin = rs.getInt("stock_min")
+
+            println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+        }
+
+        rs.close()
+        stmt.close()
+        conn.close()
+    }
+</code></pre>
+<p><strong>Ejemplo_cierre_try_catch.kt:</strong> Cierra los reursos con try-catch-finally</p>
+<pre><code>    import java.sql.Connection
+    import java.sql.DriverManager
+    import java.sql.PreparedStatement
+    import java.sql.ResultSet
+
+    fun main() {
+        val dbPath = "src/main/resources/Factura.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        var conn: Connection? = null
+        var stmt: PreparedStatement? = null
+        var rs: ResultSet? = null
+
+        try {
+            conn = DriverManager.getConnection(url)
+            val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+            stmt = conn.prepareStatement(sql)
+            rs = stmt.executeQuery()
+
+            println("Artículos:")
+            println("Código\tDescripción\tPrecio\tStock\tStock mín.")
+
+            while (rs.next()) {
+                val codA = rs.getString("cod_a")
+                val descrip = rs.getString("descrip")
+                val preu = rs.getDouble("preu")
+                val stock = rs.getInt("stock")
+                val stockMin = rs.getInt("stock_min")
+
+                println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+            }
+
+        } catch (e: Exception) {
+            println("Error al acceder a la base de datos: ${e.message}")
+        } finally {
+            try { rs?.close() } catch (e: Exception) { /* Ignorar */ }
+            try { stmt?.close() } catch (e: Exception) { /* Ignorar */ }
+            try { conn?.close() } catch (e: Exception) { /* Ignorar */ }
+        }
+    }
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Conectores/" class="btn btn-neutral float-left" title="Conectores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Estructura/" class="btn btn-neutral float-right" title="Ejemplo completo en PostgreSQL">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Conectores/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Estructura/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
