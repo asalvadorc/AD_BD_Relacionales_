@@ -24,7 +24,7 @@ nav:
   - 🔹Introducción: Introduccion.md
   - 🔹Conexión a un SGBD: Conectores.md
   - 🔹Operaciones sobre BD: Operaciones.md
-  - 🔹Ejemplo completo en PostgreSQL: Estructura.md
+  #- 🔹Ejemplo completo en PostgreSQL: Estructura.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
   

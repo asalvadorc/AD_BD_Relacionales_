@@ -25,6 +25,8 @@ Una base de datos puede ser accedida desde diferentes orígenes o herramientas, 
 
 **Conectores**{.azul}
 
+De todas las formas posibles de interactuar con una base de datos, en este tema nos vamos a centrar en el uso de **conectores**, porque son la forma más directa y habitual de acceder a la base de datos desde un lenguaje de programación, como Kotlin, que es el que estamos utilizando en este módulo.
+
 En la introducción ya vimos que un **conector** (también llamado driver) es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa. Sin un conector, tu aplicación no podría comunicarse con la base de datos.
 
 - En herramientas gráficas como **DBeaver**, los drivers se gestionan automáticamente.
@@ -52,10 +54,9 @@ MySQL|	jdbc:mysql://localhost:3306/empresa
 SQLite|	jdbc:sqlite:empresa.sqlite
 
 
-Para que la conexión funcione, es necesario **añadir el conector** correspondiente al SGBD:   
+Para que la conexión funcione, es necesario **añadir el conector** correspondiente al SGBD, utilizamos **Gradle** o Maven para automatizar la gestión de dependencias, lo que nos permite conectar fácilmente nuestras aplicaciones en Kotlin a bases de datos, sin tener que configurar nada a mano.
 
-
-- **En un proyecto Gradle**
+- **En un proyecto Gradle** : build.gradle.kts
 
         dependencies {
             implementation("org.postgresql:postgresql:42.7.1") //Postgres
@@ -63,7 +64,8 @@ Para que la conexión funcione, es necesario **añadir el conector** correspondi
             implementation("org.xerial:sqlite-jdbc:3.43.0.0") //SQLite
         }
 
-En los siguientes apartados veremos como conectarnos a una BD SQLite llamada Factura.sqlite, disponible en la sección de recursos de Aules, tanto desde IntelliJ como desde DBeaver.
+!!!Tip ""
+    En los siguientes apartados veremos como conectarnos a una BD SQLite llamada **Factura.sqlite**, disponible en la sección de **recursos de Aules**{.verde}, tanto desde **IntelliJ** como desde **DBeaver**.
 
 ## 🔹Desde IntellJ
 
