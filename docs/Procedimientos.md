@@ -1,137 +1,308 @@
-# Procedimientos almacenados
+# Funciones y Procedimientos almacenados 
 
-En una base de datos relacional, además de tablas y consultas, podemos encontrar procedimientos almacenados (stored procedures), que son bloques de código SQL que se guardan y ejecutan directamente dentro del sistema gestor de base de datos (SGBD).
+Tanto **las funciones** como **los procedimientos almacenados** son bloques de código que se guardan en el servidor de la base de datos y que encapsulan una serie de instrucciones SQL.
 
-Un procedimiento almacenado (o función en PostgreSQL) es un bloque de código SQL que se guarda en la base de datos para su posterior reutilización. Funciona como un pequeño programa que encapsula lógica de negocio y operaciones complejas (consultas, validaciones, cálculos, actualizaciones, etc.), permitiendo ejecutarlas de forma sencilla mediante una llamada desde SQL o desde una aplicación cliente como Kotlin.
+Se usan para:
 
-Se utilizan para:
+- Reutilizar operaciones complejas
+- Organizar mejor la lógica de negocio
+- Mejorar el rendimiento (menos tráfico entre app y BD)
+- Mantener la integridad de datos
 
-- centralizar la lógica de negocio en la base de datos
-- reducir el tráfico entre la aplicación y la base de datos
-- mejorar el rendimiento y evitar duplicación de código
-- facilitar el mantenimiento y la seguridad
 
-Tanto las funciones (**FUNCTION**) como los procedimientos (**PROCEDURE**) permiten encapsular lógica SQL en el servidor de base de datos.
-La diferencia principal es que:
+**Diferencia entre Funciones y Procedimientos**{.azul}
 
-- Las funciones devuelven valores
-- Los procedimientos no devuelven nada directamente, pero pueden realizar operaciones como INSERT, UPDATE o controlar transacciones.
+Una **función** está diseñada para **calcular y devolver un resultado**. Se puede usar directamente dentro de una consulta SQL como parte de un SELECT, WHERE, ORDER BY, etc. Las funciones siempre devuelven un valor, que puede ser escalar (un número, texto...), una fila o una tabla.
 
-**Sintaxis básica**{.azul}
+Un **procedimiento** sirve para **ejecutar acciones** dentro de la base de datos, como insertar registros, modificar datos o gestionar operaciones en bloque. **No devuelve un valor directamente** (aunque puede usar parámetros de salida), y se ejecuta con CALL, no con SELECT.
 
-- **Función**:
 
-        CREATE OR REPLACE FUNCTION nombre_funcion(parametros)
-        RETURNS tipo
-        AS $$
-        BEGIN
-            -- código SQL
-            RETURN valor;
-        END;
-        $$ LANGUAGE plpgsql;
 
-- **Procedimiento**:
- 
-        CREATE OR REPLACE PROCEDURE nombre_procedimiento(parametros)
+!!!Note "Nota"
+    **SQLite** no soporta funciones ni procedimientos almacenados como lo hacen bases de datos como PostgreSQL, MySQL u Oracle. Sin embargo, puedes simular su comportamiento mediante funciones definidas en la aplicación, o vistas y triggers.
+
+
+Las funciones (FUNCTION) y los procedimientos (PROCEDURE) **no se crean desde el lenguaje Kotlin**, ya que son elementos propios del sistema gestor de bases de datos (SGBD), en este caso **PostgreSQL**. Para definirlos, se utiliza **SQL** y se ejecutan **directamente sobre la base de datos** a través de un cliente SQL.
+
+Una vez que las funciones o procedimientos están creados en la base de datos, se pueden **utilizar perfectamente desde Kotlin** a través de **JDBC**, igual que se hace con cualquier consulta SQL:
+
+- Las funciones se invocan con **SELECT nombre_funcion(...)**
+- Los procedimientos se llaman con **CALL nombre_procedimiento(...)**
+
+Y desde Kotlin, se gestionan mediante objetos como **PreparedStatement** y **CallableStatement**.
+
+
+## 🔹Funciones (FUNCTION)
+
+Una función en PostgreSQL es un bloque que:
+
+- Puede aceptar parámetros
+- Devuelve siempre un valor (escalar, tabla o compuesto)
+- Se puede usar en consultas SQL (SELECT, WHERE, etc.)
+- Puede tener IN, OUT, INOUT
+
+
+!!!Warning "Sintaxis básica en PostgreSql"
+        CREATE [OR REPLACE] FUNCTION nombre_funcion(parámetros)
+        RETURNS tipo_de_dato
         LANGUAGE plpgsql
         AS $$
         BEGIN
-            -- acciones sin devolver datos
+            -- instrucciones
+            RETURN valor;
         END;
         $$;
 
-
-Cuando trabajamos con PostgreSQL desde una aplicación Kotlin, es importante saber cómo llamar correctamente a cada tipo de lógica almacenada en la base de datos. Dependiendo de si usamos una función o un procedimiento, y del tipo de resultado que devuelve, la llamada con JDBC cambia ligeramente:
-
-
-**Ejemplo 1: Función que devuelve un valor**{.azul}
-
-- Se llama con: SELECT nombre_función(?)
-- Se usa un PreparedStatement
-- Se obtiene el resultado desde el ResultSet
-
-**SQL**
-
-    CREATE OR REPLACE FUNCTION obtener_email(id_cliente INT)
-    RETURNS VARCHAR AS $$
-    DECLARE
-        resultado_email VARCHAR;
-    BEGIN
-        SELECT email INTO resultado_email FROM cliente WHERE id = id_cliente;
-        RETURN resultado_email;
-    END;
-    $$ LANGUAGE plpgsql;
-
-**Kotlin**
-
-    val sql = "SELECT obtener_email(?)"
-    val st = conexion.prepareStatement(sql)
-    st.setInt(1, 1)
-    val rs = st.executeQuery()
-
-    if (rs.next()) {
-        val email = rs.getString(1)
-        println("Email: $email")
-    }
-
-**Ejemplo 2: Función que devuelve varias columnas (RETURNS TABLE)**{.azul}
-
-- También se llama con: SELECT * FROM nombre_función(?)
-- Se usa un PreparedStatement
-- El ResultSet contiene varias columnas o filas
-
-**SQL**
-
-    CREATE OR REPLACE FUNCTION datos_cliente(id_cliente INT)
-    RETURNS TABLE(nombre TEXT, email TEXT) AS $$
-    BEGIN
-        RETURN QUERY SELECT nombre, email FROM cliente WHERE id = id_cliente;
-    END;
-    $$ LANGUAGE plpgsql;
+| Tipo de retorno                | ¿Qué devuelve?                                        | Ejemplo de uso                                           |
+|-------------------------------|--------------------------------------------------------|-----------------------------------------------------------|
+| `INTEGER`, `TEXT`, etc.       | Un único valor escalar                                | `RETURNS INTEGER`<br>`RETURN x * x;`                      |
+| `TABLE(...)`                  | Una tabla (varias columnas y filas)                   | `RETURNS TABLE(codi TEXT, nom TEXT)`<br>`RETURN QUERY ...`|
+| `SETOF INTEGER`               | Un conjunto de valores escalares                      | `RETURNS SETOF INTEGER`<br>`RETURN NEXT i;`              |
+| `SETOF RECORD`                | Muchas filas con estructura dinámica                  | `RETURNS SETOF RECORD`                                    |
+| `%ROWTYPE`                    | Una fila con la estructura de una tabla existente     | `RETURNS institut%ROWTYPE`<br>`SELECT * INTO reg ...`    |
+| `RECORD`                      | Una sola fila con columnas genéricas                  | `RETURNS RECORD`<br>`SELECT ... INTO resultado;`         |
+| Tipo personalizado            | Una estructura definida con `CREATE TYPE`             | `RETURNS tipo_personalizado`                             |
 
 
-**Kotlin**
+!!!Tip ""   
+    Los siguientes ejemplos  se han creado utilizando el cliente **SQL DBeaver** y la BD **Geo_docker**.
 
-    val sql = "SELECT * FROM datos_cliente(?)"
-    val st = conexion.prepareStatement(sql)
-    st.setInt(1, 1)
-    val rs = st.executeQuery()
 
-    while (rs.next()) {
-        val nombre = rs.getString("nombre")
-        val email = rs.getString("email")
-        println("Cliente: $nombre - $email")
-    }
+**Funciones que devuelve un valor**{.azul}:
 
-**Ejemplo 3: Procedimiento sin retorno (VOID)**{.azul}
+**Ejemplo en SQL:**{.verde} Función que devuelve el cuadrado de un número.
 
-- Se llama con: {call nombre_procedimiento(?, ?)}
-- Se usa un CallableStatement
-- No se espera un ResultSet, solo se ejecuta
-
-**SQL**
-
-    CREATE OR REPLACE PROCEDURE insertar_cliente(nombre TEXT, email TEXT)
-    LANGUAGE plpgsql
+    CREATE OR REPLACE FUNCTION cuadrado(x INTEGER)
+    RETURNS INTEGER
     AS $$
     BEGIN
-        INSERT INTO cliente(nombre, email) VALUES (nombre, email);
+        RETURN x * x;
     END;
-    $$;
+    $$ LANGUAGE plpgsql;
 
-**Kotlin**
+La llamada desde **SQL** sería:
 
-    val sql = "{call insertar_cliente(?, ?)}"
-    val call = conexion.prepareCall(sql)
-    call.setString(1, "Lucía")
-    call.setString(2, "lucia@email.com")
-    call.execute()
-    println("Cliente insertado correctamente.")
+    SELECT cuadrado(5);  --Devuelve 25
+
+**En Kotlin**{.verde} la llamda a la función sería:
 
 
-!!!Note "En resumen"
-    Tipo de lógica|	Llamada SQL en Kotlin|	Objeto JDBC|	Retorno esperado
-    --------------|----------------------|-------------|--------------------
-    FUNCTION (un valor)|	"SELECT funcion(?)"|	PreparedStatement|	1 valor
-    FUNCTION (tabla)|	"SELECT * FROM funcion(?)"|	PreparedStatement|	Varias filas
-    PROCEDURE (void)|	"{call procedimiento(?, ?)}"|	CallableStatement|	Ninguno
+**Ejemplo_cuadrado.kt**
+
+       fun main() {
+
+            DatabaseLocal.getConnection().use { conn ->
+                val sql = "SELECT cuadrado(?)"
+
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.setInt(1, 6) // por ejemplo: x = 6
+                    val rs = stmt.executeQuery()
+
+                    if (rs.next()) {
+                        val resultado = rs.getInt(1)
+                        println("El cuadrado de 6 es: $resultado")
+                    }
+                }
+            }
+        }
+
+**Fucniones que devuelven una tabla**{.azul}
+
+**Ejemplo en SQL:**{.verde} Función que devuelve todos los institutos junto con su población y comarca.
+
+
+        CREATE OR REPLACE FUNCTION obtener_instituts()
+        RETURNS TABLE (
+            codi TEXT,
+            nom TEXT,
+            municipi TEXT,
+            comarca TEXT
+        )
+        AS $$
+            SELECT 
+                i.codi,
+                i.nom,
+                p.nom AS municipi,
+                c.nom_c AS comarca
+            FROM institut i
+            JOIN poblacio p ON i.cod_m = p.cod_m
+            JOIN comarca c ON p.nom_c = c.nom_c
+            ORDER BY comarca, municipi;
+        $$ LANGUAGE sql;
+
+La llamada desde **SQL** sería:
+
+        SELECT * FROM obtener_instituts();
+
+**En Kotlin**{.verde} la llamda a la función sería:
+
+**Ejemplo_fun_obtener_institutos.kt**
+
+        fun main() {
+
+           DatabaseLocal.getConnection().use { conn ->
+                val sql = "SELECT * FROM obtener_instituts()"
+
+                conn.prepareStatement(sql).use { stmt ->
+                    val rs = stmt.executeQuery()
+                    while (rs.next()) {
+                        val codi = rs.getString("codi")
+                        val nom = rs.getString("nom")
+                        val municipi = rs.getString("municipi")
+                        val comarca = rs.getString("comarca")
+
+                        println("Institut: $codi - $nom ($municipi, $comarca)")
+                    }
+                }
+            }
+        }
+
+
+**Fucniones que aceptan filtros como parámetros**{.azul}
+
+**Ejemplo en SQL:**{.verde} Función que devuelve los institutos de una comarca.
+
+
+        CREATE OR REPLACE FUNCTION instituts_de_comarca(p_nom_c TEXT)
+        RETURNS TABLE (
+            codi TEXT,
+            nom TEXT,
+            municipi TEXT,
+            comarca TEXT
+        )
+        AS $$
+            SELECT 
+                i.codi,
+                i.nom,
+                p.nom AS municipi,
+                c.nom_c AS comarca
+            FROM institut i
+            JOIN poblacio p ON i.cod_m = p.cod_m
+            JOIN comarca c ON p.nom_c = c.nom_c
+            WHERE c.nom_c = p_nom_c
+            ORDER BY municipi;
+        $$ LANGUAGE sql;
+
+La llamada desde **SQL** sería:
+
+    
+        SELECT * FROM instituts_de_comarca('Plana Baixa');
+
+**En Kotlin**{.verde} la llamda a la función sería:
+      
+**Ejemplo_fun_instituts_de_comarca.kt**
+
+        fun main() {
+
+            DatabaseLocal.getConnection().use { conn ->
+                val sql = "SELECT * FROM instituts_de_comarca(?)"
+
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.setString(1, "Plana Baixa") // Parámetro de entrada
+                    val rs = stmt.executeQuery()
+                    while (rs.next()) {
+                        val codi = rs.getString("codi")
+                        val nom = rs.getString("nom")
+                        val municipi = rs.getString("municipi")
+                        val comarca = rs.getString("comarca")
+
+                        println("Institut: $codi - $nom ($municipi, $comarca)")
+                    }
+                }
+            }
+        }
+
+## 🔹Procedimientos (PROCEDURE)
+
+
+Los procedimientos no devuelven valores directamente, a diferencia de las funciones, pero pueden tener parámetros de entrada (IN), salida (OUT) o ambos (INOUT). Se utilizan para realizar tareas como:
+
+- Inserciones o actualizaciones complejas
+- Validaciones
+- Operaciones en bloque
+- Ejecución de lógica con control de flujo
+- Agrupación de instrucciones dentro de una transacción
+
+!!!Warning "Sintaxis básica en PostgreSql"
+        CREATE [OR REPLACE] PROCEDURE nombre_procedimiento(
+            [parámetro1 tipo [IN|OUT|INOUT]],
+            ...
+        )
+        AS $$
+        BEGIN
+            -- cuerpo del procedimiento
+        END;
+        $$ LANGUAGE plpgsql;
+
+**Ejemplo en SQL:**{.verde} Procedimiento que inserta un nuevo instituto y muestra un aviso.
+
+        CREATE OR REPLACE PROCEDURE insertar_institut_resultado(
+            IN p_codi VARCHAR,
+            IN p_nom VARCHAR,
+            IN p_cod_m INTEGER,
+            OUT resultado TEXT
+        )
+        AS $$
+        BEGIN
+            -- ¿Municipio existe?
+            IF NOT EXISTS (SELECT 1 FROM poblacio WHERE cod_m = p_cod_m) THEN
+                resultado := 'MUNICIPIO_NO_ENCONTRADO';
+                RETURN;
+            END IF;
+
+            -- ¿Instituto ya existe?
+            IF EXISTS (SELECT 1 FROM institut WHERE codi = p_codi) THEN
+                resultado := 'EXISTENTE';
+                RETURN;
+            END IF;
+
+            -- Insertar instituto
+            INSERT INTO institut (codi, nom, cod_m)
+            VALUES (p_codi, p_nom, p_cod_m);
+
+            resultado := 'INSERTADO';
+        END;
+        $$ LANGUAGE plpgsql;
+
+La llamada desde **SQL** sería:
+
+        CALL insertar_institut_resultado('I999', 'Institut Experimental', 12028, NULL);
+
+
+**En Kotlin**{.verde} la llamda a la función sería:
+      
+**Ejemplo_pro_insertar_institut_resultado.kt**
+
+        import java.sql.Types
+
+        fun main() {
+           DatabaseLocal.getConnection().use { conn ->
+                val sql = "Call insertar_institut_resultado(?, ?, ?, ?)"
+
+                conn.prepareCall(sql).use { stmt ->
+                    stmt.setString(1, "I999")
+                    stmt.setString(2, "Institut Experimental")
+                    stmt.setInt(3, 12028)
+                    stmt.registerOutParameter(4, Types.VARCHAR)
+
+                    stmt.execute()
+
+                    val resultado = stmt.getString(4)
+                    println("Resultado: $resultado")
+                }
+            }
+        }
+
+
+## 📊 Resumen diferencias entre función y procedimiento en PostgreSQL
+
+| Característica                    | FUNCIÓN (`FUNCTION`)                             | PROCEDIMIENTO (`PROCEDURE`)                        |
+|----------------------------------|--------------------------------------------------|----------------------------------------------------|
+| 🔁 Devuelve un valor             | ✅ Sí (con `RETURN`)                             | ❌ No directamente                                 |
+| 📥 Parámetros de entrada (`IN`)  | ✅ Sí                                             | ✅ Sí                                               |
+| 📤 Parámetros de salida (`OUT`)  | ✅ Sí (como `OUT`, `INOUT`, o `RETURNS`)         | ✅ Sí (`OUT`, `INOUT`)                             |
+| 📌 Se invoca con…                | `SELECT nombre_funcion(...)`                     | `CALL nombre_procedimiento(...)`                  |
+| 📊 Usable en consultas SQL       | ✅ Sí (puede ir en `SELECT`, `WHERE`, etc.)      | ❌ No                                               |
+| 🔄 Puede devolver tablas         | ✅ Sí (`RETURNS TABLE` o `SETOF`)                | ❌ No directamente                                 |
+| 🔁 Puede usar `RETURN`           | ✅ Obligatorio                                   | ❌ No se usa `RETURN`, sino solo `CALL`            |
+| 🧱 Uso típico                    | Cálculos, validaciones, funciones reutilizables | Procesos complejos, lógica de negocio, transacciones |

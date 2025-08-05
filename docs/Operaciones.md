@@ -1,4 +1,4 @@
-# Operaciones sobre BD
+# Operaciones sobre la BD
 
 
 En JDBC (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los objetos y métodos:
@@ -46,7 +46,7 @@ executeUpdate()|Realizar modificaciones|	INSERT, UPDATE, DELETE, DDL (CREATE, DR
         - true si el resultado es un ResultSet (SELECT).
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
 
-## CRUD - Esquema de la BD - SQlite
+## 🔹CRUD - SQlite
 
 En los siguientes apartados veremos cómo realizar operaciones **CRUD** (Crear, Leer, Actualizar y Borrar) sobre una base de datos utilizando **SQLite** como sistema de gestión y la base de datos de ejemplo **Factura.sqlite**, disponible en el apartado **recursos**.
 
@@ -59,16 +59,17 @@ A lo largo del ejemplo se desarrollarán las siguientes operaciones sobre estas 
 
 Este ejemplo práctico permitirá entender cómo se gestionan los datos desde una aplicación escrita en Kotlin conectada a una base de datos relacional ligera. Para ello, se trabajará con las tablas definidas en **Factura.sqlite**, entre las que se encuentran **article**, **client**, **factura** y **linia_fac**, tal y como se obverva en el esquema lógico y relacional de la siguiente imagen.
 
+**Esquema de la BD Factura.sqlite**{.azul} 
 
 ![ref](img/bd_factura.jpg)|![ref](img/campos_bd_factura.jpg)
 
 
 !!!Note ""
-    **El archivo de BD Factura.sqlite** lo copiaremos en la carpeta resources del proyecto:
+    **El archivo de BD Factura.sqlite** lo copiaremos en la raiz del proyecto:
 
 ![ref](img/factura.jpg)|
 
-### Modificaciones
+### 🔹Modificaciones
 
 Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como **CRUD**:
 
@@ -82,11 +83,8 @@ Las operaciones más habituales para modificar los datos en una base de datos re
     import java.sql.DriverManager
 
         fun main() {
-            val dbPath = "src/main/resources/Factura.sqlite"
-            val dbFile = java.io.File(dbPath)
-            println("Ruta de la BD: ${dbFile.absolutePath}")
-
-            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+            
+            val url = "jdbc:sqlite:Factura.sqlite"
 
             DriverManager.getConnection(url).use { conn ->
 
@@ -152,7 +150,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
         }
 
-### Consultas    
+### 🔹Consultas    
 
 Las consultas permiten recuperar información, desde consultas simples hasta consultas complejas con filtros, ordenaciones y uniones entre tablas.
 
@@ -196,7 +194,7 @@ Las consultas permiten recuperar información, desde consultas simples hasta con
 
 
 
-### Consultas complejas: JOIN, filtros y ordenaciones
+### 🔹Consultas complejas: JOIN, filtros y ordenaciones
 
 **Ejemplo_join.kt**: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.
 
@@ -237,7 +235,7 @@ Las consultas permiten recuperar información, desde consultas simples hasta con
         }
 
 
-## Liberación de recursos
+## 🔹Liberación de recursos
 
 Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:
 

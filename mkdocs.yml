@@ -20,11 +20,11 @@ markdown_extensions:
 nav:
 
 - UD 2. Bases de Datos Relacionales:
-  - RA y CE: RA_CE.md
-  - Introducción: Introduccion.md
-  - Conectores: Conectores.md
-  - Operaciones sobre BD: Operaciones.md
-  - Ejemplo completo en PostgreSQL: Estructura.md
-  - Transacciones y control de errores: Transacciones.md
-  - Procedimientos almacenados: Procedimientos.md
+  - 🔹RA y CE: RA_CE.md
+  - 🔹Introducción: Introduccion.md
+  - 🔹Conexión a un SGBD: Conectores.md
+  - 🔹Operaciones sobre BD: Operaciones.md
+  - 🔹Ejemplo completo en PostgreSQL: Estructura.md
+  - 🔹Transacciones y control de errores: Transacciones.md
+  - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
   

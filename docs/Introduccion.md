@@ -11,7 +11,7 @@ Las bases de datos relacionales (BDR) son esenciales en el desarrollo de aplicac
 
 
 
-## Conectores VS ORM
+## 🔹Conectores VS ORM
 
 Cuando desarrollamos aplicaciones que trabajan con información persistente, necesitamos acceder a bases de datos relacionales (BDR) para consultar, insertar, modificar o eliminar datos. Existen dos formas principales de hacerlo desde el código:
 
@@ -69,7 +69,7 @@ Room|	Java/Kotlin|	ORM oficial para bases de datos SQLite en Android
 
 Ambos métodos son útiles y complementarios: aprender JDBC ayuda a entender mejor lo que hace un ORM por debajo.
 
-## Tipos de SGBD relacionales
+## 🔹Tipos de SGBD relacionales
 
 Conocer qué **tipo de gestor de base de datos** estás utilizando es esencial para poder **conectarte** correctamente desde tu aplicación, ya que cada uno necesita su propio conector o driver. No existe un único tipo de sistema gestor de bases de datos (SGBD): existen varios, con características y objetivos diferente:
 
@@ -91,6 +91,8 @@ SQLite, H2, Derby...
 - Casos de uso: aplicaciones de escritorio, móviles, prototipos, pruebas unitarias.
 
 Una vez aclarada la distinción entre los tipos de SGB a los que podemos conectarnos, ya podemos abordar el concepto de **conector**.
+
+
 
 
 
