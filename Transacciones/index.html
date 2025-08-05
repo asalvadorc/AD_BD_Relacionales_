@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Transacciones/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹Transacciones y control de errores - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39Transacciones y control de errores";
+        var mkdocs_page_input_path = "Transacciones.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Transacciones/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 2. Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Conexión a un SGBD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre BD</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹Transacciones y control de errores</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#transacciones">🔹Transacciones</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manejo-de-excepciones">🔹Manejo de excepciones</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 2. Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">🔹Transacciones y control de errores</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="transacciones-y-manejo-de-excepciones">Transacciones y Manejo de Excepciones<a class="headerlink" href="#transacciones-y-manejo-de-excepciones" title="Permanent link">&para;</a></h1>
+<p>La gestión de transacciones y el manejo de excepciones son dos aspectos fundamentales en el desarrollo de aplicaciones que interactúan con bases de datos, ya que garantizan la integridad, la consistencia y la robustez de los sistemas.</p>
+<h2 id="transacciones">🔹Transacciones<a class="headerlink" href="#transacciones" title="Permanent link">&para;</a></h2>
+<p>Una transacción es una secuencia de una o más operaciones sobre una base de datos que deben ejecutarse como una unidad indivisible. El objetivo es asegurar que todas las operaciones se completen con éxito o, en caso de fallo, ninguna de ellas se aplique, manteniendo así la base de datos en un estado consistente. Por ejemplo, en una transferencia bancaria, si falla el abono en una cuenta, se cancela el débito en la otra.</p>
+<p>Las transacciones se gestionan mediante comandos como BEGIN TRANSACTION (para iniciar), COMMIT (para confirmar los cambios) y ROLLBACK (para deshacer los cambios en caso de error). Este mecanismo protege la base de datos frente a fallos parciales y situaciones de concurrencia, asegurando que los datos siempre reflejen una realidad válida y coherente.</p>
+<p><strong class="azul">Propiedades de una transacción (ACID)</strong></p>
+<p>Las transacciones garantizan propiedades fundamentales, conocidas por el acrónimo ACID:</p>
+<table>
+<thead>
+<tr>
+<th>Propiedad</th>
+<th>Significado breve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Atomicidad</td>
+<td>Todas las operaciones se ejecutan o ninguna lo hace</td>
+</tr>
+<tr>
+<td>Consistencia</td>
+<td>El sistema pasa de un estado válido a otro</td>
+</tr>
+<tr>
+<td>Isolación</td>
+<td>No interfiere con otras transacciones simultáneas</td>
+</tr>
+<tr>
+<td>Durabilidad</td>
+<td>Una vez confirmada, el cambio permanece</td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">Comandos clave</strong></p>
+<p>Para controlar correctamente una transacción desde el código, necesitamos usar tres comandos clave:</p>
+<ul>
+<li><strong>commit()</strong>: Confirma los cambios realizados por la transacción, haciéndolos permanentes.</li>
+<li><strong>rollback()</strong>: Revierte todos los cambios realizados durante la transacción actual, volviendo al estado anterior.</li>
+</ul>
+<p>Por defecto, muchas conexiones JDBC están en modo <strong>auto-commit</strong>, es decir, cada operación se ejecuta y confirma automáticamente. Para usar transacciones de forma manual, debes desactivar este modo:</p>
+<pre><code>    conexion.autoCommit = false
+</code></pre>
+<h2 id="manejo-de-excepciones">🔹Manejo de excepciones<a class="headerlink" href="#manejo-de-excepciones" title="Permanent link">&para;</a></h2>
+<p>El manejo de excepciones en las transacciones es absolutamente necesario para garantizar que los datos de la base de datos no queden en un estado inconsistente o corrupto cuando ocurre un error durante una operación.</p>
+<p>👉  Cuando realizamos varias operaciones dentro de una misma transacción (por ejemplo, una transferencia bancaria), pueden ocurrir errores como:</p>
+<ul>
+<li>un fallo de conexión,</li>
+<li>un ID incorrecto,</li>
+<li>un valor nulo inesperado,</li>
+<li>un error lógico como saldo insuficiente.</li>
+</ul>
+<p>👉  Si no controlamos esos errores, la base de datos podría:</p>
+<ul>
+<li>Aplicar solo algunas de las operaciones</li>
+<li>Dejar datos parcialmente modificados</li>
+<li>Generar resultados incorrectos para otros usuarios</li>
+</ul>
+<p>👉  Para evitarlo se utiliza un bloque <strong>try-catch</strong> que:</p>
+<ul>
+<li>Llama a commit() si todo sale bien</li>
+<li>Llama a rollback() si ocurre cualquier excepción<pre><code>try {
+    conexion.autoCommit = false
+
+    // Varias operaciones SQL...
+    conexion.commit()  // Todo bien
+} catch (e: Exception) {
+    conexion.rollback()  // Algo falló → revertir
+    println("Error en la transacción. Cambios anulados.")
+}
+</code></pre>
+</li>
+</ul>
+<p>📌 “Una transacción sin control de errores no es una transacción segura. Siempre hay que estar preparado para deshacer todo si algo sale mal.”</p>
+<p><strong>Ejemplo práctico: transferencia entre cuentas</strong></p>
+<p>Supongamos que quieres transferir 100 € del cliente A al cliente B. Debes:</p>
+<ul>
+<li>Restar 100 € de la cuenta de A.</li>
+<li>Sumar 100 € a la cuenta de B.</li>
+</ul>
+<p>Ambas operaciones deben realizarse juntas, o ninguna.   </p>
+<pre><code>    val url = "jdbc:postgresql://localhost:5432/banco"
+    val user = "postgres"
+    val pass = "admin"
+
+    DriverManager.getConnection(url, user, pass).use { conn -&gt;
+        try {
+            conn.autoCommit = false  // Iniciar transacción manual
+
+            // Restar saldo a A
+            val restar = conn.prepareStatement("UPDATE cuentas SET saldo = saldo - 100 WHERE id = ?")
+            restar.setInt(1, 1)  // Cliente A
+            restar.executeUpdate()
+
+            // Añadir saldo a B
+            val sumar = conn.prepareStatement("UPDATE cuentas SET saldo = saldo + 100 WHERE id = ?")
+            sumar.setInt(1, 2)  // Cliente B
+            sumar.executeUpdate()
+
+            // Confirmar cambios
+            conn.commit()
+            println("Transferencia realizada con éxito.")
+        } catch (e: Exception) {
+            conn.rollback() // Revertir si ocurre un error
+            println("Error en la transferencia. Operación anulada.")
+            e.printStackTrace()
+        }
+    }
+</code></pre>
+<p><strong class="verde">Ejemplo sobre la BD factura.sqlite</strong>  </p>
+<p>La transacción hará lo siguiente:</p>
+<ul>
+<li>Insertar una nueva factura: "1001" y el clente 3.</li>
+<li>Insertar dos líneas de factura correspondientes a esa factura con los artículos "B10000B" y "B10005B"</li>
+<li>Actualizar el stock de los artículos implicados.</li>
+<li>Confirmar la transacción si todo va bien.</li>
+<li>Revertirla (rollback) si ocurre un error.</li>
+</ul>
+<p><strong>Ejemplo_transaccion.kt</strong></p>
+<pre><code>    import java.sql.DriverManager
+    import java.sql.SQLException
+
+    fun main() {
+       val url = "jdbc:sqlite:Factura.sqlite"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+            conn.createStatement().execute("PRAGMA foreign_keys = ON;") // Activa claves foráneas en SQLite
+            try {
+                conn.autoCommit = false // Inicia la transacción
+
+                // 1. Insertar nueva factura
+                val insertFactura = """
+                    INSERT INTO factura (num_f, data, cod_cli, iva)
+                    VALUES (1001, '2025-07-31', 3, 21)
+                """
+                conn.prepareStatement(insertFactura).executeUpdate()
+
+                // 2. Insertar líneas de factura
+                val insertLinea = """
+                    INSERT INTO linia_fac (num_f, num_l, cod_a, quant, preu)
+                    VALUES (?, ?, ?, ?, ?)
+                """
+                conn.prepareStatement(insertLinea).use { stmt -&gt;
+                    stmt.setInt(1, 1001)
+                    stmt.setInt(2, 1)
+                    stmt.setString(3, "B10000B")
+                    stmt.setInt(4, 3)
+                    stmt.setDouble(5, 10.0)
+                    stmt.executeUpdate()
+
+                    stmt.setInt(1, 1001)
+                    stmt.setInt(2, 2)
+                    stmt.setString(3, "B10005B")
+                    stmt.setInt(4, 2)
+                    stmt.setDouble(5, 15.0)
+                    stmt.executeUpdate()
+                }
+
+                // 3. Actualizar stock de los artículos
+                val updateStock = """
+                    UPDATE article SET stock = stock - ? WHERE cod_a = ?
+                """
+                conn.prepareStatement(updateStock).use { stmt -&gt;
+                    stmt.setInt(1, 3)
+                    stmt.setString(2, "A001")
+                    stmt.executeUpdate()
+
+                    stmt.setInt(1, 2)
+                    stmt.setString(2, "A002")
+                    stmt.executeUpdate()
+                }
+
+                // 4. Confirmar transacción
+                conn.commit()
+                println("Transacción realizada con éxito.")
+
+            } catch (e: SQLException) {
+                println("Error en la transacción: ${e.message}")
+                conn.rollback()
+                println("Transacción revertida.")
+            } finally {
+                conn.autoCommit = true
+            }
+        }
+    }
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Si se produjera algún error durante la operación —por ejemplo, si no existiera el cliente o alguno de los artículos referenciados—, <strong>la transacción se cancelaría por completo</strong>. Esto significa que no se insertaría la factura ni sus líneas, evitando así la creación de registros huérfanos. De este modo, la integridad referencial se mantiene intacta y la base de datos permanece en un <strong>estado consistente</strong>.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Operaciones/" class="btn btn-neutral float-left" title="🔹Operaciones sobre BD"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Procedimientos/" class="btn btn-neutral float-right" title="🔹Funciones y Procedimientos almacenados">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Operaciones/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Procedimientos/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
