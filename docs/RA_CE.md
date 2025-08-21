@@ -1,4 +1,4 @@
-# RA 2 – Desarrollo de aplicaciones con bases de datos relacionales
+# RA 2 – Desarrolla aplicaciones que gestionan información almacenada en bases de datos relacionales identificando y utilizando mecanismos de conexión.
 
 | Criterio de Evaluación | Contenido Relacionado                                                                 |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -14,7 +14,7 @@
 | j) Gestión de transacciones                                             | - Comandos `commit`, `rollback`<br>- Control manual y automático de transacciones |
 | k) Ejecución de procedimientos almacenados                              | - Llamadas a procedimientos con `CallableStatement`<br>- Parámetros de entrada y salida |
 
-## Contenidos 
+**Contenidos**{.azul}
 
 1-  Introducción a las bases de datos relacionales
 ¿Qué es una BDR?

@@ -111,7 +111,7 @@ Ambas operaciones deben realizarse juntas, o ninguna.
             }
         }
 
-**Ejemplo sobre la BD factura.sqlite**{.verde}  
+**Ejemplo sobre la BD Tienda.sqlite**{.verde}  
 
 La transacción hará lo siguiente:
 
