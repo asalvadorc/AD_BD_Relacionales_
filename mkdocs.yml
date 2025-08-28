@@ -23,7 +23,7 @@ markdown_extensions:
 
 nav:
 
-- UD 2. Bases de Datos Relacionales:
+- Bases de Datos Relacionales:
   - 🔹RA y CE: RA_CE.md
   - 🔹Introducción: Introduccion.md
   - 🔹Conexión a un SGBD: Conectores.md
@@ -31,4 +31,5 @@ nav:
   #- 🔹Ejemplo completo en PostgreSQL: Estructura.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
+  - 🔹Ejercicio: Ejercicio.md
   
