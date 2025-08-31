@@ -33,7 +33,7 @@ Una base de datos puede ser accedida desde diferentes orígenes o herramientas, 
 
 
 !!!Tip ""
-    En los siguientes apartados veremos como conectarnos a una BD Relacional, tanto desde la herramienta gráfica de BD integrada de **IntelliJ** y  la herramienta universal para la gestión de basees de datos **DBeaver**, como desde una aplicación desarrollada en Kotlin.
+    En los siguientes apartados veremos como conectarnos a una BD Relacional, tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
 
 
 ## 🔹Desde IntellJ

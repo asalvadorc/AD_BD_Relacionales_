@@ -26,8 +26,8 @@ nav:
 - Bases de Datos Relacionales:
   - 🔹RA y CE: RA_CE.md
   - 🔹Introducción: Introduccion.md
-  - 🔹Conexión a un SGBD: Conectores.md
-  - 🔹Operaciones sobre BD: Operaciones.md
+  - 🔹Herramientas y Conectores: Conectores.md
+  - 🔹Operaciones sobre la BD: Operaciones.md
   #- 🔹Ejemplo completo en PostgreSQL: Estructura.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md

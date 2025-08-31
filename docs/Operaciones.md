@@ -43,7 +43,7 @@ Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
         - true si el resultado es un ResultSet (SELECT).
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
 
-## 🔹CRUD - SQlite
+## 🔹CRUD - Ejemplos en SQlite
 
 !!!Tip "Kotlin - Instrucciones"
     En el proyecto `BDRelacionales` crearemos un **paquete** llamado `SQLite`, donde incluiremos los ejemplos de este apartado. A continuación, trabajaremos con la base de datos `Tienda.sqlite`, ubicada en la carpeta de **recursos**, para realizar operaciones **CRUD** (Crear, Leer, Actualizar y Borrar). Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional ligera, utilizando las tablas `article`, `client`, `factura` y `linia_fac`, tal y como se aprecia en el modelo relacional de la siguiente imagen.
@@ -339,7 +339,7 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 
 
-## 🔹Ejemplo en PostgreSQL
+## 🔹Ejemplos en PostgreSQL
 
 
 !!!Tip "Kotlin - Instrucciones"
