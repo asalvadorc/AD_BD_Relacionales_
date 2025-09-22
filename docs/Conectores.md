@@ -1,5 +1,5 @@
 
-# Conexión a un SGBD
+# Herramientas y Conectores
 
 
 De todas las formas posibles de interactuar con una base de datos, nos vamos a centrar en el uso de **conectores**, porque son la forma más directa y habitual de acceder a la base de datos desde un lenguaje de programación, como Kotlin, que es el que estamos utilizando en este módulo.
@@ -31,16 +31,35 @@ Una base de datos puede ser accedida desde diferentes orígenes o herramientas, 
 | 📱 Aplicaciones móviles                   | Apps Android/iOS que acceden a BD locales (como **SQLite**) o remotas (vía **Firebase**, API REST, etc.). |
 | 📂 Herramientas de integración de datos   | Software como **Talend**, **Pentaho**, **Apache Nifi** para migrar, transformar o sincronizar datos entre sistemas. |
 
+## 🔹JDBC 
 
+JDBC (Java Database Connectivity) es una API estándar de Java que permite a los programas escritos en Java (y por extensión en Kotlin) conectarse y trabajar con bases de datos relacionales.
+
+
+- **Driver JDBC**: cada gestor de BD proporciona un "driver" específico (un .jar) que implementa la interfaz de JDBC.
+
+    `mysql-connector-j, postgresql-42.x.jar, sqlite-jdbc.jar.`
+
+- **URL de conexión**: se usa una cadena con formato `jdbc:<gestor>://<host>:<puerto>/<nombre_base_datos>` para indicar cómo llegar a la BD.
+
+    Gestor de Base de Datos|	URL de conexión
+    -----------------------|---------------------
+    PostgreSQL|	jdbc:postgresql://localhost:5432/empresa
+    MySQL|	jdbc:mysql://localhost:3306/empresa
+    SQLite|	jdbc:sqlite:empresa.sqlite    
+
+- **Código estándar**: gracias a JDBC, el mismo código Java/Kotlin puede trabajar con distintas bases de datos cambiando solo la URL y el driver.
+
+
+   
 !!!Tip ""
     En los siguientes apartados veremos como conectarnos a una BD Relacional, tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
 
 
 ## 🔹Desde IntellJ
 
-En el desarrollo de aplicaciones, especialmente aquellas que utilizan bases de datos relacionales como PostgreSQL, MySQL o SQLite, es fundamental tener una visión clara y rápida del estado de los datos. Poder visualizar la base de datos directamente desde el entorno de desarrollo (IDE) ofrece una ventaja significativa frente a trabajar con herramientas externas.
 
-**IntelliJ** incorpora una potente herramienta de gestión de bases de datos que permite:
+**IntelliJ** incorpora una potente herramienta de gestión de bases de datos que permite visualizar la base de datos directamente desde el entorno de desarrollo (IDE), lo que permite:
 
 
 - 📂 Explorar la estructura de la base de datos (tablas, vistas, claves, relaciones…)
@@ -49,7 +68,7 @@ En el desarrollo de aplicaciones, especialmente aquellas que utilizan bases de d
 - ⚡ Ver los cambios reflejados inmediatamente tras ejecutar una operación desde el código
 - ✅ Probar consultas antes de implementarlas en el programa
 
-La siguientes imágenes ilustran como configura esta herramienta para conectarnos a la BD de ejemplo **Tienda.sqlite**, disponible en la sección de recursos de Aules:
+La siguientes imágenes ilustran como configura esta herramienta para conectarnos a la BD de ejemplo **Tienda.sqlite**, disponible en Aules:
 
 
 **1. Crea un nuevo proyecto en Kotlin y Gradle**{.azul}
@@ -75,7 +94,7 @@ En la herramienta **Database -> Data Source** elegimos el conector **SQLite**.
 **4. Selecciona la ubicación de la BD**{.azul}
 
 
-Podemos comprobar la conexión en **Test Concection**{.verde} antes de aceptar.  
+Podemos comprobar la conexión en **Test Concection** antes de aceptar.  
 Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no estuviera instalado.
 
 ![ref](img/dialogo_conexion_sqlite.png)
@@ -83,7 +102,7 @@ Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no e
 **5. Comprueba consultas antes de implementarlas**{.azul}
 
 
- Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL, haciendo click derecho sobre la conexión y seleccionando la opción `New > QueryConsole`.
+ Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL, haciendo click derecho sobre la conexión y seleccionando la opción **New > QueryConsole**.
 
 ![ref](img/query_consola.png)
 
@@ -96,7 +115,7 @@ Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no e
 ## 🔹Desde DBeaver    
 
 
-**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD  Factura.sqlite, disponible en la sección de recursos de Aules, son los siguientes:
+**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD  **Tienda.sqlite**, disponible en Aules, son los siguientes:
 
 
 **1. Abre DBeaver**{.azul}
@@ -105,7 +124,7 @@ Inicia el programa **DBeaver**. Aparecerá la ventana principal con el panel lat
 
 ![ref](img/dbeaver0.jpg)
 
-Haz clic en el botón **"Nueva conexión"** (ícono de enchufe) o ve al menú `Archivo > Nueva conexión`.
+Haz clic en el botón **"Nueva conexión"** (ícono de enchufe) o ve al menú **Archivo > Nueva conexión**.
 
 ![ref](img/dbeaver2.jpg)
 
@@ -164,17 +183,12 @@ Para que una aplicación (escrita en Kotlin, Java u otro lenguaje) pueda leer, i
 - Recibir y procesar resultados (ResultSet, listas de objetos…)
 - Cerrar correctamente los recursos utilizados
 
-**JDBC** (Java Database Connectivity) es la API básica de Java (conector) para conectarse a bases de datos relacionales.
 
-**Sintaxis:**{.verde}
+!!!Tip "Kotlin - Instrucciones"
+    En el proyecto `BDRelacionales`, ya creado y conectado a la BD Tienda.sqlite, crearemos un **paquete** nuevo llamado `SQLite`. En este paquete incluiremos los ejemplos de este apartado. 
 
-    jdbc:<gestor>://<host>:<puerto>/<nombre_base_datos>
+    ![ref](img/carpeta_sqlite.png)
 
-Gestor de Base de Datos|	URL de conexión
------------------------|---------------------
-PostgreSQL|	jdbc:postgresql://localhost:5432/empresa
-MySQL|	jdbc:mysql://localhost:3306/empresa
-SQLite|	jdbc:sqlite:empresa.sqlite
 
 
 Para que la conexión funcione, es necesario **añadir el conector jdbc** correspondiente. Para ello utilizaremos la herramienta **Gradle**, que permite automatizar la gestión de dependencias sin tener que configurar nada a mano.
@@ -190,7 +204,7 @@ Para que la conexión funcione, es necesario **añadir el conector jdbc** corres
 
 **Ejemplo de conexión a SQLite**{.azul}
 
-**Ejemplo_Conexion_SQLite.kt**: El siguiente programa conecta con la BD **Tienda.sqlite** que se encuentra en la carpeta **resources** del proyecto. 
+**Ejemplo_Conexion_SQLite.kt**: El siguiente programa conecta con la BD **Tienda.sqlite**.
 
        
         import java.io.File
@@ -260,22 +274,4 @@ Para que la conexión funcione, es necesario **añadir el conector jdbc** corres
             }
 
 
-
-<!--
-**Ejemplo de conexión a Postgresql**
-
-        import java.sql.DriverManager
-
-        
-        fun main() {
-            // Ruta al archivo de base de datos Postgres
-            val url = "jdbc:postgresql://localhost:5432/empresa"
-            val user = "postgres"
-            val pass = "admin"
-
-            // Conexión y prueba
-            DriverManager.getConnection(url, user, pass).use { conn ->
-                println("Conexión establecida correctamente.")
-            }        
-        }
--->        
+ 

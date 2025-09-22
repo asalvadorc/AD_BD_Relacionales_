@@ -43,10 +43,11 @@ Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
         - true si el resultado es un ResultSet (SELECT).
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
 
-## 🔹CRUD - Ejemplos en SQlite
+## 🔹CRUD - SQlite
 
 !!!Tip "Kotlin - Instrucciones"
-    En el proyecto `BDRelacionales` crearemos un **paquete** llamado `SQLite`, donde incluiremos los ejemplos de este apartado. A continuación, trabajaremos con la base de datos `Tienda.sqlite`, ubicada en la carpeta de **recursos**, para realizar operaciones **CRUD** (Crear, Leer, Actualizar y Borrar). Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional ligera, utilizando las tablas `article`, `client`, `factura` y `linia_fac`, tal y como se aprecia en el modelo relacional de la siguiente imagen.
+    Dentro del paquete `SQlite` del proyecto  `BDRelacionales`, ya creado y conectado a la BD `Tienda.sqlite`, ubicada en la carpeta de **recursos**, incluiremos los ejemplos de este apartado.
+    Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional ligera, utilizando las tablas `article`, `client`, `factura` y `linia_fac`, tal y como se aprecia en el modelo relacional de la siguiente imagen.
 
 **Tienda.sqlite**{.azul}
 
@@ -56,19 +57,17 @@ Modelo Relacional|Datos|Paquete SQLite
 
 
 
-!!!Warning "Ubicación BD"
-    **El archivo de BD Tienda.sqlite** debe estar en la carpeta **resources** del proyecto:
-
-    ![ref](img/resources_Tienda.png)|
-
-### 🔹Modificaciones
+**Operaciones CRUD**{.azul}   
 
 Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como **CRUD**:
 
-- **INSERT**: Permite añadir nuevos registros a una tabla.
+- **CREATE**: Permite añadir nuevos registros a una tabla.
+- **READ**: Permite consultar registros existentes.
 - **UPDATE**: Permite modificar los valores de uno o varios registros existentes.
 - **DELETE**: Permite eliminar registros de una tabla.
 
+
+**INSERT**{.verde} 
 
 **Ejemplo_Insert.kt**: Este fragmento añade un nuevo articulo "00001" a la tabla articles
 
@@ -98,7 +97,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
         }
 
 
-
+**UPDATE**{.verde}
 
 **Ejemplo_Update.kt**: Este código actualiza la descripción del artículo "00001"
 
@@ -123,6 +122,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
         }
 
+**DELETE**{.verde}
 
 **Ejemplo_Delete.kt**: Este fragmento elimina el articulo "00001"
 
@@ -144,11 +144,9 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
         }
 
-### 🔹Consultas    
+**INSERT (SELECT)**{.verde}
 
-Las consultas permiten recuperar información, desde consultas simples hasta consultas complejas con filtros, ordenaciones y uniones entre tablas.
-
-**Ejemplo_basico.kt**: Consulta la tabla article de la BD Tienda.sqlite
+**Ejemplo_select_basico.kt**: Consulta la tabla article.
 
         package SQLite
         import java.io.File
@@ -190,8 +188,6 @@ Las consultas permiten recuperar información, desde consultas simples hasta con
 
 
 
-
-### 🔹Consultas complejas: JOIN, filtros y ordenaciones
 
 **Ejemplo_join.kt**: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.
 
@@ -339,7 +335,7 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 
 
-## 🔹Ejemplos en PostgreSQL
+## 🔹CRUD - PostgreSQL
 
 
 !!!Tip "Kotlin - Instrucciones"
@@ -427,7 +423,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 **Read (SELECT)**{.verde}     
 
-**Ejemplo_Select.kt**
+**Ejemplo_Select.kt**: Consulta todos los institutos
 
             package Postgres
             fun main(args: Array<String>) {
@@ -451,9 +447,9 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 ---
 
 **Create (INSERT)**{.verde}  
-El siguiente ejemplo inserta un istituto de prueba.
 
-**Ejemplo_Insert.kt**
+
+**Ejemplo_Insert.kt**: inserta un istituto de prueba.
 
         package Postgres
         fun main(args: Array<String>) {
@@ -477,9 +473,9 @@ El siguiente ejemplo inserta un istituto de prueba.
 
 
 **Update (UPDATE)**{.verde}    
-El siguiente ejemplo actualiza el campo nombre del instituto de prueba insertado. 
 
-**Ejemplo_Update.kt**
+
+**Ejemplo_Update.kt**: actualiza el campo nombre del instituto de prueba insertado.
 
         package Postgres
         fun main() {
@@ -497,9 +493,9 @@ El siguiente ejemplo actualiza el campo nombre del instituto de prueba insertado
 
 
 **Delete (DELETE)**{.verde}   
-El siguiente ejemplo elimina el instituto de prueba insertado.  
+ 
 
-**Ejemplo_Delete.kt**
+**Ejemplo_Delete.kt**: elimina el instituto de prueba insertado anteriormente.
         
         package Postgres
         fun main() {
