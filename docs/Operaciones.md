@@ -338,12 +338,6 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 ## 🔹CRUD - PostgreSQL
 
 
-!!!Tip "Kotlin - Instrucciones"
-    En el proyecto `BDRelacionales` crearemos un **paquete** llamado `Postgres`, donde incluiremos los ejemplos de este apartado.   
-   
-    ![ref](img/carpeta_postgres.png)
-
-
 Hasta ahora hemos trabajado con ejemplos de operaciones **CRUD** (Crear, Leer, Actualizar y Borrar) utilizando **SQLite**, una base de datos ligera, fácil de usar y sin necesidad de servidor, ideal para iniciarse en el acceso a datos desde Kotlin.
 
 Sin embargo, en entornos reales y profesionales, lo más habitual es trabajar con sistemas de gestión de bases de datos más potentes y completos, como **PostgreSQL**.
@@ -353,11 +347,15 @@ A continuación, aplicaremos lo aprendido en SQLite, pero ahora trabajando con *
 - Base de datos **remota**: alojada en un servidor accesible mediante una dirección IP y credenciales.
 - Base de datos **local**: replicada en un contenedor **Docker**, lo que resulta ideal para pruebas, desarrollo y aprendizaje en un entorno controlado.
 
-En ambos casos utilizaremos la misma base de datos, llamada geo_ad. Su versión remota estará disponible desde cualquier ubicación, mientras que la local se generará a partir de ella siguiendo unas instrucciones que se os facilitarán. El esquema relacional de `geo_ad` es el siguiente:
+En ambos casos utilizaremos la misma base de datos, llamada **geo_ad**. Su versión remota estará disponible desde cualquier ubicación, mientras que la local se generará a partir de ella siguiendo unas instrucciones que se os facilitarán.
 
+
+!!!Tip "Kotlin - Instrucciones"
+    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.   
+   
 **Esquema de la BD geo_ad**{.azul} 
 
-![ref](img/geo_ad.jpg)
+![ref](img/geo_ad.jpg)   
 
 
 !!!Note "Datos de conexión al servido remoto"      
