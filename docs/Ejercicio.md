@@ -1,124 +1,100 @@
-# 📘 Guía para entregar una BD PostgreSQL como imagen Docker
+# 🧪 Ejercicio: Crea tu propia base de datos relacional en SQLite
 
-## Requisitos
-- Tener **Docker** instalado (Desktop o Engine).
-- Conocer/usar la **misma versión** de PostgreSQL que usaste en tu proyecto (ej.: `postgres:16`).
-- Disponer de tu **dump**: `dump.sql` (texto plano) o `backup.dump` (formato personalizado de `pg_dump -Fc`).
+## 🎯 Objetivo
 
-> **Consejo**: Anota en tu entrega la versión exacta de PostgreSQL que has usado (por ejemplo, 14/15/16).
+Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos **cuatro tablas relacionadas**, aplicando los principios básicos del modelo relacional y desarrollando un programa **Kotlin** que permita realizar operaciones de acceso a datos de forma segura y estructurada.
 
 ---
 
-## 1) Crear y arrancar un contenedor limpio de PostgreSQL
-Levanta un contenedor con Postgres (ajusta la versión si no usas la 16):
-```bash
-docker run -d --name pg_proyecto   -e POSTGRES_PASSWORD=postgres   -e POSTGRES_DB=proyecto_db   -p 5432:5432   postgres:16
-```
-Datos por defecto del ejemplo:
-- Usuario: `postgres`
-- Contraseña: `postgres`
-- Base de datos: `proyecto_db`
-- Puerto: `5432`
+## 📝 Requisitos
+
+### 1. Base de datos
+
+- Debes diseñar una base de datos de **temática libre** (música, libros, cine, videojuegos, recetas, viajes, etc.).
+- Incluye una imagen del modelo E/R de tu Base de datos: `imagenER.png`
+- La base de datos debe contener:
+    - Al menos **4 tablas** relacionadas.
+    - Claves primarias y **claves foráneas correctamente definidas**.
+    - Relación de tipo 1:N o N:M (con tabla intermedia).
+- La BD se debe crear utilizando un archivo SQL llamado `schema.sql`.
+
+### 2. Datos de ejemplo
+
+- Debes preparar un segundo script `insert.sql` que incluya datos reales o ficticios (mínimo 3 registros por tabla) para probar la base de datos.
+
+### 3. Operaciones en Kotlin
+
+- Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:
+    - Crear operaciones **CRUD completas** (Crear, Leer, Actualizar, Eliminar) sobre **al menos dos tablas**.
+    - Utiliza **`PreparedStatement`** para todas las consultas.
+    - Muestra los resultados por consola de forma clara y legible.
+
+### 4. Transacción
+
+- Implementa una **transacción** que afecte a **dos tablas relacionadas** (por ejemplo, insertar un pedido y sus líneas, o una factura y sus productos).
+- Debe usarse `commit()` y `rollback()` según corresponda.
+
+### 5. Control de errores
+
+- Implementa un **sistema básico de manejo de errores** (`try/catch`) que:
+  - Muestra un mensaje claro en caso de fallo.
+  - Cancela las operaciones si hay errores en la transacción (`rollback()`).
+  - No permita que la base de datos quede en un estado inconsistente.
+
+
+### 6. Documentación del código
+
+- El código Kotlin debe incluir **comentarios explicativos** que:
+  - Descripción de la BD y sus tablas.  
+  - Indiquen claramente qué hace cada función.
+  - Expliquen las partes principales del código (conexión, inserción, consultas, transacción, etc.).
+  - Ayuden a entender la lógica de negocio implementada.
+
 
 ---
 
-## 2) Importar la BD del proyecto
+## 📦 Estructura mínima del proyecto
 
-### Opción A — Tienes `dump.sql`
-```bash
-docker cp dump.sql pg_proyecto:/tmp/dump.sql
-docker exec -u postgres pg_proyecto psql -U postgres -d proyecto_db -f /tmp/dump.sql
-```
+    tu-tema-kotlin/
+    ├── resources/
+    │ └── tu_basededatos.sqlite
+    │ └── schema.sql
+    │ └── insert.sql
+    | └── imagenER.png
+    └── src/
+        └── main/
+            └── kotlin/
+                └── tu_paquete/
+                        └── Main.kt
 
-### Opción B — Tienes `backup.dump` (formato `pg_dump -Fc`)
-```bash
-docker cp backup.dump pg_proyecto:/tmp/backup.dump
-docker exec -u postgres pg_proyecto createdb -U postgres proyecto_db
-docker exec -u postgres pg_proyecto pg_restore -U postgres -d proyecto_db -1 /tmp/backup.dump
-```
-
-### Verificación rápida
-```bash
-docker exec -it pg_proyecto psql -U postgres -d proyecto_db -c "\dt"
-```
-Si ves tus tablas listadas, la importación se ha realizado correctamente ✅.
 
 ---
 
-## 3) Congelar el contenedor en una **imagen** (con los datos dentro)
-Detén el contenedor y créale una imagen “congelada”:
-```bash
-docker stop pg_proyecto
-docker commit pg_proyecto alumno_postgres:1.0
-```
-Esto crea la imagen `alumno_postgres:1.0` con tu BD ya cargada.
+## ✅ Entrega
+
+Sube un archivo `.zip` con:
+
+- La base de datos `tu_basededatos.sqlite`.
+- El proyecto Kotlin con todas las operaciones implementadas.
+- Los scripts `schema.sql` e `insert.sql` para replicar tu BD desde cero.
 
 ---
 
-## 4) Exportar la imagen para entregarla
-Genera un fichero `.tar` de la imagen para compartirlo:
-```bash
-docker save -o alumno_postgres_1_0.tar alumno_postgres:1.0
-```
-Entrega ese archivo (`alumno_postgres_1_0.tar`) a tu profesor/a (USB, nube, etc.).
+## 🏁 Rúbrica de evaluación
+
+| Criterio                                        | Puntos |
+|-------------------------------------------------|--------|
+| BD correctamente estructurada (mín. 4 tablas)   | 2      |
+| Scripts `schema.sql` e `insert.sql` funcionales | 1      |
+| CRUD funcional en al menos dos tablas           | 3      |
+| Transacción bien implementada                   | 2      |
+| Código estructurado, legible y sin errores      | 1      |
+| Documentación del código y BD                   | 2      |
+| **Total**                                       | **10** |
 
 ---
 
-## 5) Cómo lo probará el profesor
-Con el archivo `.tar` recibido, el profesor hará:
-```bash
-docker load -i alumno_postgres_1_0.tar
-docker run -d --name pg_alumno -p 5433:5432 alumno_postgres:1.0
-```
-Y podrá conectarse con DBeaver/pgAdmin/psql usando:
-- **Host**: `localhost`
-- **Puerto**: `5433`
-- **Usuario**: `postgres`
-- **Contraseña**: `postgres`
-- **Base de datos**: `proyecto_db`
+## 💡 Consejo
 
----
+Piensa primero en el modelo relacional y dibújalo en papel o con una herramienta online (draw.io, diagrams.net, etc.) antes de implementarlo en SQL.
 
-## 6) Plantilla de README para entregar junto con la imagen
-Copia/pega este README en tu proyecto (ajusta lo que proceda):
-
-### Proyecto BD Alumno — Entrega Docker (Opción A)
-
-**Datos de acceso**
-- Versión PostgreSQL: 16
-- Usuario: `postgres`
-- Contraseña: `postgres`
-- Base de datos: `proyecto_db`
-- Puerto recomendado para pruebas del profesor: `5433`
-
-**Instrucciones de ejecución**
-1. Cargar la imagen:
-   ```bash
-   docker load -i alumno_postgres_1_0.tar
-   ```
-
-2. Arrancar un contenedor para pruebas:
-   ```bash
-   docker run -d --name pg_alumno -p 5433:5432 alumno_postgres:1.0
-   ```
-
-3. Verificación rápida (tablas):
-   ```bash
-   docker exec -it pg_alumno psql -U postgres -d proyecto_db -c "\dt"
-   ```
-
-**Notas**
-- La imagen se ha creado con `postgres:16`. Si necesita otra versión, indíquelo.
-- Si su sistema ya usa el puerto `5433`, cambie el mapeo a otro puerto libre (por ejemplo, `-p 5434:5432`).
-
----
-
-## 7) Problemas comunes (y soluciones rápidas)
-- **“El puerto ya está en uso”** → Cambia el puerto publicado (ej.: `-p 5434:5432`).  
-- **Versión incompatible** → Usa la misma `postgres:<versión>` que se usó para generar la imagen/dump.  
-- **No aparecen tablas tras importar** → Revisa si importaste en la BD correcta (`-d proyecto_db`) y si el dump crea su propia BD (importa entonces contra `-d postgres`).  
-- **Extensiones faltantes** → Añade `CREATE EXTENSION IF NOT EXISTS ...;` tras importar, si tu proyecto las requiere.
-
----
-
-**¡Listo!** Tu imagen contiene la BD y el profesor podrá arrancarla y probarla sin restauraciones adicionales.

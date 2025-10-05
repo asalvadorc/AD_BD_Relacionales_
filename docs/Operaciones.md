@@ -67,7 +67,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 - **DELETE**: Permite eliminar registros de una tabla.
 
 
-**INSERT**{.verde} 
+**CREATE (INSERT)**{.verde} 
 
 **Ejemplo_Insert.kt**: Este fragmento añade un nuevo articulo "00001" a la tabla articles
 
@@ -86,7 +86,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
             conn.prepareStatement(sql).use { stmt ->
 
-                stmt.setString(1, "00004")
+                stmt.setString(1, "00001")
                 stmt.setString(2, "articulo de prueba 1")
                 stmt.executeUpdate()
 
@@ -144,7 +144,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
         }
 
-**INSERT (SELECT)**{.verde}
+**READ (SELECT)**{.verde}
 
 **Ejemplo_select_basico.kt**: Consulta la tabla article.
 
@@ -245,13 +245,13 @@ Estos recursos no se liberan automáticamente cuando se termina su uso (especial
 - Degradación del rendimiento
 - Errores inesperados en la aplicación
 
-En Kotlin, puedes usar **use {}** para cerrar recursos automáticamente al finalizar el bloque.
+💡 En Kotlin, puedes usar **use {}** para cerrar recursos automáticamente al finalizar el bloque, tal y como hemos hecho en los ejemplos anteriores.
 
 Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces debes cerrar manualmente cada uno de los recursos abiertos (ResultSet, Statement y Connection) usando .**close()**, y normalmente deberías hacerlo dentro de un bloque **finally** para garantizar su cierre incluso si ocurre un error. El orden correcto de cierre es del más interno al más externo.
 
-**Ejemplos**{.azul} para cerrar recursos abiertos sin **use()**, de forma manual y con el bloque **try-catch-finally**
+👉 Los siguientes **ejemplos** muestran como cerrar recursos abiertos sin **use()**, de forma manual y con el bloque **try-catch-finally**
 
-**Ejemplo_cierre_manual.kt:** Cierra los recurso con close()
+**Ejemplo_cierre_manual.kt:** Cierra los recurso de forma manual con close()
 
         package SQLite
         import java.sql.DriverManager
@@ -350,26 +350,13 @@ A continuación, aplicaremos lo aprendido en SQLite, pero ahora trabajando con *
 En ambos casos utilizaremos la misma base de datos, llamada **geo_ad**. Su versión remota estará disponible desde cualquier ubicación, mientras que la local se generará a partir de ella siguiendo unas instrucciones que se os facilitarán.
 
 
-!!!Tip "Kotlin - Instrucciones"
-    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.   
-   
+
 **Esquema de la BD geo_ad**{.azul} 
 
 ![ref](img/geo_ad.jpg)   
 
-
-!!!Note "Datos de conexión al servido remoto"      
-    **Servidor (host)**: 89.36.214.106  
-    **Port**: 5432 (és el port per defecte)  
-    **Usuari**: geo_ad  
-    **Contrasenya**: geo_ad  
-    **Base de dades**: geo_ad  
-
-
-!!!Note "Intrucciones para replicar la BD en local (Docker)"   
-    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: [Instrucciones](https://docs.google.com/document/d/1uU5B9MonTf1KhIOP5PkECIfP-NCSkdzDAo2W33P81Js/edit?tab=t.0)
-
-
+!!!Tip "Kotlin - Instrucciones"
+    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.   
 
 **Configuración de Dependencias (Gradle)**{.azul}
 
@@ -380,10 +367,19 @@ Lo primero será incluir las dependencia necesarias en **build.gradle.kts**
             implementation("org.postgresql:postgresql:42.6.0")
         }
 
-**Conexión al servidor**{.azul}
+
+### 🗄️Servidor remoto     
+
+La base de datos **geo_ad** se encuentra en una máquina externa, por lo que se comporta como un recurso compartido en la nube. Para acceder a ella necesitamos establecer una conexión de red utilizando parámetros como los siguientes:
 
 
-**Postgres remoto**{.verde}
+!!!Note "Datos de conexión al servido remoto"      
+    **Servidor (host)**: 89.36.214.106  
+    **Port**: 5432 (és el port per defecte)  
+    **Usuari**: geo_ad  
+    **Contrasenya**: geo_ad  
+    **Base de dades**: geo_ad  
+
 
 **Ejemplo_conexion_Postgres_remota.kt**
 
@@ -398,25 +394,10 @@ Lo primero será incluir las dependencia necesarias en **build.gradle.kts**
             fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
         }
 
-**Postgress en Docker**{.verde}
-
-**Ejemplo_conexion_Postgres_local.kt**
-        
-        package Postgres
-        import java.sql.DriverManager
-        object DatabaseLocal {
-
-            private const val URL =  "jdbc:postgresql://localhost:5432/geo"
-            private const val USER = "postgres"
-            private const val PASSWORD = "postgres"
-
-            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
-        }
-
 
 **Operaciones CRUD**{.azul}     
 
-Los ejemplos siguientes son igualmente válidos tanto si nos conectamos al servidor remoto como al local, ya que son iguales.  
+
 Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utilizando el objeto de conexión correspondiente.
 
 **Read (SELECT)**{.verde}     
@@ -508,4 +489,144 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
             }
         }
 
+### 🐳 Docker
 
+Para poder programar y probar nuestras aplicaciones sin depender de la conexión externa, es muy útil replicar esa base de datos en local. La forma más sencilla y estandarizada de hacerlo es mediante **Docker**.
+
+- Docker es una plataforma que permite ejecutar aplicaciones dentro de contenedores.
+- Un contenedor es como una “caja” que incluye todo lo necesario para que un servicio funcione: sistema operativo reducido, librerías, configuración y la propia aplicación.
+- Para bases de datos, existen imágenes oficiales (Postgres, MySQL, MongoDB…) que se pueden levantar en segundos.
+
+
+!!!Note "Intrucciones para replicar la BD en local (Docker)"   
+    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: [Instrucciones](https://docs.google.com/document/d/1uU5B9MonTf1KhIOP5PkECIfP-NCSkdzDAo2W33P81Js/edit?tab=t.0)
+
+Una vez hemos creada la BD en local ya podemos conectarnos a ella:    
+
+**Ejemplo_conexion_Postgres_local.kt**
+        
+        package Postgres
+        import java.sql.DriverManager
+        object DatabaseLocal {
+
+            private const val URL =  "jdbc:postgresql://localhost:5432/geo"
+            private const val USER = "postgres"
+            private const val PASSWORD = "postgres"
+
+            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+        }
+
+
+!!!Note "Nota"
+    Los ejemplos anteriores de operaciones CRUD, realizados sobre el servidor remoto, son igualmente válidos para el servidor local, ya que la base de datos es la misma.
+
+
+## 🔹Data Class
+
+Hasta ahora hemos trabajado con bases de datos relacionales utilizando JDBC, construyendo consultas SQL, procesando los resultados con ResultSet y mostrando la información directamente por consola o almacenándola en estructuras básicas como listas o mapas.
+
+Sin embargo, cuando una aplicación crece, se vuelve más cómodo y legible representar cada tabla de la base de datos como una clase del programa, cuyos atributos correspondan a las columnas de esa tabla.
+En **Kotlin**, esto se consigue de forma sencilla y elegante utilizando las **data classes**.
+
+Una **data class** (o clase de datos) es una clase especial de Kotlin diseñada para almacenar y transportar información.
+El compilador genera automáticamente métodos útiles como toString(), equals(), hashCode() y copy(), por lo que resulta ideal para representar filas (registros) de una tabla de base de datos.
+
+Su sintáxis básica es:
+
+        data class NombreClase(val campo1: Tipo, val campo2: Tipo, ...)
+
+
+🧩 **Ejemplo**: representación de una tabla cliente
+
+Supongamos que en la base de datos existe una tabla:
+
+        CREATE TABLE cliente (
+            id INTEGER PRIMARY KEY,
+            nombre TEXT,
+            email TEXT
+        );
+
+
+Podemos definir la siguiente clase en Kotlin:
+
+        data class Cliente(
+            val id: Int,
+            val nombre: String,
+            val email: String
+        )
+
+
+Y al realizar una consulta con JDBC:
+
+        val clientes = mutableListOf<Cliente>()
+        val rs = stmt.executeQuery("SELECT * FROM cliente")
+
+        while (rs.next()) {
+            clientes.add(
+                Cliente(
+                    id = rs.getInt("id"),
+                    nombre = rs.getString("nombre"),
+                    email = rs.getString("email")
+                )
+            )
+        }
+
+
+En este ejemplo:
+
+- Cada fila del ResultSet se convierte en un objeto Cliente.
+- Todos los clientes recuperados se almacenan en una lista tipada (List<Cliente>).
+- Posteriormente se pueden mostrar, modificar o procesar con facilidad.
+
+### 📌 **Uso de `data class` en la BD Geo**
+
+En este ejemplo replicamos la misma consulta que ya vimos anteriormente para obtener todos los institutos de la base de datos **Geo** alojada en el servidor remoto, pero ahora utilizando un **`data class`** en Kotlin. 
+
+Esto nos permite representar cada fila del resultado como un objeto de tipo `Institut`, facilitando el tratamiento, la reutilización y la lectura del código.
+
+Además, almacenamos los resultados en una lista de objetos, lo que nos permite trabajar con ellos de forma más natural dentro de nuestro programa (listar, filtrar, transformar, etc.).
+
+
+**Data Class: Institut**
+
+    package Postgres
+
+        data class Institut(
+            val codi: String,
+            val nom: String?,
+            val adreca: String?,
+            val numero: String?,
+            val codpostal: Int?,
+            val codMunicipi: Int?
+        )
+
+**Ejemplo_dataclass.kt**
+
+    package Postgres
+
+        fun main() {
+            val sql = "SELECT * FROM institut"
+
+            val instituts = mutableListOf<Institut>()
+
+            DatabaseRemota.getConnection().use { conn ->  // Usa DatabaseRemota si es necesario
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.executeQuery().use { rs ->
+                        while (rs.next()) {
+                            val institut = Institut(
+                                rs.getString("codi"),
+                                rs.getString("nom"),
+                                rs.getString("adreca"),
+                                rs.getString("numero"),
+                                rs.getInt("codpostal"),
+                                rs.getInt("cod_m")
+                            )
+                            instituts.add(institut)
+                        }
+                    }
+                }
+            }
+
+            println("🏫 Institutos encontrados:")
+            instituts.forEach { println(it) }
+        }

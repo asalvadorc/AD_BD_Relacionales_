@@ -30,9 +30,11 @@ Para controlar correctamente una transacción desde el código, necesitamos usar
 - **commit()**: Confirma los cambios realizados por la transacción, haciéndolos permanentes.
 - **rollback()**: Revierte todos los cambios realizados durante la transacción actual, volviendo al estado anterior.
 
-Por defecto, muchas conexiones JDBC están en modo **auto-commit**, es decir, cada operación se ejecuta y confirma automáticamente. Para usar transacciones de forma manual, debes desactivar este modo:
+Por defecto, muchas conexiones JDBC están en modo **auto-commit**, es decir, cada operación se ejecuta y confirma automáticamente. Para usar transacciones de forma manual, debes desactivar este modo justo después de abrir la conexión con la base de datos:
 
+        val conexion = DriverManager.getConnection("jdbc:sqlite:miBD.sqlite")
         conexion.autoCommit = false
+
 
 
 ## 🔹Manejo de excepciones
@@ -115,7 +117,7 @@ Ambas operaciones deben realizarse juntas, o ninguna.
 
 La transacción hará lo siguiente:
 
-- Insertar una nueva factura: "1001" y el clente 3.
+- Insertar una nueva factura: "1001" del clente 3.
 - Insertar dos líneas de factura correspondientes a esa factura con los artículos "B10000B" y "B10005B"
 - Actualizar el stock de los artículos implicados.
 - Confirmar la transacción si todo va bien.
