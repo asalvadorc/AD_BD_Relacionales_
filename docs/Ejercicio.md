@@ -1,12 +1,12 @@
-# 🧪 Ejercicio: Crea tu propia base de datos relacional en SQLite
+# 📝 Ejercicio: Crea tu propia base de datos relacional en SQLite
 
-## 🎯 Objetivo
+## 📋 Enunciado
 
 Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos **cuatro tablas relacionadas**, aplicando los principios básicos del modelo relacional y desarrollando un programa **Kotlin** que permita realizar operaciones de acceso a datos de forma segura y estructurada.
 
 ---
 
-## 📝 Requisitos
+## 🛠️ Requisitos
 
 ### 1. Base de datos
 
@@ -70,7 +70,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 ---
 
-## ✅ Entrega
+## 📩 Entrega
 
 Sube un archivo `.zip` con:
 
@@ -80,7 +80,7 @@ Sube un archivo `.zip` con:
 
 ---
 
-## 🏁 Rúbrica de evaluación
+## ✅ Rúbrica de evaluación
 
 | Criterio                                        | Puntos |
 |-------------------------------------------------|--------|
