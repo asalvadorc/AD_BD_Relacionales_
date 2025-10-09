@@ -10,31 +10,28 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 ### 1. Base de datos
 
-- Debes diseñar una base de datos de **temática libre** (música, libros, cine, videojuegos, recetas, viajes, etc.).
+- Debes crear una base de datos de **temática libre** (música, libros, cine, videojuegos, recetas, viajes, etc.).
 - Incluye una imagen del modelo E/R de tu Base de datos: `imagenER.png`
 - La base de datos debe contener:
-    - Al menos **4 tablas** relacionadas.
+    - Al menos **3 tablas** relacionadas.
     - Claves primarias y **claves foráneas correctamente definidas**.
-    - Relación de tipo 1:N o N:M (con tabla intermedia).
-- La BD se debe crear utilizando un archivo SQL llamado `schema.sql`.
+    - Relación de tipo 1:N o N:M.
+    - Poblar la BD con al menos 3 registros
 
-### 2. Datos de ejemplo
-
-- Debes preparar un segundo script `insert.sql` que incluya datos reales o ficticios (mínimo 3 registros por tabla) para probar la base de datos.
-
-### 3. Operaciones en Kotlin
+### 2. Operaciones en Kotlin
 
 - Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:
-    - Crear operaciones **CRUD completas** (Crear, Leer, Actualizar, Eliminar) sobre **al menos dos tablas**.
+    - Crear operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.
     - Utiliza **`PreparedStatement`** para todas las consultas.
     - Muestra los resultados por consola de forma clara y legible.
+    - Toda la funcionalidad debe estar **en un solo archivo main.kt**
 
-### 4. Transacción
+### 3. Transacción
 
 - Implementa una **transacción** que afecte a **dos tablas relacionadas** (por ejemplo, insertar un pedido y sus líneas, o una factura y sus productos).
 - Debe usarse `commit()` y `rollback()` según corresponda.
 
-### 5. Control de errores
+### 4. Control de errores
 
 - Implementa un **sistema básico de manejo de errores** (`try/catch`) que:
   - Muestra un mensaje claro en caso de fallo.
@@ -42,10 +39,9 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
   - No permita que la base de datos quede en un estado inconsistente.
 
 
-### 6. Documentación del código
+### 5. Documentación del código
 
 - El código Kotlin debe incluir **comentarios explicativos** que:
-  - Descripción de la BD y sus tablas.  
   - Indiquen claramente qué hace cada función.
   - Expliquen las partes principales del código (conexión, inserción, consultas, transacción, etc.).
   - Ayuden a entender la lógica de negocio implementada.
@@ -58,9 +54,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
     tu-tema-kotlin/
     ├── resources/
     │ └── tu_basededatos.sqlite
-    │ └── schema.sql
-    │ └── insert.sql
-    | └── imagenER.png
+    │ └── imagenER.png
     └── src/
         └── main/
             └── kotlin/
@@ -75,8 +69,8 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 Sube un archivo `.zip` con:
 
 - La base de datos `tu_basededatos.sqlite`.
-- El proyecto Kotlin con todas las operaciones implementadas.
-- Los scripts `schema.sql` e `insert.sql` para replicar tu BD desde cero.
+- El proyecto Kotlin con todas las operaciones implementadas (main.kt).
+
 
 ---
 
@@ -84,17 +78,14 @@ Sube un archivo `.zip` con:
 
 | Criterio                                        | Puntos |
 |-------------------------------------------------|--------|
-| BD correctamente estructurada (mín. 4 tablas)   | 2      |
-| Scripts `schema.sql` e `insert.sql` funcionales | 1      |
+| BD correctamente estructurada (mín. 3 tablas)   | 2      |
 | CRUD funcional en al menos dos tablas           | 3      |
 | Transacción bien implementada                   | 2      |
 | Código estructurado, legible y sin errores      | 1      |
-| Documentación del código y BD                   | 2      |
+| Documentación del código                        | 2      |
 | **Total**                                       | **10** |
 
 ---
 
-## 💡 Consejo
 
-Piensa primero en el modelo relacional y dibújalo en papel o con una herramienta online (draw.io, diagrams.net, etc.) antes de implementarlo en SQL.
 
