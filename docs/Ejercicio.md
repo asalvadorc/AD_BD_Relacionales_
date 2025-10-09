@@ -1,4 +1,4 @@
-# 📝 Ejercicio: Crea tu propia base de datos relacional en SQLite
+# 📝 Ejercicio: Operaciones sobre tu propia base de datos relacional en SQLite
 
 ## 📋 Enunciado
 
