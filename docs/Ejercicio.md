@@ -24,7 +24,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
     - Crear operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.
     - Utiliza **`PreparedStatement`** para todas las consultas.
     - Muestra los resultados por consola de forma clara y legible.
-    - Toda la funcionalidad debe estar **en un solo archivo main.kt**
+    - Toda la funcionalidad debe estar implementada **en un solo fichero main.kt**, aunque tengas que estructurar el progrma en varias funciones.
 
 ### 3. Transacción
 
@@ -69,7 +69,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 Sube un archivo `.zip` con:
 
 - La base de datos `tu_basededatos.sqlite`.
-- El proyecto Kotlin con todas las operaciones implementadas (main.kt).
+- El proyecto Kotlin con todas las operaciones implementadas en un solo fichero main.kt.
 
 
 ---
