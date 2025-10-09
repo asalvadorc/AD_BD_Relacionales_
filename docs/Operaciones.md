@@ -502,7 +502,7 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
 
 
 !!!Note "Intrucciones para replicar la BD en local (Docker)"   
-    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace:[Instrucciones](Docker_instrucciones.md)    
+    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: [Instrucciones](Docker_instrucciones.md)    
 
 
 ---  
@@ -527,9 +527,6 @@ Una vez hemos creada la BD en local ya podemos conectarnos a ella:
     Los ejemplos anteriores de operaciones CRUD, realizados sobre el servidor remoto, son igualmente válidos para el servidor local, ya que la base de datos es la misma.
 
 
-#### Instrucciones
-
-[Instrucciones](Docker_instrucciones.md)
 
 ## 🔹Data Class
 
