@@ -353,7 +353,10 @@ En ambos casos utilizaremos la misma base de datos, llamada **geo_ad**. Su versi
 
 **Esquema de la BD geo_ad**{.azul} 
 
-![ref](img/geo_ad.jpg)   
+Modelo Relacional - Datos|Paquete Postgres
+--|
+![ref](img/geo_ad.jpg)|![ref](img/carpeta_postgres.png)
+
 
 !!!Tip "Kotlin - Instrucciones"
     Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.   
@@ -375,7 +378,7 @@ La base de datos **geo_ad** se encuentra en una máquina externa, por lo que se 
 
 !!!Note "Datos de conexión al servido remoto"      
     **Servidor (host)**: 89.36.214.106  
-    **Port**: 5432 (és el port per defecte)  
+    **Port**: 5432 (es el puerto por defecto)  
     **Usuari**: geo_ad  
     **Contrasenya**: geo_ad  
     **Base de dades**: geo_ad  
@@ -499,7 +502,10 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
 
 
 !!!Note "Intrucciones para replicar la BD en local (Docker)"   
-    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: [Instrucciones](https://docs.google.com/document/d/1uU5B9MonTf1KhIOP5PkECIfP-NCSkdzDAo2W33P81Js/edit?tab=t.0)
+    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace:[Instrucciones](Docker_instrucciones.md)    
+
+
+---  
 
 Una vez hemos creada la BD en local ya podemos conectarnos a ella:    
 
@@ -520,6 +526,10 @@ Una vez hemos creada la BD en local ya podemos conectarnos a ella:
 !!!Note "Nota"
     Los ejemplos anteriores de operaciones CRUD, realizados sobre el servidor remoto, son igualmente válidos para el servidor local, ya que la base de datos es la misma.
 
+
+#### Instrucciones
+
+[Instrucciones](Docker_instrucciones.md)
 
 ## 🔹Data Class
 
@@ -580,7 +590,7 @@ En este ejemplo:
 
 ### 📌 **Uso de `data class` en la BD Geo**
 
-En este ejemplo replicamos la misma consulta que ya vimos anteriormente para obtener todos los institutos de la base de datos **Geo** alojada en el servidor remoto, pero ahora utilizando un **`data class`** en Kotlin. 
+En este ejemplo replicamos la misma consulta que ya vimos anteriormente para obtener todos los institutos de la base de datos **geo_ad** alojada en el servidor remoto, pero ahora utilizando un **`data class`** en Kotlin. 
 
 Esto nos permite representar cada fila del resultado como un objeto de tipo `Institut`, facilitando el tratamiento, la reutilización y la lectura del código.
 
