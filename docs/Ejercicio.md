@@ -2,7 +2,7 @@
 
 ## 📋 Enunciado
 
-Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos **cuatro tablas relacionadas**, aplicando los principios básicos del modelo relacional y desarrollando un programa **Kotlin** que permita realizar operaciones de acceso a datos de forma segura y estructurada.
+Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos **tres tablas relacionadas**, aplicando los principios básicos del modelo relacional y desarrollando un programa **Kotlin** que permita realizar operaciones de acceso a datos de forma segura y estructurada.
 
 ---
 
@@ -22,7 +22,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 - Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:
     - Crear operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.
-    - Utiliza **`PreparedStatement`** para todas las consultas.
+    - Utiliza **`PrepareStatement`** para todas las consultas.
     - Muestra los resultados por consola de forma clara y legible.
     - Toda la funcionalidad debe estar implementada **en un solo fichero main.kt**, aunque tengas que estructurar el progrma en varias funciones.
 
@@ -33,7 +33,8 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 ### 4. Control de errores
 
-- Implementa un **sistema básico de manejo de errores** (`try/catch`) que:
+Implementa un **sistema básico de manejo de errores** (`try/catch`) que:  
+
   - Muestra un mensaje claro en caso de fallo.
   - Cancela las operaciones si hay errores en la transacción (`rollback()`).
   - No permita que la base de datos quede en un estado inconsistente.
@@ -41,7 +42,8 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 ### 5. Documentación del código
 
-- El código Kotlin debe incluir **comentarios explicativos** que:
+El código Kotlin debe incluir **comentarios explicativos** que:
+
   - Indiquen claramente qué hace cada función.
   - Expliquen las partes principales del código (conexión, inserción, consultas, transacción, etc.).
   - Ayuden a entender la lógica de negocio implementada.

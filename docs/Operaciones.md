@@ -5,23 +5,11 @@ En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos
 
 - **Connection**, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)
 
-- Los objetos **PreparedStatement** y **CreateStatement** se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.
+- Los objetos **PrepareStatement** y **CreateStatement** se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.
 
 - **ResultSet** es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.
 
 - Los métodos **executeQuery()** y **executeUpdate()** se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.
-
-**PreparedStatement VS CreateStatement**{.azul}
-
-| Si necesitas...                                     | Usa...            |
-|-----------------------------------------------------|-------------------|
-| Consultas sin parámetros                            | `CreateStatement`       |
-| Consultas con datos del usuario                     | `PreparedStatement` |
-| Seguridad frente a inyecciones SQL                  | `PreparedStatement` |
-| Ejecutar muchas veces con distintos valores         | `PreparedStatement` |
-| Crear tablas o sentencias SQL complejas que no cambian | `CreateStatement`
-
-
 
 **Peticiones a la BD**{.azul}
 
@@ -31,8 +19,8 @@ Ambos permiten enviar instrucciones SQL al gestor de base de datos, pero se usan
 
 Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
 ------|--------------|-----------------------|------------------------
-**executeQuery()**{.verde}|	Realizar consultas|	SELECT|	Objeto ResultSet con los datos consultados
-**executeUpdate()**{.verde}|Realizar modificaciones|	INSERT, UPDATE, DELETE, DDL (CREATE, DROP, etc.)|	Un entero con el número de filas afectadas
+**executeQuery()**|	Realizar consultas|	SELECT|	Objeto ResultSet con los datos consultados
+**executeUpdate()**|Realizar modificaciones|	INSERT, UPDATE, DELETE, DDL (CREATE, DROP, etc.)|	Un entero con el número de filas afectadas
 
 !!!Note "execute()"
     El método **execute()** en JDBC se utiliza principalmente en los siguientes casos:
@@ -42,6 +30,54 @@ Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
       - En situaciones donde se necesita una gestión flexible de la ejecución, ya que execute() devuelve un booleano:
         - true si el resultado es un ResultSet (SELECT).
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
+
+
+**PrepareStatement VS CreateStatement**{.azul}
+
+| Si necesitas...                                     | Usa...            |
+|-----------------------------------------------------|-------------------|
+| Consultas sin parámetros                            | `CreateStatement`       |
+| Consultas con datos del usuario                     | `PrepareStatement` |
+| Seguridad frente a inyecciones SQL                  | `PrepareStatement` |
+| Ejecutar muchas veces con distintos valores         | `PrepareStatement` |
+| Crear tablas o sentencias SQL complejas que no cambian | `CreateStatement`
+
+**Diferencia en la compilación entre Statement y PreparedStatement**
+
+Cada vez que envías una sentencia SQL al motor de base de datos, el motor debe hacer varios pasos:
+
+- Parsear la consulta → comprobar que la sintaxis SQL es correcta.
+- Compilar → convertir la consulta en un plan de ejecución interno (cómo buscar los datos, qué índices usar, etc.).
+- Ejecutar → obtener los resultados.
+
+🔹 **Con Statement**
+
+Cada vez que llamas a executeQuery() o executeUpdate(), el SQL completo se envía como texto:
+
+    val stmt = conn.createStatement()
+    stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Valencia'")
+    stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Madrid'")
+
+En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo cambia el valor de 'Valencia' a 'Madrid'.
+
+🔁 Es decir, se repite todo el trabajo de compilación cada vez, lo que reduce el rendimiento si haces muchas consultas parecidas.
+
+🔹 **Con PrepareStatement**
+
+Aquí, el SQL se envía una sola vez con parámetros (?):
+
+    val pstmt = conn.prepareStatement("SELECT * FROM clientes WHERE ciudad = ?")
+    pstmt.setString(1, "Valencia")
+    pstmt.executeQuery()
+
+    pstmt.setString(1, "Madrid")
+    pstmt.executeQuery()
+
+El motor solo compila la consulta una vez, y después reutiliza el mismo plan de ejecución cambiando solo el valor del parámetro.
+
+⚡ Esto ahorra tiempo y recursos, sobre todo cuando repites muchas veces la misma consulta con diferentes datos (por ejemplo, en bucles o inserciones masivas).    
+
+
 
 ## 🔹CRUD - SQlite
 
@@ -507,7 +543,7 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
 
 ---  
 
-Una vez hemos creada la BD en local ya podemos conectarnos a ella:    
+🔌 Una vez hemos creada la BD en local ya podemos conectarnos a ella:    
 
 **Ejemplo_conexion_Postgres_local.kt**
         
@@ -582,7 +618,7 @@ Y al realizar una consulta con JDBC:
 En este ejemplo:
 
 - Cada fila del ResultSet se convierte en un objeto Cliente.
-- Todos los clientes recuperados se almacenan en una lista tipada (List<Cliente>).
+- Todos los clientes recuperados se almacenan en una lista tipada (`List<Cliente>`).
 - Posteriormente se pueden mostrar, modificar o procesar con facilidad.
 
 ### 📌 **Uso de `data class` en la BD Geo**
