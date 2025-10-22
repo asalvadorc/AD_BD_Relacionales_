@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Docker_instrucciones/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🐘 Instalación y configuración de PostgreSQL con Docker y DBeaver - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udc18 Instalaci\u00f3n y configuraci\u00f3n de PostgreSQL con Docker y DBeaver";
+        var mkdocs_page_input_path = "Docker_instrucciones.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Docker_instrucciones/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">🐘 Instalación y configuración de PostgreSQL con Docker y DBeaver</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="instalacion-y-configuracion-de-postgresql-con-docker-y-dbeaver">🐘 Instalación y configuración de PostgreSQL con Docker y DBeaver<a class="headerlink" href="#instalacion-y-configuracion-de-postgresql-con-docker-y-dbeaver" title="Permanent link">&para;</a></h1>
+<h2 id="resumen-de-la-practica">📋 Resumen de la práctica<a class="headerlink" href="#resumen-de-la-practica" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Se instala <strong>PostgreSQL</strong> con <strong>Docker</strong> usando un <code>docker-compose.yml</code>.  </li>
+<li>Se arranca el contenedor y se verifica con <code>docker ps</code>.  </li>
+<li>Se conecta la base de datos con <strong>DBeaver</strong> (<code>localhost:5432</code>).  </li>
+<li>Se crean las tablas <code>COMARCA</code>, <code>POBLACIO</code> e <code>INSTITUT</code>.  </li>
+<li>Se insertan los datos iniciales desde los scripts <code>.sql</code>.</li>
+</ol>
+<hr />
+<h2 id="1-instalacion-de-postgresql-con-docker">1️⃣ Instalación de PostgreSQL con Docker<a class="headerlink" href="#1-instalacion-de-postgresql-con-docker" title="Permanent link">&para;</a></h2>
+<p>Para crear un contenedor de <strong>PostgreSQL</strong> en nuestro equipo utilizaremos <strong>Docker Compose</strong>.</p>
+<blockquote>
+<p>💡 Si eres usuario de <strong>Windows</strong> o <strong>Mac</strong>, instala <strong>Docker Desktop</strong>.<br />
+Si usas <strong>Ubuntu</strong> o <strong>Debian</strong>, asegúrate de tener instalado <code>docker</code> y <code>docker-compose</code>.</p>
+</blockquote>
+<hr />
+<h3 id="11-crear-el-archivo-docker-composeyml">1.1. Crear el archivo <code>docker-compose.yml</code><a class="headerlink" href="#11-crear-el-archivo-docker-composeyml" title="Permanent link">&para;</a></h3>
+<p>En una carpeta llamada, por ejemplo, <code>docker/postgres</code>, crea un archivo con el siguiente contenido:</p>
+<pre><code>version: '3.8'
+services:
+db:
+    image: postgres:16.4
+    container_name: mi_postgres
+    environment:
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_DB: geo
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
+volumes: 
+db_data:
+</code></pre>
+<h3 id="12-levantar-el-servicio">1.2. Levantar el servicio<a class="headerlink" href="#12-levantar-el-servicio" title="Permanent link">&para;</a></h3>
+<p>Posiciónate en el terminal en el directorio donde está el fichero <code>docker-compose.yml</code> y ejecuta:</p>
+<pre><code>docker-compose up -d
+</code></pre>
+<h3 id="13-verificar-el-contenedor">1.3. Verificar el contenedor<a class="headerlink" href="#13-verificar-el-contenedor" title="Permanent link">&para;</a></h3>
+<p>Para comprobar que PostgreSQL está activo, ejecuta en el terminal:</p>
+<pre><code>docker ps
+</code></pre>
+<p>El resultado debe mostrar una entrada similar a la siguiente:</p>
+<pre><code>CONTAINER ID  IMAGE         COMMAND                  CREATED        STATUS       PORTS                   NAMES
+327fd50443a7  postgres:8    "docker-entrypoint.s…"   29 hours ago   Up 6 hours   0.0.0.0:5432-&gt;5432/tcp  docker_postgres
+</code></pre>
+<p>Si aparece el contenedor mi_postgres con estado Up, significa que el servicio de PostgreSQL está funcionando correctamente.</p>
+<h2 id="2-conexion-de-postgresql-con-dbeaver">2️⃣ Conexión de PostgreSQL con DBeaver<a class="headerlink" href="#2-conexion-de-postgresql-con-dbeaver" title="Permanent link">&para;</a></h2>
+<p>Una vez el contenedor de PostgreSQL está activo, podemos conectarnos mediante el cliente gráfico <strong>DBeaver</strong>.</p>
+<hr />
+<h3 id="21-crear-nueva-conexion">2.1. Crear nueva conexión<a class="headerlink" href="#21-crear-nueva-conexion" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Abre <strong>DBeaver</strong>.  </li>
+<li>Selecciona <strong>Nueva conexión → PostgreSQL</strong>.  </li>
+<li>Introduce los siguientes datos de conexión:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nombre de conexión</td>
+<td><code>docker-geo</code></td>
+</tr>
+<tr>
+<td>Server host</td>
+<td><code>localhost</code></td>
+</tr>
+<tr>
+<td>Port</td>
+<td><code>5432</code></td>
+</tr>
+<tr>
+<td>Database</td>
+<td><code>geo</code></td>
+</tr>
+<tr>
+<td>User name</td>
+<td><code>postgres</code></td>
+</tr>
+<tr>
+<td>Password</td>
+<td><code>postgres</code></td>
+</tr>
+</tbody>
+</table>
+<p>Haz clic en <strong>Test Connection</strong> para comprobar la conexión.<br />
+Si la prueba es satisfactoria, guarda la conexión.</p>
+<hr />
+<h2 id="3-creacion-de-la-base-de-datos-geo">3️⃣ Creación de la base de datos <code>geo</code><a class="headerlink" href="#3-creacion-de-la-base-de-datos-geo" title="Permanent link">&para;</a></h2>
+<p>En la conexión local de PostgreSQL (ya desde DBeaver o cualquier cliente SQL), ejecuta los siguientes scripts para crear las tablas del esquema <code>public</code>.</p>
+<hr />
+<h3 id="31-creacion-de-la-tabla-comarca">3.1. Creación de la tabla <code>COMARCA</code><a class="headerlink" href="#31-creacion-de-la-tabla-comarca" title="Permanent link">&para;</a></h3>
+<pre><code>CREATE TABLE public.comarca (
+    nom_c varchar(50) NOT NULL,
+    provincia varchar(25) NULL,
+    CONSTRAINT cp_com PRIMARY KEY (nom_c)
+);
+</code></pre>
+<h3 id="32-creacion-de-la-tabla-poblacio">3.2. Creación de la tabla <code>POBLACIO</code><a class="headerlink" href="#32-creacion-de-la-tabla-poblacio" title="Permanent link">&para;</a></h3>
+<pre><code>CREATE TABLE public.poblacio (
+    cod_m numeric(5) NOT NULL,
+    nom varchar(50) NOT NULL,
+    poblacio numeric(6) NULL,
+    extensio numeric(6, 2) NULL,
+    altura numeric(4) NULL,
+    longitud varchar(50) NULL,
+    latitud varchar(50) NULL,
+    llengua bpchar(1) NULL,
+    nom_c varchar(50) NULL,
+    CONSTRAINT cp_pobl PRIMARY KEY (cod_m),
+    CONSTRAINT ce_pob_com FOREIGN KEY (nom_c)
+        REFERENCES public.comarca(nom_c)
+        ON UPDATE CASCADE
+);
+</code></pre>
+<h3 id="33-creacion-de-la-tabla-institut">3.3. Creación de la tabla <code>INSTITUT</code><a class="headerlink" href="#33-creacion-de-la-tabla-institut" title="Permanent link">&para;</a></h3>
+<pre><code>CREATE TABLE public.institut (
+    codi varchar(8) NOT NULL,
+    nom varchar(60) NULL,
+    adreca varchar(100) NULL,
+    numero varchar(5) NULL,
+    codpostal numeric(5) NULL,
+    cod_m numeric(5) NULL,
+    CONSTRAINT cp_ins PRIMARY KEY (codi),
+    CONSTRAINT ce_ins_pob FOREIGN KEY (cod_m)
+        REFERENCES public.poblacio(cod_m)
+);
+</code></pre>
+<h2 id="4-carga-de-datos-iniciales">4️⃣ Carga de datos iniciales<a class="headerlink" href="#4-carga-de-datos-iniciales" title="Permanent link">&para;</a></h2>
+<p>Para completar la base de datos, ejecuta los siguientes scripts SQL desde <strong>DBeaver</strong> o desde el terminal de <strong>PostgreSQL</strong>.</p>
+<p>Cada script se encarga de insertar los datos de las tablas creadas previamente.</p>
+<hr />
+<p>📂 <a href="../comarcas.sql">Inserción de comarcas</a></p>
+<p>📂 <a href="../poblacions.sql">Inserción de poblacio</a></p>
+<p>📂 <a href="../instituts.sql">Inserción de insitut</a></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

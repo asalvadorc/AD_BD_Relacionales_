@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Introduccion/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹Introducción - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39Introducci\u00f3n";
+        var mkdocs_page_input_path = "Introduccion.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Introduccion/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹Introducción</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#bd-relacionales">🔹BD Relacionales</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conectores-vs-orm">🔹Conectores VS ORM</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tipos-de-sgbd-relacionales">🔹Tipos de SGBD relacionales</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">🔹Introducción</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h1>
+<p>Aunque en el módulo de Bases de Datos de 1º de DAM ya se estudiaron en profundidad, conviene repasar brevemente algunos conceptos clave de las bases de datos relacionales, ya que en este módulo (Acceso a Datos) trabajaremos con ellas desde el código.</p>
+<p>En este módulo no nos centraremos en diseñar bases de datos (eso ya se vio), sino en conectarnos a ellas desde el código, consultar datos, modificarlos y automatizar operaciones con funciones, procedimientos y transacciones.</p>
+<h2 id="bd-relacionales">🔹BD Relacionales<a class="headerlink" href="#bd-relacionales" title="Permanent link">&para;</a></h2>
+<p>Una <strong>base de datos relacional (BDR)</strong> es un sistema de almacenamiento de información que <strong>organiza los datos en tablas</strong> compuestas por filas y columnas, donde cada fila representa un registro único y cada columna contiene un atributo específico de ese registro. Estas BD siguen el <strong>Modelo Relacional</strong>, desarrollado por Edgar F. Codd en la década de 1970, y permite establecer vínculos o <strong>relaciones entre diferentes tablas</strong> mediante <strong>claves primarias y foráneas</strong>, facilitando así la integridad, la coherencia y la eficiencia en el manejo de grandes volúmenes de datos.</p>
+<p>La principal ventaja de las bases de datos relacionales es su capacidad para estructurar la información de manera lógica y accesible, permitiendo a los usuarios realizar consultas complejas, analizar relaciones entre distintos conjuntos de datos y mantener la precisión y seguridad de la información. Gracias al uso del <strong>lenguaje SQL</strong> (Structured Query Language), se pueden crear, modificar, consultar y eliminar datos de forma sencilla y estandarizada, lo que las convierte en la opción preferida para una amplia variedad de aplicaciones empresariales y tecnológicas.</p>
+<p>Las bases de datos relacionales (BDR) son esenciales en el desarrollo de aplicaciones modernas. Su integración con una aplicación requiere <strong>conectores</strong> que faciliten la comunicación entre el lenguaje de programación y el gestor de base de datos. Este tema se centra en cómo realizar esa conexión, cómo trabajar con datos mediante sentencias SQL y cómo aplicar buenas prácticas, como el cierre de recursos, el uso de transacciones y procedimientos almacenados.</p>
+<p><strong class="azul">Modelo Relacional (Una breve introducción)</strong></p>
+<p><img alt="ref" src="../img/modelo.png" /></p>
+<p>El <strong>modelo relacional</strong> es un tipo de modelo de datos que organiza la información en tablas (también llamadas relaciones), y es la base teórica de las bases de datos relacionales.</p>
+<p>Cada tabla representa una entidad (por ejemplo, clientes, productos, facturas) y cada fila de la tabla representa un registro individual. Las tablas se pueden relacionar entre sí mediante claves, lo que permite una organización lógica y eficiente de la información.</p>
+<p><strong class="verde">Tablas</strong></p>
+<p>Una tabla representa un conjunto de datos relacionados. Tiene:</p>
+<ul>
+<li><strong>Filas (registros)</strong>: cada fila contiene un dato completo.</li>
+<li><strong>Columnas (campos)</strong>: definen el tipo de información que contiene la tabla.</li>
+</ul>
+<p>Ejemplo de tabla <code>clientes</code>:</p>
+<table>
+<thead>
+<tr>
+<th>id_cliente</th>
+<th>nombre</th>
+<th>ciudad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Lucía</td>
+<td>Valencia</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Carlos</td>
+<td>Madrid</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong class="verde">Clave primaria (Primary Key)</strong></p>
+<p>Es una columna (o conjunto de columnas) que <strong>identifica de forma única</strong> cada fila de una tabla.</p>
+<p>Ejemplo: <code>id_cliente</code> es clave primaria en la tabla <code>clientes</code>.</p>
+<hr />
+<p><strong class="verde">Clave foránea (Foreign Key)</strong></p>
+<p>Es una columna que <strong>hace referencia a una clave primaria de otra tabla</strong> para establecer una relación.</p>
+<p>Ejemplo: en la tabla <code>facturas</code>, el campo <code>id_cliente</code> puede ser clave foránea que apunta a <code>clientes(id_cliente)</code>.</p>
+<hr />
+<p><strong class="verde">Lenguaje SQL</strong></p>
+<p>El lenguaje <strong>SQL (Structured Query Language)</strong> se utiliza para gestionar bases de datos relacionales.</p>
+<p>Comandos básicos:</p>
+<ul>
+<li><code>SELECT</code>: consultar datos</li>
+<li><code>INSERT</code>: añadir registros</li>
+<li><code>UPDATE</code>: modificar datos existentes</li>
+<li><code>DELETE</code>: eliminar registros</li>
+<li><code>CREATE</code>: definir tablas, claves, relaciones, etc.</li>
+</ul>
+<p>Ejemplo sencillo de consulta:</p>
+<pre><code>    SELECT nombre FROM clientes WHERE ciudad = 'Valencia';
+</code></pre>
+<h2 id="conectores-vs-orm">🔹Conectores VS ORM<a class="headerlink" href="#conectores-vs-orm" title="Permanent link">&para;</a></h2>
+<p>Cuando desarrollamos aplicaciones que trabajan con información persistente, necesitamos acceder a bases de datos relacionales para consultar, insertar, modificar o eliminar datos. Existen dos formas principales de hacerlo desde el código:</p>
+<ul>
+<li>Acceso mediante <strong>conectores</strong></li>
+<li>Acceso mediante <strong>ORM</strong></li>
+</ul>
+<p><strong class="azul">1-. Acceso mediante conectores (JDBC - Java Database Connectivity)</strong></p>
+<p><strong>JDBC</strong> es una API estándar de Java (y compatible con Kotlin) que permite conectarse a una base de datos, enviar instrucciones SQL y procesar los resultados manualmente. Es el método de más bajo nivel, pero ofrece un control total sobre lo que ocurre en la base de datos.</p>
+<p><strong>Características:</strong>  </p>
+<ul>
+<li>El programador escribe directamente las consultas SQL.</li>
+<li>Requiere gestionar manualmente conexiones, sentencias y resultados.</li>
+<li>Se necesita un driver específico (conector) para el sistema gestor de bases de datos (SGBD) concreto:</li>
+</ul>
+<p><strong>Algunos ejemplos de conectores</strong></p>
+<table>
+<thead>
+<tr>
+<th>SGBD</th>
+<th>Conector (Driver JDBC)</th>
+<th>URL de conexión típica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL</td>
+<td>org.postgresql.Driver</td>
+<td>jdbc:postgresql://host:puerto/basedatos</td>
+</tr>
+<tr>
+<td>MySQL / MariaDB</td>
+<td>com.mysql.cj.jdbc.Driver</td>
+<td>jdbc:mysql://host:puerto/basedatos</td>
+</tr>
+<tr>
+<td>SQLite (embebido)</td>
+<td>org.sqlite.JDBC</td>
+<td>jdbc:sqlite:ruta_al_fichero.db</td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">2- Acceso mediante ORM (Object-Relational Mapping)</strong></p>
+<p>Un <strong>ORM</strong> es una herramienta que permite trabajar con la base de datos como si fuera un conjunto de objetos, evitando tener que escribir directamente SQL. El <strong>ORM</strong> se encarga de mapear las tablas a clases y los registros a objetos, y traduce automáticamente las operaciones del código a consultas SQL.</p>
+<p><strong>Características:</strong>  </p>
+<ul>
+<li>Se trabaja con clases en lugar de tablas SQL.</li>
+<li>Ahorra mucho código repetitivo.</li>
+<li>Ideal para proyectos medianos o grandes que requieren mantener muchas entidades.</li>
+</ul>
+<p><strong>JPA</strong> (Java Persistence API) es una especificación estándar de Java que define cómo se deben mapear objetos Java (o Kotlin) a tablas de bases de datos relacionales. Es decir, permite gestionar la persistencia de datos de forma orientada a objetos, sin necesidad de escribir SQL directamente. Es el estándar utilizado por las herramientas ORM como Hibernate, EclipseLink, o Spring Data JPA.</p>
+<p><strong>Algunos ejemplos de ORMs</strong></p>
+<table>
+<thead>
+<tr>
+<th>ORM / Framework</th>
+<th>Lenguaje</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hibernate</td>
+<td>Java/Kotlin</td>
+<td>El ORM más utilizado con JPA</td>
+</tr>
+<tr>
+<td>Exposed</td>
+<td>Kotlin</td>
+<td>ORM ligero y expresivo creado por JetBrains</td>
+</tr>
+<tr>
+<td>Spring Data JPA</td>
+<td>Java/Kotlin</td>
+<td>Abstracción que automatiza el acceso a datos</td>
+</tr>
+<tr>
+<td>Room</td>
+<td>Java/Kotlin</td>
+<td>ORM oficial para bases de datos SQLite en Android</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusión</strong></p>
+<ul>
+<li>JDBC es ideal para aprender los fundamentos del acceso a datos y tener control total.</li>
+<li>ORM es ideal para trabajar de forma más productiva en aplicaciones complejas.</li>
+</ul>
+<p>Ambos métodos son útiles y complementarios: aprender JDBC ayuda a entender mejor lo que hace un ORM por debajo.</p>
+<h2 id="tipos-de-sgbd-relacionales">🔹Tipos de SGBD relacionales<a class="headerlink" href="#tipos-de-sgbd-relacionales" title="Permanent link">&para;</a></h2>
+<p>Conocer qué <strong>tipo de gestor de base de datos</strong> estás utilizando es esencial para poder <strong>conectarte</strong> correctamente desde tu aplicación, ya que cada uno necesita su propio conector o driver. No existe un único tipo de sistema gestor de bases de datos (SGBD): existen varios, con características y objetivos diferente:</p>
+<p><strong>1- Gestores independientes (cliente-servidor)</strong></p>
+<p>PostgreSQL, MySQL, Oracle, SQL Server...</p>
+<ul>
+<li>Sistemas robustos y escalables, ideales para entornos multi-usuario y aplicaciones web.</li>
+<li>Requieren un servidor dedicado y una configuración más compleja.</li>
+<li>Casos de uso: aplicaciones web, servicios empresariales, sistemas con alta demanda de acceso concurrente.</li>
+</ul>
+<p><strong>2- Gestores embebidos</strong></p>
+<p>SQLite, H2, Derby...</p>
+<ul>
+<li>Base de datos ligera, sin servidor, ideal para aplicaciones móviles o de escritorio donde no se requiere gestión centralizada.</li>
+<li>Fácil de configurar y desplegar, ya que la base de datos reside en un archivo local.</li>
+<li>Casos de uso: aplicaciones de escritorio, móviles, prototipos, pruebas unitarias.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../RA_CE/" class="btn btn-neutral float-left" title="🔹RA y CE"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Conectores/" class="btn btn-neutral float-right" title="🔹Herramientas y Conectores">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../RA_CE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Conectores/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

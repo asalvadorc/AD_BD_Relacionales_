@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Ejercicio/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>📝 Ejercicio obligatorio - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udcdd Ejercicio obligatorio";
+        var mkdocs_page_input_path = "Ejercicio.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Ejercicio/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">📝 Ejercicio obligatorio</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#enunciado">📋 Enunciado</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requisitos">🛠️ Requisitos</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-base-de-datos">1. Base de datos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-operaciones-en-kotlin">2. Operaciones en Kotlin</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-transaccion">3. Transacción</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-control-de-errores">4. Control de errores</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-documentacion-del-codigo">5. Documentación del código</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#estructura-minima-del-proyecto">📦 Estructura mínima del proyecto</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#entrega">📩 Entrega</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rubrica-de-evaluacion">✅ Rúbrica de evaluación</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">📝 Ejercicio obligatorio</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ejercicio-operaciones-sobre-tu-propia-base-de-datos-relacional-en-sqlite">📝 Ejercicio: Operaciones sobre tu propia base de datos relacional en SQLite<a class="headerlink" href="#ejercicio-operaciones-sobre-tu-propia-base-de-datos-relacional-en-sqlite" title="Permanent link">&para;</a></h1>
+<h2 id="enunciado">📋 Enunciado<a class="headerlink" href="#enunciado" title="Permanent link">&para;</a></h2>
+<p>Diseñar, crear y utilizar una <strong>base de datos relacional SQLite</strong> con al menos <strong>tres tablas relacionadas</strong>, aplicando los principios básicos del modelo relacional y desarrollando un programa <strong>Kotlin</strong> que permita realizar operaciones de acceso a datos de forma segura y estructurada.</p>
+<hr />
+<h2 id="requisitos">🛠️ Requisitos<a class="headerlink" href="#requisitos" title="Permanent link">&para;</a></h2>
+<h3 id="1-base-de-datos">1. Base de datos<a class="headerlink" href="#1-base-de-datos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Debes crear una base de datos de <strong>temática libre</strong> (música, libros, cine, videojuegos, recetas, viajes, etc.).</li>
+<li>Incluye una imagen del modelo E/R de tu Base de datos: <code>imagenER.png</code></li>
+<li>La base de datos debe contener:<ul>
+<li>Al menos <strong>3 tablas</strong> relacionadas.</li>
+<li>Claves primarias y <strong>claves foráneas correctamente definidas</strong>.</li>
+<li>Relación de tipo 1:N o N:M.</li>
+<li>Poblar la BD con al menos 3 registros</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-operaciones-en-kotlin">2. Operaciones en Kotlin<a class="headerlink" href="#2-operaciones-en-kotlin" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:<ul>
+<li>Crear operaciones <strong>CRUD</strong> (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.</li>
+<li>Utiliza <strong><code>PrepareStatement</code></strong> para todas las consultas.</li>
+<li>Muestra los resultados por consola de forma clara y legible.</li>
+<li>Toda la funcionalidad debe estar implementada <strong>en un solo fichero main.kt</strong>, aunque tengas que estructurar el progrma en varias funciones.</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-transaccion">3. Transacción<a class="headerlink" href="#3-transaccion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Implementa una <strong>transacción</strong> que afecte a <strong>dos tablas relacionadas</strong> (por ejemplo, insertar un pedido y sus líneas, o una factura y sus productos).</li>
+<li>Debe usarse <code>commit()</code> y <code>rollback()</code> según corresponda.</li>
+</ul>
+<h3 id="4-control-de-errores">4. Control de errores<a class="headerlink" href="#4-control-de-errores" title="Permanent link">&para;</a></h3>
+<p>Implementa un <strong>sistema básico de manejo de errores</strong> (<code>try/catch</code>) que:  </p>
+<ul>
+<li>Muestra un mensaje claro en caso de fallo.</li>
+<li>Cancela las operaciones si hay errores en la transacción (<code>rollback()</code>).</li>
+<li>No permita que la base de datos quede en un estado inconsistente.</li>
+</ul>
+<h3 id="5-documentacion-del-codigo">5. Documentación del código<a class="headerlink" href="#5-documentacion-del-codigo" title="Permanent link">&para;</a></h3>
+<p>El código Kotlin debe incluir <strong>comentarios explicativos</strong> que:</p>
+<ul>
+<li>Indiquen claramente qué hace cada función.</li>
+<li>Expliquen las partes principales del código (conexión, inserción, consultas, transacción, etc.).</li>
+<li>Ayuden a entender la lógica de negocio implementada.</li>
+</ul>
+<hr />
+<h2 id="estructura-minima-del-proyecto">📦 Estructura mínima del proyecto<a class="headerlink" href="#estructura-minima-del-proyecto" title="Permanent link">&para;</a></h2>
+<pre><code>tu-tema-kotlin/
+├── resources/
+│ └── tu_basededatos.sqlite
+│ └── imagenER.png
+└── src/
+    └── main/
+        └── kotlin/
+            └── tu_paquete/
+                    └── Main.kt
+</code></pre>
+<hr />
+<h2 id="entrega">📩 Entrega<a class="headerlink" href="#entrega" title="Permanent link">&para;</a></h2>
+<p>Sube un archivo <code>.zip</code> con:</p>
+<ul>
+<li>La base de datos <code>tu_basededatos.sqlite</code>.</li>
+<li>El proyecto Kotlin con todas las operaciones implementadas en un solo fichero main.kt.</li>
+</ul>
+<hr />
+<h2 id="rubrica-de-evaluacion">✅ Rúbrica de evaluación<a class="headerlink" href="#rubrica-de-evaluacion" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Puntos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BD correctamente estructurada (mín. 3 tablas)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CRUD funcional en al menos dos tablas</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Transacción bien implementada</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Código estructurado, legible y sin errores</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Documentación del código</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Procedimientos/" class="btn btn-neutral float-left" title="🔹Funciones y Procedimientos almacenados"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Procedimientos/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

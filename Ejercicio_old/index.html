@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Ejercicio_old/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Ejercicio old - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Ejercicio old";
+        var mkdocs_page_input_path = "Ejercicio_old.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Ejercicio_old/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Ejercicio old</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="guia-para-entregar-una-bd-postgresql-como-imagen-docker">📘 Guía para entregar una BD PostgreSQL como imagen Docker<a class="headerlink" href="#guia-para-entregar-una-bd-postgresql-como-imagen-docker" title="Permanent link">&para;</a></h2>
+<h3 id="requisitos">Requisitos<a class="headerlink" href="#requisitos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Tener <strong>Docker</strong> instalado (Desktop o Engine).</li>
+<li>Conocer/usar la <strong>misma versión</strong> de PostgreSQL que usaste en tu proyecto (ej.: <code>postgres:16</code>).</li>
+<li>Disponer de tu <strong>dump</strong>: <code>dump.sql</code> (texto plano) o <code>backup.dump</code> (formato personalizado de <code>pg_dump -Fc</code>).</li>
+</ul>
+<blockquote>
+<p><strong>Consejo</strong>: Anota en tu entrega la versión exacta de PostgreSQL que has usado (por ejemplo, 14/15/16).</p>
+</blockquote>
+<hr />
+<h3 id="1-crear-y-arrancar-un-contenedor-limpio-de-postgresql">1) Crear y arrancar un contenedor limpio de PostgreSQL<a class="headerlink" href="#1-crear-y-arrancar-un-contenedor-limpio-de-postgresql" title="Permanent link">&para;</a></h3>
+<p>Levanta un contenedor con Postgres (ajusta la versión si no usas la 16):</p>
+<pre><code class="language-bash">docker run -d --name pg_proyecto   -e POSTGRES_PASSWORD=postgres   -e POSTGRES_DB=proyecto_db   -p 5432:5432   postgres:16
+</code></pre>
+<p>Datos por defecto del ejemplo:
+- Usuario: <code>postgres</code>
+- Contraseña: <code>postgres</code>
+- Base de datos: <code>proyecto_db</code>
+- Puerto: <code>5432</code></p>
+<hr />
+<h3 id="2-importar-la-bd-del-proyecto">2) Importar la BD del proyecto<a class="headerlink" href="#2-importar-la-bd-del-proyecto" title="Permanent link">&para;</a></h3>
+<h4 id="opcion-a-tienes-dumpsql">Opción A — Tienes <code>dump.sql</code><a class="headerlink" href="#opcion-a-tienes-dumpsql" title="Permanent link">&para;</a></h4>
+<pre><code class="language-bash">docker cp dump.sql pg_proyecto:/tmp/dump.sql
+docker exec -u postgres pg_proyecto psql -U postgres -d proyecto_db -f /tmp/dump.sql
+</code></pre>
+<h4 id="opcion-b-tienes-backupdump-formato-pg_dump-fc">Opción B — Tienes <code>backup.dump</code> (formato <code>pg_dump -Fc</code>)<a class="headerlink" href="#opcion-b-tienes-backupdump-formato-pg_dump-fc" title="Permanent link">&para;</a></h4>
+<pre><code class="language-bash">docker cp backup.dump pg_proyecto:/tmp/backup.dump
+docker exec -u postgres pg_proyecto createdb -U postgres proyecto_db
+docker exec -u postgres pg_proyecto pg_restore -U postgres -d proyecto_db -1 /tmp/backup.dump
+</code></pre>
+<h4 id="verificacion-rapida">Verificación rápida<a class="headerlink" href="#verificacion-rapida" title="Permanent link">&para;</a></h4>
+<pre><code class="language-bash">docker exec -it pg_proyecto psql -U postgres -d proyecto_db -c &quot;\dt&quot;
+</code></pre>
+<p>Si ves tus tablas listadas, la importación se ha realizado correctamente ✅.</p>
+<hr />
+<h3 id="3-congelar-el-contenedor-en-una-imagen-con-los-datos-dentro">3) Congelar el contenedor en una <strong>imagen</strong> (con los datos dentro)<a class="headerlink" href="#3-congelar-el-contenedor-en-una-imagen-con-los-datos-dentro" title="Permanent link">&para;</a></h3>
+<p>Detén el contenedor y créale una imagen “congelada”:</p>
+<pre><code class="language-bash">docker stop pg_proyecto
+docker commit pg_proyecto alumno_postgres:1.0
+</code></pre>
+<p>Esto crea la imagen <code>alumno_postgres:1.0</code> con tu BD ya cargada.</p>
+<hr />
+<h3 id="4-exportar-la-imagen-para-entregarla">4) Exportar la imagen para entregarla<a class="headerlink" href="#4-exportar-la-imagen-para-entregarla" title="Permanent link">&para;</a></h3>
+<p>Genera un fichero <code>.tar</code> de la imagen para compartirlo:</p>
+<pre><code class="language-bash">docker save -o alumno_postgres_1_0.tar alumno_postgres:1.0
+</code></pre>
+<p>Entrega ese archivo (<code>alumno_postgres_1_0.tar</code>) a tu profesor/a (USB, nube, etc.).</p>
+<hr />
+<h3 id="5-como-lo-probara-el-profesor">5) Cómo lo probará el profesor<a class="headerlink" href="#5-como-lo-probara-el-profesor" title="Permanent link">&para;</a></h3>
+<p>Con el archivo <code>.tar</code> recibido, el profesor hará:</p>
+<pre><code class="language-bash">docker load -i alumno_postgres_1_0.tar
+docker run -d --name pg_alumno -p 5433:5432 alumno_postgres:1.0
+</code></pre>
+<p>Y podrá conectarse con DBeaver/pgAdmin/psql usando:
+- <strong>Host</strong>: <code>localhost</code>
+- <strong>Puerto</strong>: <code>5433</code>
+- <strong>Usuario</strong>: <code>postgres</code>
+- <strong>Contraseña</strong>: <code>postgres</code>
+- <strong>Base de datos</strong>: <code>proyecto_db</code></p>
+<hr />
+<h3 id="6-plantilla-de-readme-para-entregar-junto-con-la-imagen">6) Plantilla de README para entregar junto con la imagen<a class="headerlink" href="#6-plantilla-de-readme-para-entregar-junto-con-la-imagen" title="Permanent link">&para;</a></h3>
+<p>Copia/pega este README en tu proyecto (ajusta lo que proceda):</p>
+<h4 id="proyecto-bd-alumno-entrega-docker-opcion-a">Proyecto BD Alumno — Entrega Docker (Opción A)<a class="headerlink" href="#proyecto-bd-alumno-entrega-docker-opcion-a" title="Permanent link">&para;</a></h4>
+<p><strong>Datos de acceso</strong>
+- Versión PostgreSQL: 16
+- Usuario: <code>postgres</code>
+- Contraseña: <code>postgres</code>
+- Base de datos: <code>proyecto_db</code>
+- Puerto recomendado para pruebas del profesor: <code>5433</code></p>
+<p><strong>Instrucciones de ejecución</strong>
+1. Cargar la imagen:
+   <code>bash
+   docker load -i alumno_postgres_1_0.tar</code></p>
+<ol>
+<li>
+<p>Arrancar un contenedor para pruebas:
+   <code>bash
+   docker run -d --name pg_alumno -p 5433:5432 alumno_postgres:1.0</code></p>
+</li>
+<li>
+<p>Verificación rápida (tablas):
+   <code>bash
+   docker exec -it pg_alumno psql -U postgres -d proyecto_db -c "\dt"</code></p>
+</li>
+</ol>
+<p><strong>Notas</strong>
+- La imagen se ha creado con <code>postgres:16</code>. Si necesita otra versión, indíquelo.
+- Si su sistema ya usa el puerto <code>5433</code>, cambie el mapeo a otro puerto libre (por ejemplo, <code>-p 5434:5432</code>).</p>
+<hr />
+<h3 id="7-problemas-comunes-y-soluciones-rapidas">7) Problemas comunes (y soluciones rápidas)<a class="headerlink" href="#7-problemas-comunes-y-soluciones-rapidas" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>“El puerto ya está en uso”</strong> → Cambia el puerto publicado (ej.: <code>-p 5434:5432</code>).  </li>
+<li><strong>Versión incompatible</strong> → Usa la misma <code>postgres:&lt;versión&gt;</code> que se usó para generar la imagen/dump.  </li>
+<li><strong>No aparecen tablas tras importar</strong> → Revisa si importaste en la BD correcta (<code>-d proyecto_db</code>) y si el dump crea su propia BD (importa entonces contra <code>-d postgres</code>).  </li>
+<li><strong>Extensiones faltantes</strong> → Añade <code>CREATE EXTENSION IF NOT EXISTS ...;</code> tras importar, si tu proyecto las requiere.</li>
+</ul>
+<hr />
+<p><strong>¡Listo!</strong> Tu imagen contiene la BD y el profesor podrá arrancarla y probarla sin restauraciones adicionales.</p>
+<h2 id="guia-practica-crear-tu-propia-base-de-datos-postgresql-en-supabase">📘 Guía práctica: Crear tu propia base de datos PostgreSQL en Supabase<a class="headerlink" href="#guia-practica-crear-tu-propia-base-de-datos-postgresql-en-supabase" title="Permanent link">&para;</a></h2>
+<h2 id="objetivo">🎯 Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
+<p>En esta práctica vas a crear <strong>tu propia base de datos en la nube</strong> usando <a href="https://supabase.com">Supabase</a>.<br />
+De esta forma podrás trabajar con PostgreSQL sin instalar nada en tu ordenador, y la profesora podrá revisar tu trabajo conectándose a tu BD.</p>
+<hr />
+<h3 id="paso-1-crear-cuenta-en-supabase">🔹 Paso 1 – Crear cuenta en Supabase<a class="headerlink" href="#paso-1-crear-cuenta-en-supabase" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Entra en 👉 <a href="https://supabase.com">https://supabase.com</a>.  </li>
+<li>Pulsa en <strong>Start your project</strong>.  </li>
+<li>Regístrate con <strong>GitHub</strong> (recomendado) o con tu correo electrónico.  </li>
+</ol>
+<p><img alt="Pantalla de login de Supabase" src="imagenes/login_supabase.png" /></p>
+<hr />
+<h3 id="paso-2-crear-un-nuevo-proyecto">🔹 Paso 2 – Crear un nuevo proyecto<a class="headerlink" href="#paso-2-crear-un-nuevo-proyecto" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Pulsa en <strong>New project</strong>.  </li>
+<li>Rellena los datos:  </li>
+<li><strong>Project name</strong>: pon tu nombre o usuario → ejemplo: <code>geo_ad_alicia</code>.  </li>
+<li><strong>Database password</strong>: inventa una contraseña y guárdala (la necesitarás).  </li>
+<li><strong>Region</strong>: elige <strong>Frankfurt</strong> (la más cercana).  </li>
+<li>Pulsa <strong>Create new project</strong> y espera unos segundos.  </li>
+</ol>
+<p><img alt="Formulario de creación de proyecto" src="imagenes/nuevo_proyecto.png" /></p>
+<hr />
+<h3 id="paso-3-obtener-la-conexion-a-la-base-de-datos">🔹 Paso 3 – Obtener la conexión a la base de datos<a class="headerlink" href="#paso-3-obtener-la-conexion-a-la-base-de-datos" title="Permanent link">&para;</a></h3>
+<ol>
+<li>En el panel de tu proyecto, entra en:<br />
+<strong>Settings → Database → Connection Info</strong>.  </li>
+<li>
+<p>Copia estos datos (apúntalos aquí):  </p>
+<pre><code> Host: ___________________________
+ Port: 5432
+ Database: postgres
+ User: postgres
+ Password: _______________________
+</code></pre>
+</li>
+<li>
+<p>Para conectarte desde Kotlin/JDBC usarás algo así:</p>
+<pre><code> val url = "jdbc:postgresql://&lt;host&gt;:5432/postgres"
+ val user = "postgres"
+ val password = "&lt;tu_clave&gt;"
+</code></pre>
+</li>
+</ol>
+<p>📸 (Captura sugerida: pantalla con connection string en Supabase)</p>
+<h3 id="paso-4-crear-tablas-con-el-editor-sql">🔹 Paso 4 – Crear tablas con el editor SQL<a class="headerlink" href="#paso-4-crear-tablas-con-el-editor-sql" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>En el menú lateral, entra en SQL Editor.</p>
+</li>
+<li>
+<p>Crea tus tablas con sentencias SQL.</p>
+</li>
+<li>
+<p>Inserta algunos datos de prueba con INSERT INTO.</p>
+</li>
+</ol>
+<p>📸 (Captura sugerida: editor SQL con sentencias ejecutadas)</p>
+<h3 id="paso-5-conectarte-desde-dbeaver-o-intellij">🔹 Paso 5 – Conectarte desde DBeaver o IntelliJ<a class="headerlink" href="#paso-5-conectarte-desde-dbeaver-o-intellij" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Abre DBeaver o IntelliJ Database Tool.</p>
+</li>
+<li>
+<p>Crea una nueva conexión PostgreSQL.</p>
+</li>
+<li>
+<p>Introduce los datos que guardaste en el Paso 3.</p>
+</li>
+<li>
+<p>Comprueba que aparecen tus tablas.</p>
+</li>
+</ol>
+<p>📸 (Captura sugerida: conexión en DBeaver mostrando tablas)</p>
+<h3 id="paso-6-compartir-tu-bd-con-la-profesora">🔹 Paso 6 – Compartir tu BD con la profesora<a class="headerlink" href="#paso-6-compartir-tu-bd-con-la-profesora" title="Permanent link">&para;</a></h3>
+<p>Una vez creadas tus tablas, envíame estos datos:</p>
+<ul>
+<li>
+<p>Host</p>
+</li>
+<li>
+<p>Usuario (postgres)</p>
+</li>
+<li>
+<p>Password</p>
+</li>
+<li>
+<p>Nombre del proyecto</p>
+</li>
+</ul>
+<p>(Puedes mandarlo por mensaje privado en Aules.)</p>
+<p>Yo podré entrar en tu BD y comprobar que has creado las tablas y los datos correctamente. ✅</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

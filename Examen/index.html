@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Examen/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🧪 Ejercicio: Gestión musical con SQLite y JDBC (sin DAO) - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83e\uddea Ejercicio: Gesti\u00f3n musical con SQLite y JDBC (sin DAO)";
+        var mkdocs_page_input_path = "Examen.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Examen/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">🧪 Ejercicio: Gestión musical con SQLite y JDBC (sin DAO)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ejercicio-gestion-musical-con-sqlite-y-jdbc-sin-dao">🧪 Ejercicio: Gestión musical con SQLite y JDBC (sin DAO)<a class="headerlink" href="#ejercicio-gestion-musical-con-sqlite-y-jdbc-sin-dao" title="Permanent link">&para;</a></h1>
+<h2 id="objetivo">🎯 Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
+<p>Desarrollar un programa en <strong>Kotlin</strong> que se conecte a una base de datos <strong>SQLite</strong> llamada <code>musica.sqlite</code>, ubicada en la carpeta <code>resources</code>, y realice las siguientes operaciones <strong>directamente desde <code>main()</code></strong>, sin utilizar <code>data class</code> ni DAO.</p>
+<hr />
+<h2 id="recursos-proporcionados">📁 Recursos proporcionados<a class="headerlink" href="#recursos-proporcionados" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>schema.sql</code>: crea la base de datos con las tablas <code>estilo</code>, <code>grupo</code>, <code>disco</code> y <code>cancion</code>.</li>
+<li><code>insert.sql</code>: inserta datos de ejemplo para probar.</li>
+<li>Archivo <code>musica.sqlite</code> ya creado (puedes generarlo desde los scripts).</li>
+</ul>
+<hr />
+<h2 id="requisitos-del-ejercicio">🧩 Requisitos del ejercicio<a class="headerlink" href="#requisitos-del-ejercicio" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>Establecer conexión con la base de datos <code>musica.sqlite</code></strong> desde Kotlin usando JDBC.</p>
+</li>
+<li>
+<p><strong>Insertar un nuevo grupo musical</strong> con los siguientes datos:</p>
+</li>
+<li><code>id</code>: <code>99</code></li>
+<li><code>nombre</code>: <code>Nach</code></li>
+<li><code>país</code>: <code>España</code></li>
+<li><code>año de creación</code>: <code>1999</code></li>
+<li>
+<p><code>estilo</code>: <code>2</code> (Rap, ya existente en la tabla <code>estilo</code>)</p>
+</li>
+<li>
+<p><strong>Mostrar por pantalla</strong> todos los grupos actuales tras la inserción, incluyendo sus atributos.</p>
+</li>
+<li>
+<p><strong>Iniciar una transacción JDBC</strong> que haga lo siguiente:</p>
+</li>
+<li>Insertar un disco con:<ul>
+<li><code>id</code>: <code>20</code></li>
+<li><code>título</code>: <code>Un día en el mundo</code></li>
+<li><code>año</code>: <code>2008</code></li>
+<li><code>grupo</code>: <code>99</code> (el grupo insertado antes)</li>
+</ul>
+</li>
+<li>
+<p>Insertar dos canciones asociadas a ese disco:</p>
+<ul>
+<li><code>Copenhague</code> (300 s)</li>
+<li><code>Sálvese quien pueda</code> (270 s)</li>
+</ul>
+</li>
+<li>
+<p>Si todo va bien, <strong>confirmar la transacción</strong> (<code>commit</code>); en caso de error, <strong>revertirla</strong> (<code>rollback</code>).</p>
+</li>
+</ol>
+<hr />
+<h2 id="instrucciones-adicionales">🛠 Instrucciones adicionales<a class="headerlink" href="#instrucciones-adicionales" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Toda la lógica debe estar en el fichero <code>Main.kt</code>.</li>
+<li><strong>No</strong> se debe utilizar ningún <code>data class</code>, DAO ni estructuras adicionales.</li>
+<li>Utiliza <strong><code>PreparedStatement</code></strong> para todas las consultas.</li>
+<li>El programa debe imprimir los resultados de forma legible.</li>
+</ul>
+<hr />
+<h2 id="criterios-de-evaluacion">✅ Criterios de evaluación<a class="headerlink" href="#criterios-de-evaluacion" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Puntos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conexión correctamente establecida</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Inserción del grupo</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Listado de grupos</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Uso correcto de transacciones</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Inserción correcta de disco y canciones</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Gestión de errores con rollback</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Código estructurado y funcional</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+.copy-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;              /* separación entre icono y texto */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.copy-button:hover {
+  color: #000;
+}
+
+.copy-button.copied {
+  color: green; /* cuando se copia */
+}
+
+div.highlight pre,
+div.codehilite pre,
+pre {
+  padding-top: 2.2rem; /* deja espacio arriba */
+}

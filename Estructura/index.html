@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Estructura/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Ejemplo completo en PostgreSQL - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Ejemplo completo en PostgreSQL";
+        var mkdocs_page_input_path = "Estructura.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Estructura/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Ejemplo completo en PostgreSQL</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ejemplo-completo-en-postgresql">Ejemplo completo en PostgreSQL<a class="headerlink" href="#ejemplo-completo-en-postgresql" title="Permanent link">&para;</a></h1>
+<p>El esquema lógico y relacional de la BD a la que nos vamos a conectar es el siguiente:</p>
+<p><img alt="ref" src="../img/geo_ad.jpg" /></p>
+<p>Esta BD se encuentra en un servidor remoto y es accesible desde cualquier lugar, solo necesitamos saber sus datos de conexión. La BD también la vamos a replicar en un contenedor docker para tener ambas opciones y poder trabajar tanto en local como en remoto.</p>
+<div class="admonition note">
+<p class="admonition-title">Datos de conexión al servido remoto</p>
+<p><strong>Servidor (host)</strong>: 89.36.214.106<br />
+<strong>Port</strong>: 5432 (és el port per defecte)<br />
+<strong>Usuari</strong>: geo_ad<br />
+<strong>Contrasenya</strong>: geo_ad<br />
+<strong>Base de dades</strong>: geo_ad  </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Intrucciones para replicar la BD en local (Docker)</p>
+<p>Las instrucciones para crear la base de datos en docker las podéis encontrar en el siguiente enlace: <a href="https://docs.google.com/document/d/1uU5B9MonTf1KhIOP5PkECIfP-NCSkdzDAo2W33P81Js/edit?tab=t.0">Instrucciones</a></p>
+</div>
+<p><strong class="azul">Configuración de Dependencias (Gradle)</strong></p>
+<p>Lo primero será incluir las dependencia necesarias en <strong>build.gradle.kts</strong></p>
+<pre><code>    // build.gradle.kts (para PostgreSQL)
+    dependencies {
+        implementation("org.postgresql:postgresql:42.6.0")
+    }
+</code></pre>
+<p><strong class="azul">Conexión a un servidor</strong></p>
+<p><strong class="verde">Postgres remoto</strong></p>
+<p>Ejemplo_conexion_Postgres_remota.kt</p>
+<pre><code>    import java.sql.DriverManager
+    object DatabaseRemota {
+
+        private const val URL =  "jdbc:postgresql://89.36.214.106:5432/geo_ad"
+        private const val USER = "geo_ad"
+        private const val PASSWORD = "geo_ad"
+
+        fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+    }
+</code></pre>
+<p><strong class="verde">Postgress en Docker</strong></p>
+<p>Ejemplo_conexion_Postgres_local.kt</p>
+<pre><code>    import java.sql.DriverManager
+    object DatabaseLocal {
+
+        private const val URL =  "jdbc:postgresql://localhost:5432/geo"
+        private const val USER = "postgres"
+        private const val PASSWORD = "postgres"
+
+        fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+    }
+</code></pre>
+<p><strong class="azul">Operaciones CRUD</strong>     </p>
+<p>Los ejemplos siguientes son igualmente válidos tanto si nos conectamos al servidor remoto como al local, ya que son iguales.<br />
+Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utilizando el objeto de conexión correspondiente.</p>
+<p><strong class="verde">Read (SELECT)</strong>     </p>
+<p>Ejemplo_Select.kt</p>
+<pre><code>        fun main(args: Array&lt;String&gt;) {
+        val sql = "SELECT * FROM institut"
+
+        DatabaseLocal.getConnection().use { conn -&gt;    // DatabaseRemota si se conecta al servidor del instituto
+                conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.executeQuery().use { rs -&gt;
+
+                    while (rs.next()) {
+                        print("" + rs.getString(1) + "\t")
+                        println(rs.getString(2))
+                    }
+                }
+            }
+            }
+         }
+</code></pre>
+<hr />
+<p><strong class="verde">Create (INSERT)</strong><br />
+El siguiente ejemplo inserta un istituto de prueba.</p>
+<p>Ejemplo_Insert.kt</p>
+<pre><code>    fun main(args: Array&lt;String&gt;) {
+
+        val sql ="INSERT INTO institut (codi,nom,adreca,numero,codpostal,cod_m) VALUES(?,?,?,?,?,?)"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "00000000")
+                stmt.setString(2, "IES PRUEBA")
+                stmt.setString(3, "CASTELLÓN")
+                stmt.setString(4, "S/N")
+                stmt.setInt(5, 12560)
+                stmt.setInt(6, 12040)
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">Update (UPDATE)</strong>  <br />
+El siguiente ejemplo actualiza el campo nombre del instituto de prueba insertado. </p>
+<p>Ejemplo_Update.kt</p>
+<pre><code>    fun main() {
+        val sql = "UPDATE institut SET nom = ? WHERE codi = ?"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "IES PRUEBA 2")
+                stmt.setString(2, "00000000")
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">Delete (DELETE)</strong> <br />
+El siguiente ejemplo elimina el instituto de prueba insertado.  </p>
+<p>Ejemplo_Delete.kt</p>
+<pre><code>    fun main() {
+        val sql = "DELETE FROM institut WHERE codi = ?"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "00000000")
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

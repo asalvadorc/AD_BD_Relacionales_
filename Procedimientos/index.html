@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Procedimientos/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹Funciones y Procedimientos almacenados - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39Funciones y Procedimientos almacenados";
+        var mkdocs_page_input_path = "Procedimientos.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Procedimientos/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹Funciones y Procedimientos almacenados</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#funciones-function">🔹Funciones (FUNCTION)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#procedimientos-procedure">🔹Procedimientos (PROCEDURE)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#resumen-diferencias-entre-funcion-y-procedimiento-en-postgresql">📊 Resumen diferencias entre función y procedimiento en PostgreSQL</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">🔹Funciones y Procedimientos almacenados</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="funciones-y-procedimientos-almacenados">Funciones y Procedimientos almacenados<a class="headerlink" href="#funciones-y-procedimientos-almacenados" title="Permanent link">&para;</a></h1>
+<p>Tanto <strong>las funciones</strong> como <strong>los procedimientos almacenados</strong> son bloques de código que se guardan en el servidor de la base de datos y que encapsulan una serie de instrucciones SQL.</p>
+<p>Se usan para:</p>
+<ul>
+<li>Reutilizar operaciones complejas</li>
+<li>Organizar mejor la lógica de negocio</li>
+<li>Mejorar el rendimiento (menos tráfico entre app y BD)</li>
+<li>Mantener la integridad de datos</li>
+</ul>
+<p><strong class="azul">Diferencia entre Funciones y Procedimientos</strong></p>
+<p>Una <strong>función</strong> está diseñada para <strong>calcular y devolver un resultado</strong>. Se puede usar directamente dentro de una consulta SQL como parte de un SELECT, WHERE, ORDER BY, etc. Las funciones siempre devuelven un valor, que puede ser escalar (un número, texto...), una fila o una tabla.</p>
+<p>Un <strong>procedimiento</strong> sirve para <strong>ejecutar acciones</strong> dentro de la base de datos, como insertar registros, modificar datos o gestionar operaciones en bloque. <strong>No devuelve un valor directamente</strong> (aunque puede usar parámetros de salida), y se ejecuta con CALL, no con SELECT.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p><strong>SQLite</strong> no soporta funciones ni procedimientos almacenados como lo hacen bases de datos como PostgreSQL, MySQL u Oracle. Sin embargo, puedes simular su comportamiento mediante funciones definidas en la aplicación, o vistas y triggers.</p>
+</div>
+<p>Las funciones (FUNCTION) y los procedimientos (PROCEDURE) <strong>no se crean desde el lenguaje Kotlin</strong>, ya que son elementos propios del sistema gestor de bases de datos (SGBD), en este caso <strong>PostgreSQL</strong>. Para definirlos, se utiliza <strong>SQL</strong> y se ejecutan <strong>directamente sobre la base de datos</strong> a través de un cliente SQL.</p>
+<p>Una vez que las funciones o procedimientos están creados en la base de datos, se pueden <strong>utilizar perfectamente desde Kotlin</strong> a través de <strong>JDBC</strong>, igual que se hace con cualquier consulta SQL:</p>
+<ul>
+<li>Las funciones se invocan con <strong>SELECT nombre_funcion(...)</strong></li>
+<li>Los procedimientos se llaman con <strong>CALL nombre_procedimiento(...)</strong></li>
+</ul>
+<p>Y desde Kotlin, se gestionan mediante objetos como <strong>PreparedStatement</strong> y <strong>CallableStatement</strong>.</p>
+<h2 id="funciones-function">🔹Funciones (FUNCTION)<a class="headerlink" href="#funciones-function" title="Permanent link">&para;</a></h2>
+<p>Una función en PostgreSQL es un bloque que:</p>
+<ul>
+<li>Puede aceptar parámetros</li>
+<li>Devuelve siempre un valor (escalar, tabla o compuesto)</li>
+<li>Se puede usar en consultas SQL (SELECT, WHERE, etc.)</li>
+<li>Puede tener IN, OUT, INOUT</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Sintaxis básica en PostgreSql</p>
+<pre><code>CREATE [OR REPLACE] FUNCTION nombre_funcion(parámetros)
+RETURNS tipo_de_dato
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- instrucciones
+    RETURN valor;
+END;
+$$;
+</code></pre>
+</div>
+<table>
+<thead>
+<tr>
+<th>Tipo de retorno</th>
+<th>¿Qué devuelve?</th>
+<th>Ejemplo de uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INTEGER</code>, <code>TEXT</code>, etc.</td>
+<td>Un único valor escalar</td>
+<td><code>RETURNS INTEGER</code><br><code>RETURN x * x;</code></td>
+</tr>
+<tr>
+<td><code>TABLE(...)</code></td>
+<td>Una tabla (varias columnas y filas)</td>
+<td><code>RETURNS TABLE(codi TEXT, nom TEXT)</code><br><code>RETURN QUERY ...</code></td>
+</tr>
+<tr>
+<td><code>SETOF INTEGER</code></td>
+<td>Un conjunto de valores escalares</td>
+<td><code>RETURNS SETOF INTEGER</code><br><code>RETURN NEXT i;</code></td>
+</tr>
+<tr>
+<td><code>SETOF RECORD</code></td>
+<td>Muchas filas con estructura dinámica</td>
+<td><code>RETURNS SETOF RECORD</code></td>
+</tr>
+<tr>
+<td><code>%ROWTYPE</code></td>
+<td>Una fila con la estructura de una tabla existente</td>
+<td><code>RETURNS institut%ROWTYPE</code><br><code>SELECT * INTO reg ...</code></td>
+</tr>
+<tr>
+<td><code>RECORD</code></td>
+<td>Una sola fila con columnas genéricas</td>
+<td><code>RETURNS RECORD</code><br><code>SELECT ... INTO resultado;</code></td>
+</tr>
+<tr>
+<td>Tipo personalizado</td>
+<td>Una estructura definida con <code>CREATE TYPE</code></td>
+<td><code>RETURNS tipo_personalizado</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p>Los siguientes ejemplos  se han creado utilizando el cliente <strong>SQL DBeaver</strong> y la BD <strong>Geo_docker</strong>.</p>
+</div>
+<p><strong class="azul">Funciones que devuelve un valor</strong>:</p>
+<p><strong class="verde">Ejemplo en SQL:</strong> Función que devuelve el cuadrado de un número.</p>
+<pre><code>CREATE OR REPLACE FUNCTION cuadrado(x INTEGER)
+RETURNS INTEGER
+AS $$
+BEGIN
+    RETURN x * x;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre>
+<p>La llamada desde <strong>SQL</strong> sería:</p>
+<pre><code>SELECT cuadrado(5);  --Devuelve 25
+</code></pre>
+<p><strong class="verde">En Kotlin</strong> la llamda a la función sería:</p>
+<p><strong>Ejemplo_cuadrado.kt</strong></p>
+<pre><code>   fun main() {
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+            val sql = "SELECT cuadrado(?)"
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setInt(1, 6) // por ejemplo: x = 6
+                val rs = stmt.executeQuery()
+
+                if (rs.next()) {
+                    val resultado = rs.getInt(1)
+                    println("El cuadrado de 6 es: $resultado")
+                }
+            }
+        }
+    }
+</code></pre>
+<p><strong class="azul">Fucniones que devuelven una tabla</strong></p>
+<p><strong class="verde">Ejemplo en SQL:</strong> Función que devuelve todos los institutos junto con su población y comarca.</p>
+<pre><code>    CREATE OR REPLACE FUNCTION obtener_instituts()
+    RETURNS TABLE (
+        codi TEXT,
+        nom TEXT,
+        municipi TEXT,
+        comarca TEXT
+    )
+    AS $$
+        SELECT 
+            i.codi,
+            i.nom,
+            p.nom AS municipi,
+            c.nom_c AS comarca
+        FROM institut i
+        JOIN poblacio p ON i.cod_m = p.cod_m
+        JOIN comarca c ON p.nom_c = c.nom_c
+        ORDER BY comarca, municipi;
+    $$ LANGUAGE sql;
+</code></pre>
+<p>La llamada desde <strong>SQL</strong> sería:</p>
+<pre><code>    SELECT * FROM obtener_instituts();
+</code></pre>
+<p><strong class="verde">En Kotlin</strong> la llamda a la función sería:</p>
+<p><strong>Ejemplo_fun_obtener_institutos.kt</strong></p>
+<pre><code>    fun main() {
+
+       DatabaseLocal.getConnection().use { conn -&gt;
+            val sql = "SELECT * FROM obtener_instituts()"
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                val rs = stmt.executeQuery()
+                while (rs.next()) {
+                    val codi = rs.getString("codi")
+                    val nom = rs.getString("nom")
+                    val municipi = rs.getString("municipi")
+                    val comarca = rs.getString("comarca")
+
+                    println("Institut: $codi - $nom ($municipi, $comarca)")
+                }
+            }
+        }
+    }
+</code></pre>
+<p><strong class="azul">Fucniones que aceptan filtros como parámetros</strong></p>
+<p><strong class="verde">Ejemplo en SQL:</strong> Función que devuelve los institutos de una comarca.</p>
+<pre><code>    CREATE OR REPLACE FUNCTION instituts_de_comarca(p_nom_c TEXT)
+    RETURNS TABLE (
+        codi TEXT,
+        nom TEXT,
+        municipi TEXT,
+        comarca TEXT
+    )
+    AS $$
+        SELECT 
+            i.codi,
+            i.nom,
+            p.nom AS municipi,
+            c.nom_c AS comarca
+        FROM institut i
+        JOIN poblacio p ON i.cod_m = p.cod_m
+        JOIN comarca c ON p.nom_c = c.nom_c
+        WHERE c.nom_c = p_nom_c
+        ORDER BY municipi;
+    $$ LANGUAGE sql;
+</code></pre>
+<p>La llamada desde <strong>SQL</strong> sería:</p>
+<pre><code>    SELECT * FROM instituts_de_comarca('Plana Baixa');
+</code></pre>
+<p><strong class="verde">En Kotlin</strong> la llamda a la función sería:</p>
+<p><strong>Ejemplo_fun_instituts_de_comarca.kt</strong></p>
+<pre><code>    fun main() {
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+            val sql = "SELECT * FROM instituts_de_comarca(?)"
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "Plana Baixa") // Parámetro de entrada
+                val rs = stmt.executeQuery()
+                while (rs.next()) {
+                    val codi = rs.getString("codi")
+                    val nom = rs.getString("nom")
+                    val municipi = rs.getString("municipi")
+                    val comarca = rs.getString("comarca")
+
+                    println("Institut: $codi - $nom ($municipi, $comarca)")
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="procedimientos-procedure">🔹Procedimientos (PROCEDURE)<a class="headerlink" href="#procedimientos-procedure" title="Permanent link">&para;</a></h2>
+<p>Los procedimientos no devuelven valores directamente, a diferencia de las funciones, pero pueden tener parámetros de entrada (IN), salida (OUT) o ambos (INOUT). Se utilizan para realizar tareas como:</p>
+<ul>
+<li>Inserciones o actualizaciones complejas</li>
+<li>Validaciones</li>
+<li>Operaciones en bloque</li>
+<li>Ejecución de lógica con control de flujo</li>
+<li>Agrupación de instrucciones dentro de una transacción</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Sintaxis básica en PostgreSql</p>
+<pre><code>CREATE [OR REPLACE] PROCEDURE nombre_procedimiento(
+    [parámetro1 tipo [IN|OUT|INOUT]],
+    ...
+)
+AS $$
+BEGIN
+    -- cuerpo del procedimiento
+END;
+$$ LANGUAGE plpgsql;
+</code></pre>
+</div>
+<p><strong class="verde">Ejemplo en SQL:</strong> Procedimiento que inserta un nuevo instituto y muestra un aviso.</p>
+<pre><code>    CREATE OR REPLACE PROCEDURE insertar_institut_resultado(
+        IN p_codi VARCHAR,
+        IN p_nom VARCHAR,
+        IN p_cod_m INTEGER,
+        OUT resultado TEXT
+    )
+    AS $$
+    BEGIN
+        -- ¿Municipio existe?
+        IF NOT EXISTS (SELECT 1 FROM poblacio WHERE cod_m = p_cod_m) THEN
+            resultado := 'MUNICIPIO_NO_ENCONTRADO';
+            RETURN;
+        END IF;
+
+        -- ¿Instituto ya existe?
+        IF EXISTS (SELECT 1 FROM institut WHERE codi = p_codi) THEN
+            resultado := 'EXISTENTE';
+            RETURN;
+        END IF;
+
+        -- Insertar instituto
+        INSERT INTO institut (codi, nom, cod_m)
+        VALUES (p_codi, p_nom, p_cod_m);
+
+        resultado := 'INSERTADO';
+    END;
+    $$ LANGUAGE plpgsql;
+</code></pre>
+<p>La llamada desde <strong>SQL</strong> sería:</p>
+<pre><code>    CALL insertar_institut_resultado('I999', 'Institut Experimental', 12028, NULL);
+</code></pre>
+<p><strong class="verde">En Kotlin</strong> la llamda a la función sería:</p>
+<p><strong>Ejemplo_pro_insertar_institut_resultado.kt</strong></p>
+<pre><code>    import java.sql.Types
+
+    fun main() {
+       DatabaseLocal.getConnection().use { conn -&gt;
+            val sql = "Call insertar_institut_resultado(?, ?, ?, ?)"
+
+            conn.prepareCall(sql).use { stmt -&gt;
+                stmt.setString(1, "I999")
+                stmt.setString(2, "Institut Experimental")
+                stmt.setInt(3, 12028)
+                stmt.registerOutParameter(4, Types.VARCHAR)
+
+                stmt.execute()
+
+                val resultado = stmt.getString(4)
+                println("Resultado: $resultado")
+            }
+        }
+    }
+</code></pre>
+<h2 id="resumen-diferencias-entre-funcion-y-procedimiento-en-postgresql">📊 Resumen diferencias entre función y procedimiento en PostgreSQL<a class="headerlink" href="#resumen-diferencias-entre-funcion-y-procedimiento-en-postgresql" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>FUNCIÓN (<code>FUNCTION</code>)</th>
+<th>PROCEDIMIENTO (<code>PROCEDURE</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔁 Devuelve un valor</td>
+<td>✅ Sí (con <code>RETURN</code>)</td>
+<td>❌ No directamente</td>
+</tr>
+<tr>
+<td>📥 Parámetros de entrada (<code>IN</code>)</td>
+<td>✅ Sí</td>
+<td>✅ Sí</td>
+</tr>
+<tr>
+<td>📤 Parámetros de salida (<code>OUT</code>)</td>
+<td>✅ Sí (como <code>OUT</code>, <code>INOUT</code>, o <code>RETURNS</code>)</td>
+<td>✅ Sí (<code>OUT</code>, <code>INOUT</code>)</td>
+</tr>
+<tr>
+<td>📌 Se invoca con…</td>
+<td><code>SELECT nombre_funcion(...)</code></td>
+<td><code>CALL nombre_procedimiento(...)</code></td>
+</tr>
+<tr>
+<td>📊 Usable en consultas SQL</td>
+<td>✅ Sí (puede ir en <code>SELECT</code>, <code>WHERE</code>, etc.)</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td>🔄 Puede devolver tablas</td>
+<td>✅ Sí (<code>RETURNS TABLE</code> o <code>SETOF</code>)</td>
+<td>❌ No directamente</td>
+</tr>
+<tr>
+<td>🔁 Puede usar <code>RETURN</code></td>
+<td>✅ Obligatorio</td>
+<td>❌ No se usa <code>RETURN</code>, sino solo <code>CALL</code></td>
+</tr>
+<tr>
+<td>🧱 Uso típico</td>
+<td>Cálculos, validaciones, funciones reutilizables</td>
+<td>Procesos complejos, lógica de negocio, transacciones</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Transacciones/" class="btn btn-neutral float-left" title="🔹Transacciones y control de errores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Ejercicio/" class="btn btn-neutral float-right" title="📝 Ejercicio obligatorio">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Transacciones/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Ejercicio/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

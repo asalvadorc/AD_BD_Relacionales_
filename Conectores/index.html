@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Conectores/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹Herramientas y Conectores - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39Herramientas y Conectores";
+        var mkdocs_page_input_path = "Conectores.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Conectores/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹Herramientas y Conectores</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#jdbc">🔹JDBC</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#desde-intellj">🔹Desde IntellJ</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#desde-dbeaver">🔹Desde DBeaver</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#desde-kotlin">🔹Desde Kotlin</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Operaciones/">🔹Operaciones sobre la BD</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">🔹Herramientas y Conectores</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="herramientas-y-conectores">Herramientas y Conectores<a class="headerlink" href="#herramientas-y-conectores" title="Permanent link">&para;</a></h1>
+<p>De todas las formas posibles de interactuar con una base de datos, nos vamos a centrar en el uso de <strong>conectores</strong>, porque son la forma más directa y habitual de acceder a la base de datos desde un lenguaje de programación, como Kotlin, que es el que estamos utilizando en este módulo.</p>
+<p>En la introducción ya vimos que un <strong>conector</strong> (también llamado driver) es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa. Sin un conector, tu aplicación no podría comunicarse con la base de datos.</p>
+<ul>
+<li>En herramientas gráficas como <strong>DBeaver</strong>, los drivers se gestionan automáticamente.</li>
+<li>En <strong>proyectos en código</strong>, se añaden como dependencia (por ejemplo, en Maven, Gradle, pip…).</li>
+</ul>
+<p>Una base de datos puede ser accedida desde diferentes orígenes o herramientas, siempre que tengamos:</p>
+<ul>
+<li>Las credenciales de acceso (usuario y contraseña)</li>
+<li>El host/servidor donde se encuentra la base de datos</li>
+<li>El motor de base de datos (PostgreSQL, MySQL, SQLite, etc.)</li>
+<li>Los puertos habilitados y los permisos correctos</li>
+</ul>
+<p><strong class="azul">Principales formas de conectarse a una base de datos</strong></p>
+<table>
+<thead>
+<tr>
+<th>Medio de conexión</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🖥️ Aplicaciones de escritorio</td>
+<td>Herramientas gráficas como <strong>DBeaver</strong>, <strong>pgAdmin</strong>, <strong>MySQL Workbench</strong>, <strong>DB Browser for SQLite</strong>. Permiten explorar, consultar y administrar BD de forma visual.</td>
+</tr>
+<tr>
+<td>💻 Aplicaciones desarrolladas en código</td>
+<td>Programas en <strong>Kotlin</strong>, <strong>Java</strong>, <strong>Python</strong>, <strong>C#</strong>, etc., mediante <strong class="verde">conectores</strong> como <strong>JDBC</strong>, <strong>psycopg2</strong>, <strong>ODBC</strong>, etc. para acceder a BD desde código.</td>
+</tr>
+<tr>
+<td>🔠 Línea de comandos</td>
+<td>Clientes como <code>psql</code> (PostgreSQL), <code>mysql</code>, <code>sqlite3</code>. Permiten ejecutar comandos SQL directamente desde terminal.</td>
+</tr>
+<tr>
+<td>🌐 Aplicaciones web</td>
+<td>Sitios web que acceden a BD desde el backend (por ejemplo, en Spring Boot, Node.js, Django, etc.).</td>
+</tr>
+<tr>
+<td>🔄 APIs REST o servidores intermedios</td>
+<td>Servicios web que conectan la BD con otras aplicaciones, actuando como puente o capa de seguridad.</td>
+</tr>
+<tr>
+<td>📱 Aplicaciones móviles</td>
+<td>Apps Android/iOS que acceden a BD locales (como <strong>SQLite</strong>) o remotas (vía <strong>Firebase</strong>, API REST, etc.).</td>
+</tr>
+<tr>
+<td>📂 Herramientas de integración de datos</td>
+<td>Software como <strong>Talend</strong>, <strong>Pentaho</strong>, <strong>Apache Nifi</strong> para migrar, transformar o sincronizar datos entre sistemas.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="jdbc">🔹JDBC<a class="headerlink" href="#jdbc" title="Permanent link">&para;</a></h2>
+<p>JDBC (Java Database Connectivity) es una API estándar de Java que permite a los programas escritos en Java (y por extensión en Kotlin) conectarse y trabajar con bases de datos relacionales.</p>
+<ul>
+<li>
+<p><strong>Driver JDBC</strong>: cada gestor de BD proporciona un "driver" específico (un .jar) que implementa la interfaz de JDBC.</p>
+<p><code>mysql-connector-j, postgresql-42.x.jar, sqlite-jdbc.jar.</code></p>
+</li>
+<li>
+<p><strong>URL de conexión</strong>: se usa una cadena con formato <code>jdbc:&lt;gestor&gt;://&lt;host&gt;:&lt;puerto&gt;/&lt;nombre_base_datos&gt;</code> para indicar cómo llegar a la BD.</p>
+<table>
+<thead>
+<tr>
+<th>Gestor de Base de Datos</th>
+<th>URL de conexión</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL</td>
+<td>jdbc:postgresql://localhost:5432/empresa</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>jdbc:mysql://localhost:3306/empresa</td>
+</tr>
+<tr>
+<td>SQLite</td>
+<td>jdbc:sqlite:empresa.sqlite</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>Código estándar</strong>: gracias a JDBC, el mismo código Java/Kotlin puede trabajar con distintas bases de datos cambiando solo la URL y el driver.</p>
+</li>
+</ul>
+<div class="admonition tip">
+<p>En los siguientes apartados veremos como conectarnos a una BD Relacional, tanto desde la herramienta gráfica de BD integrada de <strong>IntelliJ</strong>  como desde la herramienta universal para la gestión de bases de datos <strong>DBeaver</strong> y también desde una aplicación desarrollada en <strong>Kotlin</strong>.</p>
+</div>
+<h2 id="desde-intellj">🔹Desde IntellJ<a class="headerlink" href="#desde-intellj" title="Permanent link">&para;</a></h2>
+<p><strong>IntelliJ</strong> incorpora una potente herramienta de gestión de bases de datos que permite visualizar la base de datos directamente desde el entorno de desarrollo (IDE), lo que permite:</p>
+<ul>
+<li>📂 Explorar la estructura de la base de datos (tablas, vistas, claves, relaciones…)</li>
+<li>🔎 Consultar datos en tiempo real con editores SQL integrados</li>
+<li>🛠️ Modificar tablas, añadir registros o ejecutar scripts SQL sin salir del proyecto</li>
+<li>⚡ Ver los cambios reflejados inmediatamente tras ejecutar una operación desde el código</li>
+<li>✅ Probar consultas antes de implementarlas en el programa</li>
+</ul>
+<p>La siguientes imágenes ilustran como configura esta herramienta para conectarnos a la BD de ejemplo <strong>Tienda.sqlite</strong>, disponible en Aules:</p>
+<p><strong class="azul">1. Crea un nuevo proyecto en Kotlin y Gradle</strong></p>
+<p>Al nuevo proyecto lo llamaremos <strong>BDRelacionales</strong>.</p>
+<p><img alt="ref" src="../img/new_project.png" /></p>
+<p><strong class="azul">2. Copia el archivo de la BD a nuestro proyecto</strong></p>
+<p>La ubicaremos en la carpeta <strong>resources</strong>. Esta carpeta forma parte del <strong>classpath</strong> del proyecto. Allí se colocan archivos que necesita la aplicación en tiempo de ejecución. Cuando compilas el <strong>proyecto</strong>, todo lo que está en <strong>resources/</strong> se copia dentro del jar o build <strong>final</strong> en la carpeta <strong>classes</strong>, manteniendo la misma estructura. Además, Si compartes el proyecto, la base de datos viaja con él.</p>
+<p><img alt="ref" src="../img/resources_Tienda.png" /></p>
+<p><strong class="azul">3. Elige el conector a la base de datos</strong></p>
+<p>En la herramienta <strong>Database -&gt; Data Source</strong> elegimos el conector <strong>SQLite</strong>. </p>
+<p><img alt="ref" src="../img/DataSource.png" /></p>
+<p><strong class="azul">4. Selecciona la ubicación de la BD</strong></p>
+<p>Podemos comprobar la conexión en <strong>Test Concection</strong> antes de aceptar.<br />
+Al aceptar, se nos pedirá que instalemos <strong>el driver</strong> correspondiente, si no estuviera instalado.</p>
+<p><img alt="ref" src="../img/dialogo_conexion_sqlite.png" /></p>
+<p><strong class="azul">5. Comprueba consultas antes de implementarlas</strong></p>
+<p>Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL, haciendo click derecho sobre la conexión y seleccionando la opción <strong>New &gt; QueryConsole</strong>.</p>
+<p><img alt="ref" src="../img/query_consola.png" /></p>
+<p><img alt="ref" src="../img/consola_sql.png" /></p>
+<h2 id="desde-dbeaver">🔹Desde DBeaver<a class="headerlink" href="#desde-dbeaver" title="Permanent link">&para;</a></h2>
+<p><strong>DBeaver</strong> es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD  <strong>Tienda.sqlite</strong>, disponible en Aules, son los siguientes:</p>
+<p><strong class="azul">1. Abre DBeaver</strong></p>
+<p>Inicia el programa <strong>DBeaver</strong>. Aparecerá la ventana principal con el panel lateral de conexiones.</p>
+<p><img alt="ref" src="../img/dbeaver0.jpg" /></p>
+<p>Haz clic en el botón <strong>"Nueva conexión"</strong> (ícono de enchufe) o ve al menú <strong>Archivo &gt; Nueva conexión</strong>.</p>
+<p><img alt="ref" src="../img/dbeaver2.jpg" /></p>
+<hr />
+<p><strong class="azul">2. Selecciona el tipo de base de datos</strong></p>
+<p>En la ventana de selección, elige <strong>SQlite</strong> y pulsa <strong>Siguiente</strong>.</p>
+<p><img alt="ref" src="../img/dbeaver3.jpg" /></p>
+<hr />
+<p><strong class="azul">3. Introduce la ruta donde se encuentra la BD</strong></p>
+<p><img alt="ref" src="../img/dbeaver4.jpg" /></p>
+<hr />
+<p><strong class="azul">4. Prueba la conexión</strong></p>
+<p>Haz clic en <strong>"Probar conexión"</strong>. Si todo está correcto, verás un mensaje de éxito.<br />
+Si DBeaver necesita un controlador (driver), te lo ofrecerá para descargar automáticamente.</p>
+<p><img alt="ref" src="../img/dbeaver5.jpg" /></p>
+<hr />
+<p><strong class="azul">5. Finaliza y explora</strong></p>
+<p>Haz clic en <strong>"Finalizar"</strong>. La nueva conexión aparecerá en el panel lateral izquierdo.<br />
+Desde allí puedes:</p>
+<ul>
+<li>Ver tablas, vistas, funciones y procedimientos</li>
+<li>Ejecutar sentencias SQL</li>
+<li>Consultar y modificar registros</li>
+<li>Exportar datos en distintos formatos</li>
+</ul>
+<p><img alt="ref" src="../img/dbeaver6.jpg" /></p>
+<h2 id="desde-kotlin">🔹Desde Kotlin<a class="headerlink" href="#desde-kotlin" title="Permanent link">&para;</a></h2>
+<p>Para que una aplicación (escrita en Kotlin, Java u otro lenguaje) pueda leer, insertar o modificar información almacenada en una base de datos relacional (BDR), debe establecer una conexión con ella. Esto implica una serie de <strong>pasos técnicos</strong> y el uso de componentes específicos:</p>
+<ul>
+<li>Conectarse al gestor de base de datos (PostgreSQL, MySQL, SQLite…)</li>
+<li>Enviar consultas SQL (SELECT, INSERT, UPDATE, DELETE…)</li>
+<li>Recibir y procesar resultados (ResultSet, listas de objetos…)</li>
+<li>Cerrar correctamente los recursos utilizados</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Kotlin - Instrucciones</p>
+<p>En el proyecto <code>BDRelacionales</code>, ya creado y conectado a la BD Tienda.sqlite, crearemos un <strong>paquete</strong> nuevo llamado <code>SQLite</code>. En este paquete incluiremos los ejemplos de este apartado. </p>
+<p><img alt="ref" src="../img/carpeta_sqlite.png" /></p>
+</div>
+<p>Para que la conexión funcione, es necesario <strong>añadir el conector jdbc</strong> correspondiente. Para ello utilizaremos la herramienta <strong>Gradle</strong>, que permite automatizar la gestión de dependencias sin tener que configurar nada a mano.</p>
+<ul>
+<li><strong>build.gradle.kts</strong> : <pre><code>dependencies {
+    implementation("org.postgresql:postgresql:42.7.1") //Postgres
+    implementation("mysql:mysql-connector-java:8.3.0") //MySQL
+    implementation("org.xerial:sqlite-jdbc:3.43.0.0") //SQLite
+}
+</code></pre>
+</li>
+</ul>
+<p><strong class="azul">Ejemplo de conexión a SQLite</strong></p>
+<p><strong>Ejemplo_Conexion_SQLite.kt</strong>: El siguiente programa conecta con la BD <strong>Tienda.sqlite</strong>.</p>
+<pre><code>    import java.io.File
+    import java.sql.DriverManager
+
+    fun main() {
+        // Ruta al archivo de base de datos SQLite
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}")
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        // Conexión y prueba
+        DriverManager.getConnection(url).use { conn -&gt;
+            println("Conexión establecida correctamente con SQLite.")
+        }
+
+
+    }
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Recuerda</p>
+<p>No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.     </p>
+</div>
+<div class="admonition tip">
+<p>Podemos encapsular la conexión a la base de datos dentro de un objeto, de manera que pueda reutilizarse tantas veces como sea necesario. Así evitamos duplicar código y reducimos posibles errores. Por ejemplo, si la base de datos cambia de ubicación, solo habría que actualizar la ruta en el objeto y no en cada uno de los programas.</p>
+</div>
+<p><strong>Ejemplo_Conexion_SQLite_obj.kt</strong></p>
+<pre><code>    import java.io.File
+    import java.sql.DriverManager
+
+    object DatabaseTienda {
+
+
+        // Ruta al archivo de base de datos SQLite
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        fun getConnection() = DriverManager.getConnection(url)
+
+    }
+</code></pre>
+<p><strong>Ejemplo_basico_conexion_objeto.kt</strong></p>
+<pre><code>        import java.io.File
+        import java.sql.DriverManager
+        import kotlin.use
+
+        fun main() {
+            val sql = "SELECT * FROM article"
+            DatabaseTienda.getConnection().use { conn -&gt;
+                conn.prepareStatement(sql).use { stmt -&gt;
+                    stmt.executeQuery().use { rs -&gt;
+
+                        while (rs.next()) {
+
+                            //código
+                        }
+                    }
+                }
+            }
+        }
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Introduccion/" class="btn btn-neutral float-left" title="🔹Introducción"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Operaciones/" class="btn btn-neutral float-right" title="🔹Operaciones sobre la BD">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Introduccion/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Operaciones/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

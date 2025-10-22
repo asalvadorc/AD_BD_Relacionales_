@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Operaciones/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹Operaciones sobre la BD - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39Operaciones sobre la BD";
+        var mkdocs_page_input_path = "Operaciones.md";
+        var mkdocs_page_url = "/AD_BD_Relacionales_/Operaciones/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Bases de Datos Relacionales</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RA_CE/">🔹RA y CE</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Introduccion/">🔹Introducción</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Conectores/">🔹Herramientas y Conectores</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹Operaciones sobre la BD</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#crud-sqlite">🔹CRUD - SQlite</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#liberacion-de-recursos">🔹Liberación de recursos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#crud-postgresql">🔹CRUD - PostgreSQL</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#servidor-remoto">🗄️Servidor remoto</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker">🐳 Docker</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#data-class">🔹Data Class</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#uso-de-data-class-en-la-bd-geo">📌 Uso de data class en la BD Geo</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Transacciones/">🔹Transacciones y control de errores</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Procedimientos/">🔹Funciones y Procedimientos almacenados</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Ejercicio/">📝 Ejercicio obligatorio</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Bases de Datos Relacionales</li>
+      <li class="breadcrumb-item active">🔹Operaciones sobre la BD</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="operaciones-sobre-la-bd">Operaciones sobre la BD<a class="headerlink" href="#operaciones-sobre-la-bd" title="Permanent link">&para;</a></h1>
+<p>En <strong>JDBC</strong> (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los siguientes objetos y métodos:</p>
+<ul>
+<li>
+<p><strong>Connection</strong>, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)</p>
+</li>
+<li>
+<p>Los objetos <strong>PrepareStatement</strong> y <strong>CreateStatement</strong> se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.</p>
+</li>
+<li>
+<p><strong>ResultSet</strong> es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.</p>
+</li>
+<li>
+<p>Los métodos <strong>executeQuery()</strong> y <strong>executeUpdate()</strong> se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.</p>
+</li>
+</ul>
+<p><strong class="azul">Peticiones a la BD</strong></p>
+<p>Cuando una aplicación se conecta a una base de datos, necesita ejecutar sentencias SQL desde el código. En JDBC (Java/Kotlin), existen dos métodos principales para ello: <strong>executeQuery()</strong> y <strong>executeUpdate()</strong>.</p>
+<p>Ambos permiten enviar instrucciones SQL al gestor de base de datos, pero se usan en situaciones diferentes:</p>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Uso principal</th>
+<th>Tipo de sentencia SQL</th>
+<th>Resultado que devuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>executeQuery()</strong></td>
+<td>Realizar consultas</td>
+<td>SELECT</td>
+<td>Objeto ResultSet con los datos consultados</td>
+</tr>
+<tr>
+<td><strong>executeUpdate()</strong></td>
+<td>Realizar modificaciones</td>
+<td>INSERT, UPDATE, DELETE, DDL (CREATE, DROP, etc.)</td>
+<td>Un entero con el número de filas afectadas</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">execute()</p>
+<p>El método <strong>execute()</strong> en JDBC se utiliza principalmente en los siguientes casos:</p>
+<ul>
+<li>Cuando no se sabe de antemano qué tipo de sentencia SQL se va a ejecutar o si la consulta puede ser tanto de consulta como de modificación de datos.</li>
+<li>Para ejecutar sentencias SQL que pueden devolver varios resultados.</li>
+<li>En situaciones donde se necesita una gestión flexible de la ejecución, ya que execute() devuelve un booleano:<ul>
+<li>true si el resultado es un ResultSet (SELECT).</li>
+<li>false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)</li>
+</ul>
+</li>
+</ul>
+</div>
+<p><strong class="azul">PrepareStatement VS CreateStatement</strong></p>
+<table>
+<thead>
+<tr>
+<th>Si necesitas...</th>
+<th>Usa...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consultas sin parámetros</td>
+<td><code>CreateStatement</code></td>
+</tr>
+<tr>
+<td>Consultas con datos del usuario</td>
+<td><code>PrepareStatement</code></td>
+</tr>
+<tr>
+<td>Seguridad frente a inyecciones SQL</td>
+<td><code>PrepareStatement</code></td>
+</tr>
+<tr>
+<td>Ejecutar muchas veces con distintos valores</td>
+<td><code>PrepareStatement</code></td>
+</tr>
+<tr>
+<td>Crear tablas o sentencias SQL complejas que no cambian</td>
+<td><code>CreateStatement</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Diferencia en la compilación entre Statement y PreparedStatement</strong></p>
+<p>Cada vez que envías una sentencia SQL al motor de base de datos, el motor debe hacer varios pasos:</p>
+<ul>
+<li>Parsear la consulta → comprobar que la sintaxis SQL es correcta.</li>
+<li>Compilar → convertir la consulta en un plan de ejecución interno (cómo buscar los datos, qué índices usar, etc.).</li>
+<li>Ejecutar → obtener los resultados.</li>
+</ul>
+<p>🔹 <strong>Con Statement</strong></p>
+<p>Cada vez que llamas a executeQuery() o executeUpdate(), el SQL completo se envía como texto:</p>
+<pre><code>val stmt = conn.createStatement()
+stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Valencia'")
+stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Madrid'")
+</code></pre>
+<p>En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo cambia el valor de 'Valencia' a 'Madrid'.</p>
+<p>🔁 Es decir, se repite todo el trabajo de compilación cada vez, lo que reduce el rendimiento si haces muchas consultas parecidas.</p>
+<p>🔹 <strong>Con PrepareStatement</strong></p>
+<p>Aquí, el SQL se envía una sola vez con parámetros (?):</p>
+<pre><code>val pstmt = conn.prepareStatement("SELECT * FROM clientes WHERE ciudad = ?")
+pstmt.setString(1, "Valencia")
+pstmt.executeQuery()
+
+pstmt.setString(1, "Madrid")
+pstmt.executeQuery()
+</code></pre>
+<p>El motor solo compila la consulta una vez, y después reutiliza el mismo plan de ejecución cambiando solo el valor del parámetro.</p>
+<p>⚡ Esto ahorra tiempo y recursos, sobre todo cuando repites muchas veces la misma consulta con diferentes datos (por ejemplo, en bucles o inserciones masivas).    </p>
+<h2 id="crud-sqlite">🔹CRUD - SQlite<a class="headerlink" href="#crud-sqlite" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Kotlin - Instrucciones</p>
+<p>Dentro del paquete <code>SQlite</code> del proyecto  <code>BDRelacionales</code>, ya creado y conectado a la BD <code>Tienda.sqlite</code>, ubicada en la carpeta de <strong>recursos</strong>, incluiremos los ejemplos de este apartado.
+Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional ligera, utilizando las tablas <code>article</code>, <code>client</code>, <code>factura</code> y <code>linia_fac</code>, tal y como se aprecia en el modelo relacional de la siguiente imagen.</p>
+</div>
+<p><strong class="azul">Tienda.sqlite</strong></p>
+<table>
+<thead>
+<tr>
+<th>Modelo Relacional</th>
+<th>Datos</th>
+<th>Paquete SQLite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="ref" src="../img/bd_factura.jpg" /></td>
+<td><img alt="ref" src="../img/campos_bd_factura.jpg" /></td>
+<td><img alt="ref" src="../img/carpeta_sqlite.png" /></td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">Operaciones CRUD</strong>   </p>
+<p>Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como <strong>CRUD</strong>:</p>
+<ul>
+<li><strong>CREATE</strong>: Permite añadir nuevos registros a una tabla.</li>
+<li><strong>READ</strong>: Permite consultar registros existentes.</li>
+<li><strong>UPDATE</strong>: Permite modificar los valores de uno o varios registros existentes.</li>
+<li><strong>DELETE</strong>: Permite eliminar registros de una tabla.</li>
+</ul>
+<p><strong class="verde">CREATE (INSERT)</strong> </p>
+<p><strong>Ejemplo_Insert.kt</strong>: Este fragmento añade un nuevo articulo "00001" a la tabla articles</p>
+<pre><code>package SQLite
+import java.sql.DriverManager
+
+fun main() {
+    val dbPath = "src/main/resources/Tienda.sqlite"
+    val dbFile = java.io.File(dbPath)
+    val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+    DriverManager.getConnection(url).use { conn -&gt;
+
+        val sql = "INSERT INTO article (cod_a, descrip) VALUES (?, ?)"
+        //conn.prepareStatement(sql)
+
+        conn.prepareStatement(sql).use { stmt -&gt;
+
+            stmt.setString(1, "00001")
+            stmt.setString(2, "articulo de prueba 1")
+            stmt.executeUpdate()
+
+
+        }
+
+        }
+    }
+</code></pre>
+<p><strong class="verde">UPDATE</strong></p>
+<p><strong>Ejemplo_Update.kt</strong>: Este código actualiza la descripción del artículo "00001"</p>
+<pre><code>    package SQLite
+    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "UPDATE article SET descrip = ? WHERE cod_a = ?"
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "descripción nueva")
+                stmt.setString(2, "00001")
+                stmt.executeUpdate()
+
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">DELETE</strong></p>
+<p><strong>Ejemplo_Delete.kt</strong>: Este fragmento elimina el articulo "00001"</p>
+<pre><code>   package SQLite
+   import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "DELETE FROM article WHERE cod_a = ?"
+            conn.prepareStatement(sql).use { stmt -&gt;
+            stmt.setString(1, "00001")
+            stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">READ (SELECT)</strong></p>
+<p><strong>Ejemplo_select_basico.kt</strong>: Consulta la tabla article.</p>
+<pre><code>    package SQLite
+    import java.io.File
+    import java.sql.DriverManager
+
+    fun main() {
+
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = File(dbPath)
+        println("Ruta de la BD: ${dbFile.absolutePath}")
+
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+
+                stmt.executeQuery().use { rs -&gt;
+
+                    println("Artículos disponibles:")
+                    println("Código\tDescripción\tPrecio\tStock\tStock Mínimo")
+
+                    while (rs.next()) {
+                        val codA = rs.getString("cod_a")
+                        val descrip = rs.getString("descrip")
+                        val preu = rs.getDouble("preu")
+                        val stock = rs.getInt("stock")
+                        val stockMin = rs.getInt("stock_min")
+
+                        println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+                    }
+
+                }
+            }
+        }
+    }
+</code></pre>
+<p><strong>Ejemplo_join.kt</strong>: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.</p>
+<pre><code>    package SQLite
+    import java.sql.DriverManager
+
+    fun main() {
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        DriverManager.getConnection(url).use { conn -&gt;
+
+            val sql = """
+                SELECT lf.num_f, lf.num_l, lf.cod_a, a.descrip, lf.quant, lf.preu
+                FROM linia_fac lf
+                JOIN article a ON lf.cod_a = a.cod_a
+                ORDER BY lf.num_f, lf.num_l
+            """.trimIndent()
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.executeQuery().use { rs -&gt;
+                    println("Líneas de factura:")
+                    println("Factura | Línea | Artículo | Descripción | Cantidad | Precio")
+
+                    while (rs.next()) {
+                        val numF = rs.getInt("num_f")
+                        val numL = rs.getInt("num_l")
+                        val codA = rs.getString("cod_a")
+                        val descrip = rs.getString("descrip")
+                        val quant = rs.getInt("quant")
+                        val preu = rs.getDouble("preu")
+
+                        println("$numF\t$numL\t$codA\t$descrip\t$quant\t$preu")
+                    }
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="liberacion-de-recursos">🔹Liberación de recursos<a class="headerlink" href="#liberacion-de-recursos" title="Permanent link">&para;</a></h2>
+<p>Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:</p>
+<ul>
+<li>La conexión con el servidor de base de datos (Connection)</li>
+<li>Las sentencias SQL preparadas (Statement o PreparedStatement)</li>
+<li>El resultado de la consulta (ResultSet)</li>
+</ul>
+<p>Estos recursos no se liberan automáticamente cuando se termina su uso (especialmente en Java o Kotlin con JDBC). Si no se cierran correctamente, se pueden producir problemas como:</p>
+<ul>
+<li>Fugas de memoria</li>
+<li>Bloqueo de conexiones (demasiadas conexiones abiertas)</li>
+<li>Degradación del rendimiento</li>
+<li>Errores inesperados en la aplicación</li>
+</ul>
+<p>💡 En Kotlin, puedes usar <strong>use {}</strong> para cerrar recursos automáticamente al finalizar el bloque, tal y como hemos hecho en los ejemplos anteriores.</p>
+<p>Si no utilizas <strong>use {}</strong> en Kotlin (o try-with-resources en Java), entonces debes cerrar manualmente cada uno de los recursos abiertos (ResultSet, Statement y Connection) usando .<strong>close()</strong>, y normalmente deberías hacerlo dentro de un bloque <strong>finally</strong> para garantizar su cierre incluso si ocurre un error. El orden correcto de cierre es del más interno al más externo.</p>
+<p>👉 Los siguientes <strong>ejemplos</strong> muestran como cerrar recursos abiertos sin <strong>use()</strong>, de forma manual y con el bloque <strong>try-catch-finally</strong></p>
+<p><strong>Ejemplo_cierre_manual.kt:</strong> Cierra los recurso de forma manual con close()</p>
+<pre><code>    package SQLite
+    import java.sql.DriverManager
+    import java.sql.Connection
+    import java.sql.PreparedStatement
+    import java.sql.ResultSet
+
+    fun main() {
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        val conn: Connection = DriverManager.getConnection(url)
+        val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+        val stmt: PreparedStatement = conn.prepareStatement(sql)
+        val rs: ResultSet = stmt.executeQuery()
+
+        println("Artículos:")
+        println("Código\tDescripción\tPrecio\tStock\tStock mín.")
+
+        while (rs.next()) {
+            val codA = rs.getString("cod_a")
+            val descrip = rs.getString("descrip")
+            val preu = rs.getDouble("preu")
+            val stock = rs.getInt("stock")
+            val stockMin = rs.getInt("stock_min")
+
+            println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+        }
+
+        rs.close()
+        stmt.close()
+        conn.close()
+    }
+</code></pre>
+<p><strong>Ejemplo_cierre_try_catch.kt:</strong> Cierra los reursos con try-catch-finally</p>
+<pre><code>    package SQLite
+    import java.sql.Connection
+    import java.sql.DriverManager
+    import java.sql.PreparedStatement
+    import java.sql.ResultSet
+
+    fun main() {
+        val dbPath = "src/main/resources/Tienda.sqlite"
+        val dbFile = java.io.File(dbPath)
+        val url = "jdbc:sqlite:${dbFile.absolutePath}"
+
+        var conn: Connection? = null
+        var stmt: PreparedStatement? = null
+        var rs: ResultSet? = null
+
+        try {
+            conn = DriverManager.getConnection(url)
+            val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+            stmt = conn.prepareStatement(sql)
+            rs = stmt.executeQuery()
+
+            println("Artículos:")
+            println("Código\tDescripción\tPrecio\tStock\tStock mín.")
+
+            while (rs.next()) {
+                val codA = rs.getString("cod_a")
+                val descrip = rs.getString("descrip")
+                val preu = rs.getDouble("preu")
+                val stock = rs.getInt("stock")
+                val stockMin = rs.getInt("stock_min")
+
+                println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
+            }
+
+        } catch (e: Exception) {
+            println("Error al acceder a la base de datos: ${e.message}")
+        } finally {
+            try { rs?.close() } catch (e: Exception) { /* Ignorar */ }
+            try { stmt?.close() } catch (e: Exception) { /* Ignorar */ }
+            try { conn?.close() } catch (e: Exception) { /* Ignorar */ }
+        }
+    }
+</code></pre>
+<h2 id="crud-postgresql">🔹CRUD - PostgreSQL<a class="headerlink" href="#crud-postgresql" title="Permanent link">&para;</a></h2>
+<p>Hasta ahora hemos trabajado con ejemplos de operaciones <strong>CRUD</strong> (Crear, Leer, Actualizar y Borrar) utilizando <strong>SQLite</strong>, una base de datos ligera, fácil de usar y sin necesidad de servidor, ideal para iniciarse en el acceso a datos desde Kotlin.</p>
+<p>Sin embargo, en entornos reales y profesionales, lo más habitual es trabajar con sistemas de gestión de bases de datos más potentes y completos, como <strong>PostgreSQL</strong>.</p>
+<p>A continuación, aplicaremos lo aprendido en SQLite, pero ahora trabajando con <strong>PostgreSQL</strong> en <strong>dos contextos distintos</strong>:</p>
+<ul>
+<li>Base de datos <strong>remota</strong>: alojada en un servidor accesible mediante una dirección IP y credenciales.</li>
+<li>Base de datos <strong>local</strong>: replicada en un contenedor <strong>Docker</strong>, lo que resulta ideal para pruebas, desarrollo y aprendizaje en un entorno controlado.</li>
+</ul>
+<p>En ambos casos utilizaremos la misma base de datos, llamada <strong>geo_ad</strong>. Su versión remota estará disponible desde cualquier ubicación, mientras que la local se generará a partir de ella siguiendo unas instrucciones que se os facilitarán.</p>
+<p><strong class="azul">Esquema de la BD geo_ad</strong> </p>
+<table>
+<thead>
+<tr>
+<th>Modelo Relacional - Datos</th>
+<th>Paquete Postgres</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="ref" src="../img/geo_ad.jpg" /></td>
+<td><img alt="ref" src="../img/carpeta_postgres.png" /></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Kotlin - Instrucciones</p>
+<p>Dentro del paquete <code>Postgres</code> del proyecto <code>BDRelacionales</code>, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas <code>institut</code>, <code>poblacio</code> y <code>comarca</code>, tal y como se aprecia en el modelo relacional de la siguiente imagen.   </p>
+</div>
+<p><strong class="azul">Configuración de Dependencias (Gradle)</strong></p>
+<p>Lo primero será incluir las dependencia necesarias en <strong>build.gradle.kts</strong></p>
+<pre><code>    // build.gradle.kts (para PostgreSQL)
+    dependencies {
+        implementation("org.postgresql:postgresql:42.6.0")
+    }
+</code></pre>
+<h3 id="servidor-remoto">🗄️Servidor remoto<a class="headerlink" href="#servidor-remoto" title="Permanent link">&para;</a></h3>
+<p>La base de datos <strong>geo_ad</strong> se encuentra en una máquina externa, por lo que se comporta como un recurso compartido en la nube. Para acceder a ella necesitamos establecer una conexión de red utilizando parámetros como los siguientes:</p>
+<div class="admonition note">
+<p class="admonition-title">Datos de conexión al servido remoto</p>
+<p><strong>Servidor (host)</strong>: 89.36.214.106<br />
+<strong>Port</strong>: 5432 (es el puerto por defecto)<br />
+<strong>Usuari</strong>: geo_ad<br />
+<strong>Contrasenya</strong>: geo_ad<br />
+<strong>Base de dades</strong>: geo_ad  </p>
+</div>
+<p><strong>Ejemplo_conexion_Postgres_remota.kt</strong></p>
+<pre><code>    package Postgres
+    import java.sql.DriverManager
+    object DatabaseRemota {
+
+        private const val URL =  "jdbc:postgresql://89.36.214.106:5432/geo_ad"
+        private const val USER = "geo_ad"
+        private const val PASSWORD = "geo_ad"
+
+        fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+    }
+</code></pre>
+<p><strong class="azul">Operaciones CRUD</strong>     </p>
+<p>Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utilizando el objeto de conexión correspondiente.</p>
+<p><strong class="verde">Read (SELECT)</strong>     </p>
+<p><strong>Ejemplo_Select.kt</strong>: Consulta todos los institutos</p>
+<pre><code>        package Postgres
+        fun main(args: Array&lt;String&gt;) {
+        val sql = "SELECT * FROM institut"
+
+        DatabaseLocal.getConnection().use { conn -&gt;    // DatabaseRemota si se conecta al servidor del instituto
+                conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.executeQuery().use { rs -&gt;
+
+                    while (rs.next()) {
+                        print("" + rs.getString(1) + "\t")
+                        println(rs.getString(2))
+                    }
+                }
+            }
+            }
+         }
+</code></pre>
+<hr />
+<p><strong class="verde">Create (INSERT)</strong>  </p>
+<p><strong>Ejemplo_Insert.kt</strong>: inserta un istituto de prueba.</p>
+<pre><code>    package Postgres
+    fun main(args: Array&lt;String&gt;) {
+
+        val sql ="INSERT INTO institut (codi,nom,adreca,numero,codpostal,cod_m) VALUES(?,?,?,?,?,?)"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "00000000")
+                stmt.setString(2, "IES PRUEBA")
+                stmt.setString(3, "CASTELLÓN")
+                stmt.setString(4, "S/N")
+                stmt.setInt(5, 12560)
+                stmt.setInt(6, 12040)
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">Update (UPDATE)</strong>    </p>
+<p><strong>Ejemplo_Update.kt</strong>: actualiza el campo nombre del instituto de prueba insertado.</p>
+<pre><code>    package Postgres
+    fun main() {
+        val sql = "UPDATE institut SET nom = ? WHERE codi = ?"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "IES PRUEBA 2")
+                stmt.setString(2, "00000000")
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<p><strong class="verde">Delete (DELETE)</strong>   </p>
+<p><strong>Ejemplo_Delete.kt</strong>: elimina el instituto de prueba insertado anteriormente.</p>
+<pre><code>    package Postgres
+    fun main() {
+        val sql = "DELETE FROM institut WHERE codi = ?"
+
+        DatabaseLocal.getConnection().use { conn -&gt;
+
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.setString(1, "00000000")
+                stmt.executeUpdate()
+            }
+        }
+    }
+</code></pre>
+<h3 id="docker">🐳 Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<p>Para poder programar y probar nuestras aplicaciones sin depender de la conexión externa, es muy útil replicar esa base de datos en local. La forma más sencilla y estandarizada de hacerlo es mediante <strong>Docker</strong>.</p>
+<ul>
+<li>Docker es una plataforma que permite ejecutar aplicaciones dentro de contenedores.</li>
+<li>Un contenedor es como una “caja” que incluye todo lo necesario para que un servicio funcione: sistema operativo reducido, librerías, configuración y la propia aplicación.</li>
+<li>Para bases de datos, existen imágenes oficiales (Postgres, MySQL, MongoDB…) que se pueden levantar en segundos.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Intrucciones para replicar la BD en local (Docker)</p>
+<p>Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: <a href="../Docker_instrucciones/">Instrucciones</a>    </p>
+</div>
+<hr />
+<p>🔌 Una vez hemos creada la BD en local ya podemos conectarnos a ella:    </p>
+<p><strong>Ejemplo_conexion_Postgres_local.kt</strong></p>
+<pre><code>    package Postgres
+    import java.sql.DriverManager
+    object DatabaseLocal {
+
+        private const val URL =  "jdbc:postgresql://localhost:5432/geo"
+        private const val USER = "postgres"
+        private const val PASSWORD = "postgres"
+
+        fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+    }
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Los ejemplos anteriores de operaciones CRUD, realizados sobre el servidor remoto, son igualmente válidos para el servidor local, ya que la base de datos es la misma.</p>
+</div>
+<h2 id="data-class">🔹Data Class<a class="headerlink" href="#data-class" title="Permanent link">&para;</a></h2>
+<p>Hasta ahora hemos trabajado con bases de datos relacionales utilizando JDBC, construyendo consultas SQL, procesando los resultados con ResultSet y mostrando la información directamente por consola o almacenándola en estructuras básicas como listas o mapas.</p>
+<p>Sin embargo, cuando una aplicación crece, se vuelve más cómodo y legible representar cada tabla de la base de datos como una clase del programa, cuyos atributos correspondan a las columnas de esa tabla.
+En <strong>Kotlin</strong>, esto se consigue de forma sencilla y elegante utilizando las <strong>data classes</strong>.</p>
+<p>Una <strong>data class</strong> (o clase de datos) es una clase especial de Kotlin diseñada para almacenar y transportar información.
+El compilador genera automáticamente métodos útiles como toString(), equals(), hashCode() y copy(), por lo que resulta ideal para representar filas (registros) de una tabla de base de datos.</p>
+<p>Su sintáxis básica es:</p>
+<pre><code>    data class NombreClase(val campo1: Tipo, val campo2: Tipo, ...)
+</code></pre>
+<p>🧩 <strong>Ejemplo</strong>: representación de una tabla cliente</p>
+<p>Supongamos que en la base de datos existe una tabla:</p>
+<pre><code>    CREATE TABLE cliente (
+        id INTEGER PRIMARY KEY,
+        nombre TEXT,
+        email TEXT
+    );
+</code></pre>
+<p>Podemos definir la siguiente clase en Kotlin:</p>
+<pre><code>    data class Cliente(
+        val id: Int,
+        val nombre: String,
+        val email: String
+    )
+</code></pre>
+<p>Y al realizar una consulta con JDBC:</p>
+<pre><code>    val clientes = mutableListOf&lt;Cliente&gt;()
+    val rs = stmt.executeQuery("SELECT * FROM cliente")
+
+    while (rs.next()) {
+        clientes.add(
+            Cliente(
+                id = rs.getInt("id"),
+                nombre = rs.getString("nombre"),
+                email = rs.getString("email")
+            )
+        )
+    }
+</code></pre>
+<p>En este ejemplo:</p>
+<ul>
+<li>Cada fila del ResultSet se convierte en un objeto Cliente.</li>
+<li>Todos los clientes recuperados se almacenan en una lista tipada (<code>List&lt;Cliente&gt;</code>).</li>
+<li>Posteriormente se pueden mostrar, modificar o procesar con facilidad.</li>
+</ul>
+<h3 id="uso-de-data-class-en-la-bd-geo">📌 <strong>Uso de <code>data class</code> en la BD Geo</strong><a class="headerlink" href="#uso-de-data-class-en-la-bd-geo" title="Permanent link">&para;</a></h3>
+<p>En este ejemplo replicamos la misma consulta que ya vimos anteriormente para obtener todos los institutos de la base de datos <strong>geo_ad</strong> alojada en el servidor remoto, pero ahora utilizando un <strong><code>data class</code></strong> en Kotlin. </p>
+<p>Esto nos permite representar cada fila del resultado como un objeto de tipo <code>Institut</code>, facilitando el tratamiento, la reutilización y la lectura del código.</p>
+<p>Además, almacenamos los resultados en una lista de objetos, lo que nos permite trabajar con ellos de forma más natural dentro de nuestro programa (listar, filtrar, transformar, etc.).</p>
+<p><strong>Data Class: Institut</strong></p>
+<pre><code>package Postgres
+
+    data class Institut(
+        val codi: String,
+        val nom: String?,
+        val adreca: String?,
+        val numero: String?,
+        val codpostal: Int?,
+        val codMunicipi: Int?
+    )
+</code></pre>
+<p><strong>Ejemplo_dataclass.kt</strong></p>
+<pre><code>package Postgres
+
+    fun main() {
+        val sql = "SELECT * FROM institut"
+
+        val instituts = mutableListOf&lt;Institut&gt;()
+
+        DatabaseRemota.getConnection().use { conn -&gt;  // Usa DatabaseRemota si es necesario
+            conn.prepareStatement(sql).use { stmt -&gt;
+                stmt.executeQuery().use { rs -&gt;
+                    while (rs.next()) {
+                        val institut = Institut(
+                            rs.getString("codi"),
+                            rs.getString("nom"),
+                            rs.getString("adreca"),
+                            rs.getString("numero"),
+                            rs.getInt("codpostal"),
+                            rs.getInt("cod_m")
+                        )
+                        instituts.add(institut)
+                    }
+                }
+            }
+        }
+
+        println("🏫 Institutos encontrados:")
+        instituts.forEach { println(it) }
+    }
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Conectores/" class="btn btn-neutral float-left" title="🔹Herramientas y Conectores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Transacciones/" class="btn btn-neutral float-right" title="🔹Transacciones y control de errores">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Conectores/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Transacciones/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
