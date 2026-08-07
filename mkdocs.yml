@@ -1,30 +1,94 @@
 site_url : https://asalvadorc.github.io/AD_BD_Relacionales_
 
-site_name: AD - Accés a Dades
+site_name: AD - Acceso a Datos
+copyright: >
+  © 2026 Alicia Salvador —
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+  Licencia CC BY-NC-SA 4.0
+  </a>
 
 extra_css:
   - css/extra.css
-  - css/copy-button.css
+  #- css/copy-button.css
 
 extra_javascript:
-  - js/copy-button.js  
+  #- js/copy-button.js
+  - js/lightbox.js
 
 theme: 
-  name: readthedocs
-  highlightjs: true
-  logo: assets/logocaminas.png
+  name: material
+  language: es
+  font:
+    text: Inter
+    code: JetBrains Mono
+  logo: assets/logo.png
+  favicon: img/favicon.ico
+  features:
+    - toc.follow
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+    - content.action.edit
+    - content.action.view
+    - header.autohide
+  palette: 
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
 
 markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
   - admonition
-  - toc:
-      permalink: True 
   - tables    
   - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true     
+  - md_in_html
+  - pymdownx.details
+  - meta
+  - toc:
+      toc_depth: 2
+      permalink: True
 
 nav:
 
-- Bases de Datos Relacionales:
+- 🏠 Inicio: 
   - 🔹RA y CE: RA_CE.md
+  - 🔹Guía de estudio semipresencial: Guia_estudio_semipresencial.md
+- Bases de Datos Relacionales:
   - 🔹Introducción: Introduccion.md
   - 🔹Herramientas y Conectores: Conectores.md
   - 🔹Operaciones sobre la BD: Operaciones.md

@@ -69,7 +69,11 @@ Comandos básicos:
 
 Ejemplo sencillo de consulta:
 
-        SELECT nombre FROM clientes WHERE ciudad = 'Valencia';
+```sql
+SELECT nombre FROM clientes WHERE ciudad = 'Valencia'; -- (1)!
+```
+
+  1. Esta consulta extrae únicamente la columna `nombre` de todos los registros donde la ciudad coincide exactamente con el texto `Valencia`. 
 
 
 ## 🔹Conectores VS ORM
