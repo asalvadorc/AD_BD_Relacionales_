@@ -36,6 +36,13 @@ Para controlar correctamente una transacción desde el código, necesitamos usar
         val conexion = DriverManager.getConnection("jdbc:sqlite:miBD.sqlite")
         conexion.autoCommit = false
 
+!!!question "🤔 Comprueba tu comprensión"
+
+    ¿Qué pasaría si intentamos hacer un `rollback()` tras un error, pero hemos olvidado configurar antes `conexion.autoCommit = false`?
+
+    ??? success "Ver respuesta"
+        Si `autoCommit` está activado (su valor por defecto), cada instrucción SQL se confirma automáticamente nada más ejecutarse. Por tanto, el `rollback()` no tendría ningún efecto sobre las instrucciones que ya hayan pasado, y los cambios incompletos o erróneos ya estarían guardados de forma permanente.
+
 
 
 ## 🔹Manejo de excepciones
@@ -60,6 +67,24 @@ El manejo de excepciones en las transacciones es absolutamente necesario para ga
 
 - Llama a commit() si todo sale bien
 - Llama a rollback() si ocurre cualquier excepción
+
+```mermaid
+graph TD
+    A([Inicio: autoCommit = false]) --> B{Operación 1}
+    B -- Éxito --> C{Operación 2}
+    C -- Éxito --> D([Fin: commit])
+    
+    B -- Fallo --> E[Excepción Capturada]
+    C -- Fallo --> E
+    
+    E --> F([rollback])
+    F --> G[Datos en estado original]
+    D --> H[Cambios permanentes en BD]
+    
+    style A fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
+    style D fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    style F fill:#ffebee,stroke:#f44336,stroke-width:2px
+```
 
 
         try {

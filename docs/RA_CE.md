@@ -1,4 +1,13 @@
-# RA 2 – Desarrolla aplicaciones que gestionan información almacenada en bases de datos relacionales identificando y utilizando mecanismos de conexión.
+---
+hide:
+  - toc
+---
+
+# Resultados de Aprendizaje y Criterios de Evalucaicón.
+
+## RA 2 – Desarrolla aplicaciones que gestionan información almacenada en bases de datos relacionales identificando y utilizando mecanismos de conexión.
+
+**Contenidos vs Criterios de Evaluación**{.azul}
 
 | Criterio de Evaluación | Contenido Relacionado                                                                 |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -13,56 +22,4 @@
 | i) Eliminación de objetos tras su uso                                   | - Cierre de conexiones, sentencias y resultados<br>- Uso de `try-with-resources` o `use {}` en Kotlin |
 | j) Gestión de transacciones                                             | - Comandos `commit`, `rollback`<br>- Control manual y automático de transacciones |
 | k) Ejecución de procedimientos almacenados                              | - Llamadas a procedimientos con `CallableStatement`<br>- Parámetros de entrada y salida |
-
-**Contenidos**{.azul}
-
-1-  Introducción a las bases de datos relacionales
-¿Qué es una BDR?
-
-- Estructura: tablas, claves primarias y foráneas
-- Lenguaje SQL
-- Casos de uso reales
-- ¿Qué es un conector (driver)?
-- Tipos de gestores: embebidos vs. independientes
-- Requisitos para establecer una conexión
-
-📌 Criterios: a), b), c), d)
-
-2-  Herramientas y conectores
-
-- Cómo añadir conectores 
-- Ejemplos: PostgreSQL, SQLite
-- Primer programa que establece conexión
-
-📌 Criterios: c), d)
-
-3-  Operaciones sobre la BD
-
-- Inserción (INSERT)
-- Actualización (UPDATE)
-- Borrado (DELETE)
-- Consultas con SELECT
-- Sentencias preparadas (PreparedStatement)
-- Ejemplos: PostgreSQL, SQLite
-
-📌 Criterios: f), g), h), i)
-
-
-4-  Transacciones y control de errores
-
-- ¿Qué es una transacción?
-- commit, rollback
-- Manejo de excepciones
-
-📌 Criterios: j)
-
-5-  Procedimientos y Funciones 
-
-- ¿Qué son y cuándo se usan?
-- Sintaxis básica en PostgreSQL
-- Acceso desde código con CallableStatement
-
-📌 Criterios: k)
-
-
 

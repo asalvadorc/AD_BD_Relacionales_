@@ -1,4 +1,6 @@
 ---
+hide:
+  - toc
 title:  "Acceso a Datos - Bases de Datos Relacionales"
 ---
 
@@ -6,6 +8,7 @@ title:  "Acceso a Datos - Bases de Datos Relacionales"
 
 ![ref1](portada.png)
 
+<!--
 ## Introducción
 
 Este módulo de Acceso a Datos se centra en el uso de las bases de datos relacionales desde aplicaciones Java y Kotlin. A lo largo de las unidades se trabajan los conceptos fundamentales para conectar una aplicación con una base de datos, consultar y modificar información, y automatizar operaciones mediante transacciones, funciones y procedimientos almacenados.
@@ -21,3 +24,4 @@ En esta unidad se abordarán temas como:
 - funciones y procedimientos almacenados.
 
 Para comenzar, puedes consultar la página de [Introducción](Introduccion.md).
+-->

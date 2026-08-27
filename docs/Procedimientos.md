@@ -16,6 +16,31 @@ Una **función** está diseñada para **calcular y devolver un resultado**. Se p
 
 Un **procedimiento** sirve para **ejecutar acciones** dentro de la base de datos, como insertar registros, modificar datos o gestionar operaciones en bloque. **No devuelve un valor directamente** (aunque puede usar parámetros de salida), y se ejecuta con CALL, no con SELECT.
 
+<div style="display: flex; gap: 2%;" markdown="1">
+<div style="flex: 1;" markdown="1">
+
+**Función**
+```mermaid
+graph TD
+    A(["Llamada: SELECT func()"]) --> B["Ejecuta Lógica"]
+    B --> C{"Devuelve Valor"}
+    C --> D["Uso en SQL"]
+```
+
+</div>
+<div style="flex: 1;" markdown="1">
+
+**Procedimiento**
+```mermaid
+graph TD
+    E(["Llamada: CALL proc()"]) --> F["Ejecuta Acción"]
+    F --> G[("Modifica BD")]
+    G -.-> H["Sin retorno directo"]
+```
+
+</div>
+</div>
+
 
 
 !!!Note "Nota"
@@ -30,6 +55,14 @@ Una vez que las funciones o procedimientos están creados en la base de datos, s
 - Los procedimientos se llaman con **CALL nombre_procedimiento(...)**
 
 Y desde Kotlin, se gestionan mediante objetos como **PreparedStatement** y **CallableStatement**.
+
+!!!question "🤔 Comprueba tu comprensión"
+
+    Si te piden crear una funcionalidad para subir un 10% el sueldo a todos los empleados de un departamento, y otra para calcular cuál es el sueldo medio actual de dicho departamento, ¿qué usarías en cada caso?
+
+    ??? success "Ver respuesta"
+        - Para **subir el sueldo**, usarías un **Procedimiento Almacenado** (se llama con `CALL`), ya que su objetivo principal es ejecutar una acción que modifica los datos en la base de datos (un bloque de actualizaciones).
+        - Para **calcular el sueldo medio**, usarías una **Función** (se llama con `SELECT`), ya que su objetivo es realizar un cálculo y devolver un valor o resultado que la aplicación necesita leer.
 
 
 ## 🔹Funciones (FUNCTION)

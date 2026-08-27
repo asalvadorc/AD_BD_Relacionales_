@@ -1,4 +1,4 @@
-# 🐘 Instalación y configuración de PostgreSQL con Docker y DBeaver
+# 🐘 Instalación de PostgreSQL y creación de la BD geo con Docker y DBeaver
 
 ## 📋 Resumen de la práctica
 

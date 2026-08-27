@@ -23,6 +23,7 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 - Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:
     - Crear operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.
     - Utiliza **`PrepareStatement`** para todas las consultas.
+  - Representa al menos 2 tablas mediante **`data class`** y utilízalas en las operaciones de consulta o manipulación de datos.
     - Muestra los resultados por consola de forma clara y legible.
     - Toda la funcionalidad debe estar implementada **en un solo fichero main.kt**, aunque tengas que estructurar el progrma en varias funciones.
 
@@ -78,14 +79,15 @@ Sube un archivo `.zip` con:
 
 ## ✅ Rúbrica de evaluación
 
-| Criterio                                        | Puntos |
-|-------------------------------------------------|--------|
-| BD correctamente estructurada (mín. 3 tablas)   | 2      |
-| CRUD funcional en al menos dos tablas           | 3      |
-| Transacción bien implementada                   | 2      |
-| Código estructurado, legible y sin errores      | 1      |
-| Documentación del código                        | 2      |
-| **Total**                                       | **10** |
+| Criterio                                              | Puntos |
+|-------------------------------------------------------|--------|
+| BD correctamente estructurada (mín. 3 tablas)         | 2      |
+| CRUD funcional en al menos dos tablas                 | 2      |
+| Uso adecuado de `data class` en al menos 2 tablas     | 1      |
+| Transacción bien implementada                         | 2      |
+| Código estructurado, legible y sin errores            | 1      |
+| Documentación del código                              | 2      |
+| **Total**                                             | **10** |
 
 ---
 

@@ -77,6 +77,11 @@ El motor solo compila la consulta una vez, y después reutiliza el mismo plan de
 
 ⚡ Esto ahorra tiempo y recursos, sobre todo cuando repites muchas veces la misma consulta con diferentes datos (por ejemplo, en bucles o inserciones masivas).    
 
+!!!question "🤔 Comprueba tu comprensión"
+    ¿Por qué es especialmente importante usar `PreparedStatement` cuando trabajamos con datos introducidos por el usuario (por ejemplo, desde un formulario)?
+
+    ??? success "Ver respuesta"
+        Principalmente por **seguridad**, para evitar ataques de **Inyección SQL**. Al usar `PreparedStatement`, los datos introducidos por el usuario se tratan estrictamente como valores literales y nunca como código ejecutable. Además, mejora el rendimiento al compilar la consulta una sola vez.
 
 
 ## 🔹CRUD - SQlite
@@ -378,13 +383,12 @@ Hasta ahora hemos trabajado con ejemplos de operaciones **CRUD** (Crear, Leer, A
 
 Sin embargo, en entornos reales y profesionales, lo más habitual es trabajar con sistemas de gestión de bases de datos más potentes y completos, como **PostgreSQL**.
 
-A continuación, aplicaremos lo aprendido en SQLite, pero ahora trabajando con **PostgreSQL** en **dos contextos distintos**:
+Actualmente trabajaremos con **PostgreSQL** en entorno local, replicando la base de datos mediante **Docker**. Este enfoque garantiza que todos los equipos tengan la misma configuración y evita depender de servicios remotos externos.
 
-- Base de datos **remota**: alojada en un servidor accesible mediante una dirección IP y credenciales.
-- Base de datos **local**: replicada en un contenedor **Docker**, lo que resulta ideal para pruebas, desarrollo y aprendizaje en un entorno controlado.
+Opcionalmente, también se puede usar una instalación local nativa de PostgreSQL con los mismos scripts y consultas.
 
-En ambos casos utilizaremos la misma base de datos, llamada **geo_ad**. Su versión remota estará disponible desde cualquier ubicación, mientras que la local se generará a partir de ella siguiendo unas instrucciones que se os facilitarán.
-
+!!!Tip "Kotlin - Instrucciones"
+    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional,llamada **geo**, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.  
 
 
 **Esquema de la BD geo_ad**{.azul} 
@@ -394,43 +398,48 @@ Modelo Relacional - Datos|Paquete Postgres
 ![ref](img/geo_ad.jpg)|![ref](img/carpeta_postgres.png)
 
 
-!!!Tip "Kotlin - Instrucciones"
-    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.   
+
+
+### 🐳 Docker
+
+Para poder programar y probar nuestras aplicaciones sin depender de la conexión externa, es muy útil replicar esa base de datos en local. La forma más sencilla y estandarizada de hacerlo es mediante **Docker**.
+
+- Docker es una plataforma que permite ejecutar aplicaciones dentro de contenedores.
+- Un contenedor es como una “caja” que incluye todo lo necesario para que un servicio funcione: sistema operativo reducido, librerías, configuración y la propia aplicación.
+- Para bases de datos, existen imágenes oficiales (Postgres, MySQL, MongoDB…) que se pueden levantar en segundos.
+
+
+!!!Note "Instrucciones para replicar la BD `geo` en local (Docker)"   
+    Las instrucciones para replicar la base de datos en Docker están disponibles en el siguiente enlace: [Preparación de la BD geo](Docker_instrucciones.md).
+    También podéis acceder a ellas desde la barra de navegación principal.
+    
+--- 
+
+
+
+🔌 Una vez hemos creado la BD en local, ya podemos conectarnos a ella:    
+
+**Ejemplo_conexion_Postgres_local.kt**
+        
+        package Postgres
+        import java.sql.DriverManager
+        object DatabaseLocal {
+
+            private const val URL =  "jdbc:postgresql://localhost:5432/geo"
+            private const val USER = "postgres"
+            private const val PASSWORD = "postgres"
+
+            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+        }
+
 
 **Configuración de Dependencias (Gradle)**{.azul}
 
-Lo primero será incluir las dependencia necesarias en **build.gradle.kts**
+Lo primero será incluir las dependencias necesarias en **build.gradle.kts**
 
         // build.gradle.kts (para PostgreSQL)
         dependencies {
             implementation("org.postgresql:postgresql:42.6.0")
-        }
-
-
-### 🗄️Servidor remoto     
-
-La base de datos **geo_ad** se encuentra en una máquina externa, por lo que se comporta como un recurso compartido en la nube. Para acceder a ella necesitamos establecer una conexión de red utilizando parámetros como los siguientes:
-
-
-!!!Note "Datos de conexión al servido remoto"      
-    **Servidor (host)**: 89.36.214.106  
-    **Port**: 5432 (es el puerto por defecto)  
-    **Usuari**: geo_ad  
-    **Contrasenya**: geo_ad  
-    **Base de dades**: geo_ad  
-
-
-**Ejemplo_conexion_Postgres_remota.kt**
-
-        package Postgres
-        import java.sql.DriverManager
-        object DatabaseRemota {
-
-            private const val URL =  "jdbc:postgresql://89.36.214.106:5432/geo_ad"
-            private const val USER = "geo_ad"
-            private const val PASSWORD = "geo_ad"
-
-            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
         }
 
 
@@ -447,7 +456,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
             fun main(args: Array<String>) {
             val sql = "SELECT * FROM institut"
 
-            DatabaseLocal.getConnection().use { conn ->    // DatabaseRemota si se conecta al servidor del instituto
+            DatabaseLocal.getConnection().use { conn ->
                     conn.prepareStatement(sql).use { stmt ->
                     stmt.executeQuery().use { rs ->
 
@@ -467,7 +476,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 **Create (INSERT)**{.verde}  
 
 
-**Ejemplo_Insert.kt**: inserta un istituto de prueba.
+**Ejemplo_Insert.kt**: inserta un instituto de prueba.
 
         package Postgres
         fun main(args: Array<String>) {
@@ -528,40 +537,6 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
             }
         }
 
-### 🐳 Docker
-
-Para poder programar y probar nuestras aplicaciones sin depender de la conexión externa, es muy útil replicar esa base de datos en local. La forma más sencilla y estandarizada de hacerlo es mediante **Docker**.
-
-- Docker es una plataforma que permite ejecutar aplicaciones dentro de contenedores.
-- Un contenedor es como una “caja” que incluye todo lo necesario para que un servicio funcione: sistema operativo reducido, librerías, configuración y la propia aplicación.
-- Para bases de datos, existen imágenes oficiales (Postgres, MySQL, MongoDB…) que se pueden levantar en segundos.
-
-
-!!!Note "Intrucciones para replicar la BD en local (Docker)"   
-    Las instrucciones para replicar la base de datos en Docker las podéis encontrar en el siguiente enlace: [Instrucciones](Docker_instrucciones.md)    
-
-
----  
-
-🔌 Una vez hemos creada la BD en local ya podemos conectarnos a ella:    
-
-**Ejemplo_conexion_Postgres_local.kt**
-        
-        package Postgres
-        import java.sql.DriverManager
-        object DatabaseLocal {
-
-            private const val URL =  "jdbc:postgresql://localhost:5432/geo"
-            private const val USER = "postgres"
-            private const val PASSWORD = "postgres"
-
-            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
-        }
-
-
-!!!Note "Nota"
-    Los ejemplos anteriores de operaciones CRUD, realizados sobre el servidor remoto, son igualmente válidos para el servidor local, ya que la base de datos es la misma.
-
 
 
 ## 🔹Data Class
@@ -574,7 +549,7 @@ En **Kotlin**, esto se consigue de forma sencilla y elegante utilizando las **da
 Una **data class** (o clase de datos) es una clase especial de Kotlin diseñada para almacenar y transportar información.
 El compilador genera automáticamente métodos útiles como toString(), equals(), hashCode() y copy(), por lo que resulta ideal para representar filas (registros) de una tabla de base de datos.
 
-Su sintáxis básica es:
+Su sintaxis básica es:
 
         data class NombreClase(val campo1: Tipo, val campo2: Tipo, ...)
 
@@ -621,55 +596,219 @@ En este ejemplo:
 - Todos los clientes recuperados se almacenan en una lista tipada (`List<Cliente>`).
 - Posteriormente se pueden mostrar, modificar o procesar con facilidad.
 
-### 📌 **Uso de `data class` en la BD Geo**
+### 📌 Uso de **data class** en la BD Geo
 
-En este ejemplo replicamos la misma consulta que ya vimos anteriormente para obtener todos los institutos de la base de datos **geo_ad** alojada en el servidor remoto, pero ahora utilizando un **`data class`** en Kotlin. 
+En la BD geo, este enfoque nos permitirá trabajar de manera más clara con las tablas `comarca`, `poblacio` e `institut`.
 
-Esto nos permite representar cada fila del resultado como un objeto de tipo `Institut`, facilitando el tratamiento, la reutilización y la lectura del código.
+Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y tipos bien definidos. Esto hace que el código sea más legible y facilita operaciones habituales como recorrer resultados, filtrarlos, agruparlos o relacionarlos entre sí.
 
-Además, almacenamos los resultados en una lista de objetos, lo que nos permite trabajar con ellos de forma más natural dentro de nuestro programa (listar, filtrar, transformar, etc.).
-
-
-**Data Class: Institut**
+**Data classes de la BD geo**
 
     package Postgres
 
-        data class Institut(
-            val codi: String,
-            val nom: String?,
-            val adreca: String?,
-            val numero: String?,
-            val codpostal: Int?,
-            val codMunicipi: Int?
-        )
+    data class Comarca(
+        val nomComarca: String,
+        val provincia: String?
+    )
 
-**Ejemplo_dataclass.kt**
+    data class Poblacio(
+        val codMunicipi: Int,
+        val nom: String,
+        val poblacio: Int?,
+        val extensio: Double?,
+        val altura: Int?,
+        val longitud: String?,
+        val latitud: String?,
+        val llengua: String?,
+        val nomComarca: String?
+    )
+
+    data class Institut(
+        val codi: String,
+        val nom: String?,
+        val adreca: String?,
+        val numero: String?,
+        val codpostal: Int?,
+        val codMunicipi: Int?
+    )
+
+**Ejemplo_dataclass_geo.kt**
 
     package Postgres
 
-        fun main() {
-            val sql = "SELECT * FROM institut"
+    fun main() {
+        val comarques = mutableListOf<Comarca>()
+        val poblacions = mutableListOf<Poblacio>()
+        val instituts = mutableListOf<Institut>()
 
-            val instituts = mutableListOf<Institut>()
+        DatabaseLocal.getConnection().use { conn ->
 
-            DatabaseRemota.getConnection().use { conn ->  // Usa DatabaseRemota si es necesario
-                conn.prepareStatement(sql).use { stmt ->
-                    stmt.executeQuery().use { rs ->
-                        while (rs.next()) {
-                            val institut = Institut(
-                                rs.getString("codi"),
-                                rs.getString("nom"),
-                                rs.getString("adreca"),
-                                rs.getString("numero"),
-                                rs.getInt("codpostal"),
-                                rs.getInt("cod_m")
+            conn.prepareStatement("SELECT nom_c, provincia FROM comarca ORDER BY nom_c").use { stmt ->
+                stmt.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        comarques.add(
+                            Comarca(
+                                nomComarca = rs.getString("nom_c"),
+                                provincia = rs.getString("provincia")
                             )
-                            instituts.add(institut)
-                        }
+                        )
                     }
                 }
             }
 
-            println("🏫 Institutos encontrados:")
-            instituts.forEach { println(it) }
+            conn.prepareStatement("SELECT * FROM poblacio ORDER BY nom").use { stmt ->
+                stmt.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        poblacions.add(
+                            Poblacio(
+                                codMunicipi = rs.getInt("cod_m"),
+                                nom = rs.getString("nom"),
+                                poblacio = rs.getInt("poblacio").takeIf { !rs.wasNull() },
+                                extensio = rs.getDouble("extensio").takeIf { !rs.wasNull() },
+                                altura = rs.getInt("altura").takeIf { !rs.wasNull() },
+                                longitud = rs.getString("longitud"),
+                                latitud = rs.getString("latitud"),
+                                llengua = rs.getString("llengua"),
+                                nomComarca = rs.getString("nom_c")
+                            )
+                        )
+                    }
+                }
+            }
+
+            conn.prepareStatement("SELECT * FROM institut ORDER BY nom").use { stmt ->
+                stmt.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        instituts.add(
+                            Institut(
+                                codi = rs.getString("codi"),
+                                nom = rs.getString("nom"),
+                                adreca = rs.getString("adreca"),
+                                numero = rs.getString("numero"),
+                                codpostal = rs.getInt("codpostal").takeIf { !rs.wasNull() },
+                                codMunicipi = rs.getInt("cod_m").takeIf { !rs.wasNull() }
+                            )
+                        )
+                    }
+                }
+            }
         }
+
+        println("Comarcas cargadas: ${comarques.size}")
+        println("Poblaciones cargadas: ${poblacions.size}")
+        println("Institutos cargados: ${instituts.size}")
+
+        println("\nPrimeras comarcas:")
+        comarques.take(3).forEach { println(it) }
+
+        println("\nPrimeras poblaciones:")
+        poblacions.take(3).forEach { println(it) }
+
+        println("\nPrimeros institutos:")
+        instituts.take(3).forEach { println(it) }
+    }
+
+En este ejemplo se aprecia mejor la utilidad de las **data class**:
+
+- Cada tabla de la base de datos queda representada por una clase propia.
+- Los resultados de cada consulta se almacenan en listas tipadas (`List<Comarca>`, `List<Poblacio>` y `List<Institut>`).
+- El código gana claridad porque cada campo se recupera con un significado explícito.
+- Después es mucho más fácil relacionar datos entre tablas, por ejemplo, asociar un instituto con su población o una población con su comarca.
+
+### 📌 Uso de una **data class** en operaciones `INSERT`, `UPDATE` y `DELETE`
+
+Las **data class** no solo resultan útiles al recuperar datos con `SELECT`. También permiten agrupar en un único objeto la información que queremos insertar o modificar en la base de datos.
+
+En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para enviar los datos a JDBC de una forma más clara y ordenada.
+
+**Ejemplo_dataclass_crud.kt**
+
+    package Postgres
+
+    data class Institut(
+        val codi: String,
+        val nom: String?,
+        val adreca: String?,
+        val numero: String?,
+        val codpostal: Int?,
+        val codMunicipi: Int?
+    )
+
+    fun insertarInstitut(institut: Institut) {
+        val sql = """
+            INSERT INTO institut (codi, nom, adreca, numero, codpostal, cod_m)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """.trimIndent()
+
+        DatabaseLocal.getConnection().use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, institut.codi)
+                stmt.setString(2, institut.nom)
+                stmt.setString(3, institut.adreca)
+                stmt.setString(4, institut.numero)
+                stmt.setObject(5, institut.codpostal)
+                stmt.setObject(6, institut.codMunicipi)
+                stmt.executeUpdate()
+            }
+        }
+    }
+
+    fun actualizarInstitut(institut: Institut) {
+        val sql = """
+            UPDATE institut
+            SET nom = ?, adreca = ?, numero = ?, codpostal = ?, cod_m = ?
+            WHERE codi = ?
+        """.trimIndent()
+
+        DatabaseLocal.getConnection().use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, institut.nom)
+                stmt.setString(2, institut.adreca)
+                stmt.setString(3, institut.numero)
+                stmt.setObject(4, institut.codpostal)
+                stmt.setObject(5, institut.codMunicipi)
+                stmt.setString(6, institut.codi)
+                stmt.executeUpdate()
+            }
+        }
+    }
+
+    fun eliminarInstitut(codi: String) {
+        val sql = "DELETE FROM institut WHERE codi = ?"
+
+        DatabaseLocal.getConnection().use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, codi)
+                stmt.executeUpdate()
+            }
+        }
+    }
+
+    fun main() {
+        val institutNou = Institut(
+            codi = "00000001",
+            nom = "IES EXEMPLE",
+            adreca = "AV. JAUME I",
+            numero = "12",
+            codpostal = 12001,
+            codMunicipi = 12040
+        )
+
+        insertarInstitut(institutNou)
+
+        val institutActualitzat = institutNou.copy(
+            nom = "IES EXEMPLE ACTUALITZAT",
+            numero = "14"
+        )
+
+        actualizarInstitut(institutActualitzat)
+        eliminarInstitut(institutActualitzat.codi)
+    }
+
+En este segundo ejemplo, la **data class** actúa como contenedor de datos del instituto:
+
+- En `insertarInstitut()`, el objeto aporta todos los valores necesarios para crear un nuevo registro.
+- En `actualizarInstitut()`, reutilizamos el mismo modelo para modificar un registro existente.
+- En `eliminarInstitut()`, basta con pasar la clave primaria porque solo necesitamos identificar la fila.
+
+Este enfoque resulta útil porque separa mejor los datos de la lógica SQL y hace que el código sea más fácil de reutilizar y mantener.

@@ -73,7 +73,11 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true     
   - md_in_html
@@ -86,14 +90,15 @@ markdown_extensions:
 nav:
 
 - 🏠 Inicio: 
+  - index.md
   - 🔹RA y CE: RA_CE.md
-  - 🔹Guía de estudio semipresencial: Guia_estudio_semipresencial.md
+  - 🔹Guía de estudio: Guia_estudio.md
 - Bases de Datos Relacionales:
   - 🔹Introducción: Introduccion.md
   - 🔹Herramientas y Conectores: Conectores.md
   - 🔹Operaciones sobre la BD: Operaciones.md
-  #- 🔹Ejemplo completo en PostgreSQL: Estructura.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
   - 📝 Ejercicio obligatorio: Ejercicio.md
+- Preparación de la BD geo: Docker_instrucciones.md  
   # - Examen: Examen.md   
