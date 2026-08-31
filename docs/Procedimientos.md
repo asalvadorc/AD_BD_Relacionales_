@@ -120,13 +120,16 @@ Una función en PostgreSQL es un bloque que:
 
 ```sql
     CREATE OR REPLACE FUNCTION cuadrado(x INTEGER)
-    RETURNS INTEGER
+    RETURNS INTEGER -- (1)!
     AS $$
     BEGIN
-        RETURN x * x;
+        RETURN x * x; -- (2)!
     END;
     $$ LANGUAGE plpgsql;
 ```
+
+1. `RETURNS` declara el tipo del valor que entregará la función.
+2. `RETURN` finaliza la función devolviendo el resultado calculado.
 
 La llamada desde **SQL** sería:
 
@@ -143,14 +146,14 @@ La llamada desde **SQL** sería:
         fun main() {
 
             DatabaseLocal.getConnection().use { conn ->
-                val sql = "SELECT cuadrado(?)"
+                val sql = "SELECT cuadrado(?)" // (1)!
 
                 conn.prepareStatement(sql).use { stmt ->
-                    stmt.setInt(1, 6) // por ejemplo: x = 6
-                    val rs = stmt.executeQuery()
+                    stmt.setInt(1, 6) // (2)!
+                    val rs = stmt.executeQuery() // (3)!
 
                     if (rs.next()) {
-                        val resultado = rs.getInt(1)
+                        val resultado = rs.getInt(1) // (4)!
                         println("El cuadrado de 6 es: $resultado")
                     }
                 }
@@ -158,13 +161,18 @@ La llamada desde **SQL** sería:
         }
 ```
 
+1. Las funciones PostgreSQL que devuelven valores se invocan desde Kotlin mediante `SELECT`.
+2. El parámetro JDBC se envía como argumento de la función.
+3. El valor devuelto llega dentro de un `ResultSet` de una fila.
+4. La primera columna contiene el resultado escalar producido por `cuadrado`.
+
 **Fucniones que devuelven una tabla**{.azul}
 
 **Ejemplo en SQL:**{.verde} Función que devuelve todos los institutos junto con su población y comarca.
 
 ```sql
         CREATE OR REPLACE FUNCTION obtener_instituts()
-        RETURNS TABLE (
+        RETURNS TABLE ( -- (1)!
             codi TEXT,
             nom TEXT,
             municipi TEXT,
@@ -177,11 +185,14 @@ La llamada desde **SQL** sería:
                 p.nom AS municipi,
                 c.nom_c AS comarca
             FROM institut i
-            JOIN poblacio p ON i.cod_m = p.cod_m
+            JOIN poblacio p ON i.cod_m = p.cod_m -- (2)!
             JOIN comarca c ON p.nom_c = c.nom_c
             ORDER BY comarca, municipi;
         $$ LANGUAGE sql;
 ```
+
+1. `RETURNS TABLE` define los nombres y tipos de las columnas que expondrá la función.
+2. La consulta interna genera las filas que la función devolverá al invocarla.
 
 La llamada desde **SQL** sería:
 
@@ -236,10 +247,12 @@ La llamada desde **SQL** sería:
             FROM institut i
             JOIN poblacio p ON i.cod_m = p.cod_m
             JOIN comarca c ON p.nom_c = c.nom_c
-            WHERE c.nom_c = p_nom_c
+            WHERE c.nom_c = p_nom_c -- (1)!
             ORDER BY municipi;
         $$ LANGUAGE sql;
 ```
+
+1. El parámetro `p_nom_c` se utiliza dentro de la consulta para filtrar el resultado de la función.
 
 La llamada desde **SQL** sería:
 
@@ -256,10 +269,10 @@ La llamada desde **SQL** sería:
         fun main() {
 
             DatabaseLocal.getConnection().use { conn ->
-                val sql = "SELECT * FROM instituts_de_comarca(?)"
+                val sql = "SELECT * FROM instituts_de_comarca(?)" // (1)!
 
                 conn.prepareStatement(sql).use { stmt ->
-                    stmt.setString(1, "Plana Baixa") // Parámetro de entrada
+                    stmt.setString(1, "Plana Baixa") // (2)!
                     val rs = stmt.executeQuery()
                     while (rs.next()) {
                         val codi = rs.getString("codi")
@@ -273,6 +286,9 @@ La llamada desde **SQL** sería:
             }
         }
 ```
+
+1. El argumento de la función se representa con un parámetro JDBC para evitar construir SQL dinámico.
+2. `setString` asigna el nombre de la comarca al parámetro de entrada de PostgreSQL.
 
 ## 🔹 Procedimientos (`PROCEDURE`)
 
@@ -305,12 +321,12 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
             IN p_codi VARCHAR,
             IN p_nom VARCHAR,
             IN p_cod_m INTEGER,
-            OUT resultado TEXT
+            OUT resultado TEXT -- (1)!
         )
         AS $$
         BEGIN
             -- ¿Municipio existe?
-            IF NOT EXISTS (SELECT 1 FROM poblacio WHERE cod_m = p_cod_m) THEN
+            IF NOT EXISTS (SELECT 1 FROM poblacio WHERE cod_m = p_cod_m) THEN -- (2)!
                 resultado := 'MUNICIPIO_NO_ENCONTRADO';
                 RETURN;
             END IF;
@@ -322,13 +338,17 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
             END IF;
 
             -- Insertar instituto
-            INSERT INTO institut (codi, nom, cod_m)
+            INSERT INTO institut (codi, nom, cod_m) -- (3)!
             VALUES (p_codi, p_nom, p_cod_m);
 
             resultado := 'INSERTADO';
         END;
         $$ LANGUAGE plpgsql;
 ```
+
+1. El parámetro `OUT` permite comunicar a la aplicación el resultado de la operación.
+2. El procedimiento valida los datos en el servidor antes de modificarlos.
+3. La inserción solo se ejecuta si se cumplen las reglas comprobadas anteriormente.
 
 La llamada desde **SQL** sería:
 
@@ -348,20 +368,25 @@ La llamada desde **SQL** sería:
            DatabaseLocal.getConnection().use { conn ->
                 val sql = "CALL insertar_institut_resultado(?, ?, ?, ?)"
 
-                conn.prepareCall(sql).use { stmt ->
+                conn.prepareCall(sql).use { stmt -> // (1)!
                     stmt.setString(1, "I999")
                     stmt.setString(2, "Institut Experimental")
                     stmt.setInt(3, 12028)
-                    stmt.registerOutParameter(4, Types.VARCHAR)
+                    stmt.registerOutParameter(4, Types.VARCHAR) // (2)!
 
-                    stmt.execute()
+                    stmt.execute() // (3)!
 
-                    val resultado = stmt.getString(4)
+                    val resultado = stmt.getString(4) // (4)!
                     println("Resultado: $resultado")
                 }
             }
         }
 ```
+
+1. Los procedimientos se invocan mediante `CallableStatement`, creado con `prepareCall`.
+2. Los parámetros de salida deben registrarse con su posición y tipo JDBC antes de ejecutar.
+3. `execute()` realiza la llamada al procedimiento almacenado.
+4. Tras la ejecución se recupera el valor asignado al parámetro `OUT`.
 
 
 ## 📊 Resumen de diferencias entre función y procedimiento en PostgreSQL

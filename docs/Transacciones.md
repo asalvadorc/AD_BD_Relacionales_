@@ -182,10 +182,10 @@ La transacción hará lo siguiente:
 
             DriverManager.getConnection(url).use { conn ->
                 conn.createStatement().use { stmt ->
-                    stmt.execute("PRAGMA foreign_keys = ON;") // Activa claves foráneas en SQLite
+                    stmt.execute("PRAGMA foreign_keys = ON;") // (1)!
                 }
                 try {
-                    conn.autoCommit = false // Inicia la transacción
+                    conn.autoCommit = false // (2)!
 
                     // 1. Insertar nueva factura
                     val insertFactura = """
@@ -201,7 +201,7 @@ La transacción hará lo siguiente:
                         INSERT INTO linia_fac (num_f, num_l, cod_a, quant, preu)
                         VALUES (?, ?, ?, ?, ?)
                     """
-                    conn.prepareStatement(insertLinea).use { stmt ->
+                    conn.prepareStatement(insertLinea).use { stmt -> // (3)!
                         stmt.setInt(1, 1001)
                         stmt.setInt(2, 1)
                         stmt.setString(3, "B10000B")
@@ -232,20 +232,27 @@ La transacción hará lo siguiente:
                     }
 
                     // 4. Confirmar transacción
-                    conn.commit()
+                    conn.commit() // (4)!
                     println("Transacción realizada con éxito.")
 
                 } catch (e: SQLException) {
                     println("Error en la transacción: ${e.message}")
-                    conn.rollback()
+                    conn.rollback() // (5)!
                     println("Transacción revertida.")
                 } finally {
-                    conn.autoCommit = true
+                    conn.autoCommit = true // (6)!
                 }
             }
         }
 
 ```
+
+1. SQLite no aplica claves foráneas si no se activan explícitamente en cada conexión.
+2. Al desactivar `autoCommit`, las operaciones siguientes pasan a formar una única transacción.
+3. El mismo `PreparedStatement` se reutiliza cambiando sus parámetros para insertar varias líneas.
+4. `commit()` confirma conjuntamente la factura, sus líneas y las actualizaciones de stock.
+5. Ante un error, `rollback()` revierte todas las operaciones realizadas desde el inicio de la transacción.
+6. La conexión recupera su comportamiento habitual antes de salir del bloque.
 
 !!!Note "Nota"
     Si se produjera algún error durante la operación —por ejemplo, si no existiera el cliente o alguno de los artículos referenciados—, **la transacción se cancelaría por completo**. Esto significa que no se insertaría la factura ni sus líneas, evitando así la creación de registros huérfanos. De este modo, la integridad referencial se mantiene intacta y la base de datos permanece en un **estado consistente**.

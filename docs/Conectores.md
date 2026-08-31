@@ -230,10 +230,10 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
             val dbFile = File(dbPath)
             println("Ruta de la BD: ${dbFile.absolutePath}")
 
-            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+            val url = "jdbc:sqlite:${dbFile.absolutePath}" // (1)!
 
             // Conexión y prueba
-            DriverManager.getConnection(url).use { conn ->
+            DriverManager.getConnection(url).use { conn -> // (2)!
                 println("Conexión establecida correctamente con SQLite.")
             }
 
@@ -241,6 +241,9 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
         }
 
 ```
+
+1. La URL JDBC identifica el controlador `sqlite` y la ruta absoluta del archivo que se abrirá.
+2. `DriverManager` solicita la conexión al controlador JDBC. `use` garantiza su cierre automático al terminar el bloque.
 
 !!!Note "Recuerda"
     No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.
@@ -263,13 +266,16 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
             // Ruta al archivo de base de datos SQLite
             val dbPath = "src/main/resources/Tienda.sqlite"
             val dbFile = File(dbPath)
-            val url = "jdbc:sqlite:${dbFile.absolutePath}"
+            val url = "jdbc:sqlite:${dbFile.absolutePath}" // (1)!
 
-            fun getConnection() = DriverManager.getConnection(url)
+            fun getConnection() = DriverManager.getConnection(url) // (2)!
 
         }
 
 ```
+
+1. La conexión queda configurada una sola vez para todos los ejemplos que utilizan `Tienda.sqlite`.
+2. Cada llamada devuelve una conexión nueva. Quien la solicite debe cerrarla, normalmente mediante `use`.
 
 **Ejemplo_basico_conexion_objeto.kt**
 
@@ -278,11 +284,11 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
             fun main() {
                 val sql = "SELECT * FROM article"
-                DatabaseTienda.getConnection().use { conn ->
-                    conn.prepareStatement(sql).use { stmt ->
-                        stmt.executeQuery().use { rs ->
+                DatabaseTienda.getConnection().use { conn -> // (1)!
+                    conn.prepareStatement(sql).use { stmt -> // (2)!
+                        stmt.executeQuery().use { rs -> // (3)!
 
-                            while (rs.next()) {
+                            while (rs.next()) { // (4)!
 
                                 //código
                             }
@@ -291,3 +297,8 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
                 }
             }
 ```
+
+1. Se obtiene una conexión reutilizando el objeto común `DatabaseTienda`.
+2. `prepareStatement` prepara la sentencia SQL antes de ejecutarla.
+3. Una consulta `SELECT` devuelve un `ResultSet`, que también se cierra con `use`.
+4. `next()` avanza a la siguiente fila y devuelve `false` cuando ya no quedan resultados.

@@ -136,14 +136,14 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
         DriverManager.getConnection(url).use { conn ->
 
-            val sql = "INSERT INTO article (cod_a, descrip) VALUES (?, ?)"
+            val sql = "INSERT INTO article (cod_a, descrip) VALUES (?, ?)" // (1)!
             //conn.prepareStatement(sql)
 
-            conn.prepareStatement(sql).use { stmt ->
+            conn.prepareStatement(sql).use { stmt -> // (2)!
 
-                stmt.setString(1, "00001")
+                stmt.setString(1, "00001") // (3)!
                 stmt.setString(2, "articulo de prueba 1")
-                stmt.executeUpdate()
+                stmt.executeUpdate() // (4)!
 
 
             }
@@ -151,6 +151,11 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
     }
 ```
+
+1. Los signos `?` reservan la posición de los valores y evitan concatenarlos directamente en el SQL.
+2. `PreparedStatement` prepara la orden parametrizada y se cierra automáticamente con `use`.
+3. Los parámetros empiezan en la posición 1 y deben asignarse en el mismo orden que los signos `?`.
+4. `executeUpdate()` ejecuta `INSERT`, `UPDATE` o `DELETE` y devuelve el número de filas afectadas.
 
 **UPDATE**{.verde}
 
@@ -167,17 +172,20 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
             DriverManager.getConnection(url).use { conn ->
 
-                val sql = "UPDATE article SET descrip = ? WHERE cod_a = ?"
+                val sql = "UPDATE article SET descrip = ? WHERE cod_a = ?" // (1)!
 
                 conn.prepareStatement(sql).use { stmt ->
                     stmt.setString(1, "descripción nueva")
                     stmt.setString(2, "00001")
-                    stmt.executeUpdate()
+                    stmt.executeUpdate() // (2)!
 
                 }
             }
         }
 ```
+
+1. El primer parámetro contiene el nuevo valor y el segundo identifica la fila mediante `WHERE`.
+2. `executeUpdate()` devuelve cuántas filas se han actualizado.
 
 **DELETE**{.verde}
 
@@ -194,14 +202,17 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
             DriverManager.getConnection(url).use { conn ->
 
-                val sql = "DELETE FROM article WHERE cod_a = ?"
+                val sql = "DELETE FROM article WHERE cod_a = ?" // (1)!
                 conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, "00001")
-                stmt.executeUpdate()
+                stmt.executeUpdate() // (2)!
                 }
             }
         }
 ```
+
+1. La condición `WHERE` limita el borrado al artículo indicado; omitirla eliminaría todas las filas.
+2. El valor devuelto por `executeUpdate()` permite comprobar si realmente se eliminó algún registro.
 
 **READ (SELECT)**{.verde}
 
@@ -222,17 +233,17 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
             DriverManager.getConnection(url).use { conn ->
 
-                val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article"
+                val sql = "SELECT cod_a, descrip, preu, stock, stock_min FROM article" // (1)!
 
                 conn.prepareStatement(sql).use { stmt ->
 
-                    stmt.executeQuery().use { rs ->
+                    stmt.executeQuery().use { rs -> // (2)!
 
                         println("Artículos disponibles:")
                         println("Código\tDescripción\tPrecio\tStock\tStock Mínimo")
 
-                        while (rs.next()) {
-                            val codA = rs.getString("cod_a")
+                        while (rs.next()) { // (3)!
+                            val codA = rs.getString("cod_a") // (4)!
                             val descrip = rs.getString("descrip")
                             val preu = rs.getDouble("preu")
                             val stock = rs.getInt("stock")
@@ -250,6 +261,11 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
 
 ```
+
+1. En una consulta conviene indicar las columnas necesarias en lugar de utilizar `SELECT *`.
+2. `executeQuery()` se utiliza cuando la sentencia devuelve filas y entrega un `ResultSet`.
+3. El cursor comienza antes de la primera fila; cada llamada a `next()` lo hace avanzar.
+4. Los valores se recuperan con el método compatible con el tipo SQL y el nombre de la columna.
 
 **Ejemplo_join.kt**: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.
 
@@ -348,13 +364,17 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
                 println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
             }
 
-            rs.close()
-            stmt.close()
-            conn.close()
+            rs.close() // (1)!
+            stmt.close() // (2)!
+            conn.close() // (3)!
         }
 
 
 ```
+
+1. Primero se cierra el `ResultSet`, que depende de la sentencia que lo produjo.
+2. Después se libera el `PreparedStatement`.
+3. La conexión se cierra en último lugar, cuando ya no quedan recursos que dependan de ella.
 
 **Ejemplo_cierre_try_catch.kt:** Cierra los reursos con try-catch-finally
 
@@ -393,10 +413,10 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
                     println("$codA\t$descrip\t$preu\t$stock\t$stockMin")
                 }
 
-            } catch (e: Exception) {
+            } catch (e: Exception) { // (1)!
                 println("Error al acceder a la base de datos: ${e.message}")
-            } finally {
-                try { rs?.close() } catch (e: Exception) { /* Ignorar */ }
+            } finally { // (2)!
+                try { rs?.close() } catch (e: Exception) { /* Ignorar */ } // (3)!
                 try { stmt?.close() } catch (e: Exception) { /* Ignorar */ }
                 try { conn?.close() } catch (e: Exception) { /* Ignorar */ }
             }
@@ -405,6 +425,10 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 
 ```
+
+1. `catch` evita que un error JDBC finalice el programa sin informar de la causa.
+2. `finally` se ejecuta tanto si la consulta termina correctamente como si lanza una excepción.
+3. El cierre seguro (`?.close()`) contempla que el recurso podría no haberse llegado a crear.
 
 ## 🔹 CRUD con PostgreSQL
 
@@ -458,15 +482,18 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
         import java.sql.DriverManager
         object DatabaseLocal {
 
-            private const val URL =  "jdbc:postgresql://localhost:5432/geo"
+            private const val URL =  "jdbc:postgresql://localhost:5432/geo" // (1)!
             private const val USER = "postgres"
             private const val PASSWORD = "postgres"
 
-            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD)
+            fun getConnection() = DriverManager.getConnection(URL, USER, PASSWORD) // (2)!
         }
 
 
 ```
+
+1. La URL PostgreSQL incluye el servidor, el puerto y el nombre de la base de datos `geo`.
+2. PostgreSQL requiere abrir la conexión con URL, usuario y contraseña.
 
 **Configuración de Dependencias (Gradle)**{.azul}
 
@@ -475,11 +502,13 @@ Lo primero será incluir las dependencias necesarias en **build.gradle.kts**
 ```kotlin
         // build.gradle.kts (para PostgreSQL)
         dependencies {
-            implementation("org.postgresql:postgresql:42.7.1")
+            implementation("org.postgresql:postgresql:42.7.1") // (1)!
         }
 
 
 ```
+
+1. Esta dependencia incorpora al proyecto el controlador JDBC específico de PostgreSQL.
 
 ### Operaciones CRUD con PostgreSQL
 
@@ -495,12 +524,12 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
             fun main(args: Array<String>) {
             val sql = "SELECT * FROM institut"
 
-            DatabaseLocal.getConnection().use { conn ->
+            DatabaseLocal.getConnection().use { conn -> // (1)!
                     conn.prepareStatement(sql).use { stmt ->
-                    stmt.executeQuery().use { rs ->
+                    stmt.executeQuery().use { rs -> // (2)!
 
                         while (rs.next()) {
-                            print("" + rs.getString(1) + "\t")
+                            print("" + rs.getString(1) + "\t") // (3)!
                             println(rs.getString(2))
                         }
                     }
@@ -511,6 +540,10 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 
 ```
+
+1. El ejemplo obtiene la conexión centralizada definida en `DatabaseLocal`.
+2. Una consulta de lectura se ejecuta con `executeQuery()` y devuelve un `ResultSet`.
+3. También es posible leer columnas por posición, aunque usar su nombre suele resultar más claro y resistente a cambios de orden.
 
 ---
 
@@ -709,9 +742,9 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
             conn.prepareStatement("SELECT nom_c, provincia FROM comarca ORDER BY nom_c").use { stmt ->
                 stmt.executeQuery().use { rs ->
                     while (rs.next()) {
-                        comarques.add(
-                            Comarca(
-                                nomComarca = rs.getString("nom_c"),
+                        comarques.add( // (1)!
+                            Comarca( // (2)!
+                                nomComarca = rs.getString("nom_c"), // (3)!
                                 provincia = rs.getString("provincia")
                             )
                         )
@@ -726,7 +759,7 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
                             Poblacio(
                                 codMunicipi = rs.getInt("cod_m"),
                                 nom = rs.getString("nom"),
-                                poblacio = rs.getInt("poblacio").takeIf { !rs.wasNull() },
+                                poblacio = rs.getInt("poblacio").takeIf { !rs.wasNull() }, // (4)!
                                 extensio = rs.getDouble("extensio").takeIf { !rs.wasNull() },
                                 altura = rs.getInt("altura").takeIf { !rs.wasNull() },
                                 longitud = rs.getString("longitud"),
@@ -773,6 +806,11 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
 
 ```
 
+1. Cada fila recuperada se incorpora a una colección tipada en lugar de conservar el `ResultSet`.
+2. La fila actual se transforma en una instancia de la `data class` correspondiente.
+3. El nombre de la columna SQL se relaciona explícitamente con la propiedad Kotlin.
+4. `wasNull()` permite distinguir un `NULL` SQL del valor numérico `0` devuelto inicialmente por JDBC.
+
 En este ejemplo se aprecia mejor la utilidad de las **data class**:
 
 - Cada tabla de la base de datos queda representada por una clase propia.
@@ -806,13 +844,13 @@ En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para 
             VALUES (?, ?, ?, ?, ?, ?)
         """.trimIndent()
 
-        DatabaseLocal.getConnection().use { conn ->
+        DatabaseLocal.getConnection().use { conn -> // (1)!
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, institut.codi)
+                stmt.setString(1, institut.codi) // (2)!
                 stmt.setString(2, institut.nom)
                 stmt.setString(3, institut.adreca)
                 stmt.setString(4, institut.numero)
-                stmt.setObject(5, institut.codpostal)
+                stmt.setObject(5, institut.codpostal) // (3)!
                 stmt.setObject(6, institut.codMunicipi)
                 stmt.executeUpdate()
             }
@@ -862,7 +900,7 @@ En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para 
 
         insertarInstitut(institutNou)
 
-        val institutActualitzat = institutNou.copy(
+        val institutActualitzat = institutNou.copy( // (4)!
             nom = "IES EXEMPLE ACTUALITZAT",
             numero = "14"
         )
@@ -872,6 +910,11 @@ En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para 
     }
 
 ```
+
+1. La función abre su propia conexión y la libera al finalizar la operación.
+2. Las propiedades del objeto alimentan los parámetros del `PreparedStatement`.
+3. `setObject` permite enviar `null` a PostgreSQL cuando una propiedad nullable no tiene valor.
+4. `copy()` crea otra instancia conservando los datos originales salvo las propiedades indicadas.
 
 En este segundo ejemplo, la **data class** actúa como contenedor de datos del instituto:
 

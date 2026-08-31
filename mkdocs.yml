@@ -101,5 +101,6 @@ nav:
   - 🔹Operaciones sobre la BD: Operaciones.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
-  - 📝 Ejercicio obligatorio: Ejercicio.md
 - Preparación de la BD geo: Docker_instrucciones.md
+- Ejercicios:
+  - 📝 Ejercicio obligatorio: Ejercicio.md
