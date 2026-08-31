@@ -82,20 +82,20 @@ Las siguientes imágenes muestran cómo configurar esta herramienta para conecta
 
 Al nuevo proyecto lo llamaremos **BDRelacionales**.
 
-![ref](img/new_project.png)
+![Creación del proyecto BDRelacionales en IntelliJ](img/new_project.png)
 
 
 **2. Copia el archivo de la BD a nuestro proyecto**{.azul}
 
 La ubicaremos en **`src/main/resources/Tienda.sqlite`**. La carpeta `resources` forma parte del **classpath** del proyecto. Allí se colocan archivos que necesita la aplicación en tiempo de ejecución. Cuando compilas el proyecto, su contenido se copia al resultado de la compilación, manteniendo la misma estructura. Además, si compartes el proyecto, la base de datos viaja con él.
 
-![ref](img/resources_Tienda.png)
+![Archivo Tienda.sqlite dentro de la carpeta resources](img/resources_Tienda.png)
 
 **3. Elige el conector a la base de datos**{.azul}
 
 En la herramienta **Database -> Data Source** elegimos el conector **SQLite**. 
 
-![ref](img/DataSource.png)
+![Selección de SQLite como origen de datos en IntelliJ](img/DataSource.png)
 
 
 **4. Selecciona la ubicación de la BD**{.azul}
@@ -105,16 +105,16 @@ Podemos comprobar la conexión con **Test Connection** antes de aceptar.
 
 Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no estuviera instalado.
 
-![ref](img/dialogo_conexion_sqlite.png)
+![Configuración y prueba de la conexión SQLite en IntelliJ](img/dialogo_conexion_sqlite.png)
 
 **5. Comprueba consultas antes de implementarlas**{.azul}
 
 
  Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL, haciendo click derecho sobre la conexión y seleccionando la opción **New > QueryConsole**.
 
-![ref](img/query_consola.png)
+![Creación de una consola de consultas en IntelliJ](img/query_consola.png)
 
-![ref](img/consola_sql.png)
+![Ejecución de una consulta SQL desde IntelliJ](img/consola_sql.png)
 
 
 
@@ -130,11 +130,11 @@ Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no e
 
 Inicia el programa **DBeaver**. Aparecerá la ventana principal con el panel lateral de conexiones.
 
-![ref](img/dbeaver0.jpg)
+![Pantalla principal de DBeaver](img/dbeaver0.jpg)
 
 Haz clic en el botón **"Nueva conexión"** (ícono de enchufe) o ve al menú **Archivo > Nueva conexión**.
 
-![ref](img/dbeaver2.jpg)
+![Botón para crear una conexión en DBeaver](img/dbeaver2.jpg)
 
 ---
 
@@ -143,7 +143,7 @@ Haz clic en el botón **"Nueva conexión"** (ícono de enchufe) o ve al menú **
 
 En la ventana de selección, elige **SQLite** y pulsa **Siguiente**.
 
-![ref](img/dbeaver3.jpg)
+![Selección del controlador SQLite en DBeaver](img/dbeaver3.jpg)
 
 
 ---
@@ -151,7 +151,7 @@ En la ventana de selección, elige **SQLite** y pulsa **Siguiente**.
 **3. Introduce la ruta donde se encuentra la BD**{.azul}
 
 
-![ref](img/dbeaver4.jpg)
+![Selección del archivo Tienda.sqlite en DBeaver](img/dbeaver4.jpg)
 
 
 ---
@@ -162,7 +162,7 @@ Haz clic en **"Probar conexión"**. Si todo está correcto, verás un mensaje de
 Si DBeaver necesita un controlador (driver), te lo ofrecerá para descargar automáticamente.
 
 
-![ref](img/dbeaver5.jpg)
+![Prueba correcta de la conexión SQLite en DBeaver](img/dbeaver5.jpg)
 
 
 ---
@@ -177,7 +177,7 @@ Desde allí puedes:
 - Consultar y modificar registros
 - Exportar datos en distintos formatos
 
-![ref](img/dbeaver6.jpg)
+![Base de datos SQLite abierta en DBeaver](img/dbeaver6.jpg)
 
 
 
@@ -197,7 +197,7 @@ Para que una aplicación (escrita en Kotlin, Java u otro lenguaje) pueda leer, i
 
     La base de datos debe estar en `src/main/resources/Tienda.sqlite`.
 
-    ![ref](img/carpeta_sqlite.png)
+    ![Paquete SQLite dentro del proyecto Kotlin](img/carpeta_sqlite.png)
 
 
 
@@ -205,18 +205,20 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
 - **build.gradle.kts** : 
 
+```kotlin
         dependencies {
             implementation("org.postgresql:postgresql:42.7.1") //Postgres
             implementation("com.mysql:mysql-connector-j:8.3.0") //MySQL
             implementation("org.xerial:sqlite-jdbc:3.43.0.0") //SQLite
         }
+```
 
 
 **Ejemplo de conexión a SQLite**{.azul}
 
 **Ejemplo_Conexion_SQLite.kt**: El siguiente programa conecta con la BD **Tienda.sqlite**.
 
-       
+```kotlin
         package SQLite
 
         import java.io.File
@@ -238,8 +240,10 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
         }
 
+```
+
 !!!Note "Recuerda"
-    No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.     
+    No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.
 
 
 !!!Tip ""
@@ -247,7 +251,7 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
 **Ejemplo_Conexion_SQLite_obj.kt**
 
-       
+```kotlin
         package SQLite
 
         import java.io.File
@@ -265,9 +269,11 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
         }
 
+```
+
 **Ejemplo_basico_conexion_objeto.kt**
 
-           
+```kotlin
             package SQLite
 
             fun main() {
@@ -284,6 +290,4 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
                     }
                 }
             }
-
-
- 
+```

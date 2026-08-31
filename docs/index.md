@@ -6,7 +6,7 @@ title:  "Acceso a Datos - Bases de Datos Relacionales"
 
 # Bases de Datos Relacionales
 
-![ref1](portada.png)
+![Portada de la unidad de bases de datos relacionales](portada.png)
 
 <!--
 ## Introducción

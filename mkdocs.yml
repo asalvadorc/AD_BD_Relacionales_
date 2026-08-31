@@ -13,10 +13,8 @@ copyright: >
 
 extra_css:
   - css/extra.css
-  #- css/copy-button.css
 
 extra_javascript:
-  #- js/copy-button.js
   - js/lightbox.js
 
 theme: 

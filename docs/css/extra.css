@@ -294,6 +294,9 @@ p {
     border: 1px solid rgba(0, 0, 0, 0.08);
     max-width: 100%;
     height: auto;
+}
+
+.md-typeset img[role="button"] {
     cursor: zoom-in;
 }
 
@@ -307,6 +310,11 @@ p {
 
 .md-typeset img:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.md-typeset img[role="button"]:focus-visible {
+    outline: 3px solid var(--md-accent-fg-color);
+    outline-offset: 3px;
 }
 
 body.lightbox-open {
@@ -363,6 +371,11 @@ body.lightbox-open {
 
 .lightbox-close:hover {
     background: #ffffff;
+}
+
+.lightbox-close:focus-visible {
+    outline: 3px solid var(--md-accent-fg-color);
+    outline-offset: 3px;
 }
 
 .md-typeset img.img-left {

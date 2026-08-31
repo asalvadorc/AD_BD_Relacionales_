@@ -87,6 +87,7 @@ Una función en PostgreSQL es un bloque que:
 
 
 !!!Warning "Sintaxis básica en PostgreSql"
+    ```sql
         CREATE [OR REPLACE] FUNCTION nombre_funcion(parámetros)
         RETURNS tipo_de_dato
         LANGUAGE plpgsql
@@ -96,6 +97,7 @@ Una función en PostgreSQL es un bloque que:
             RETURN valor;
         END;
         $$;
+    ```
 
 | Tipo de retorno                | ¿Qué devuelve?                                        | Ejemplo de uso                                           |
 |-------------------------------|--------------------------------------------------------|-----------------------------------------------------------|
@@ -116,6 +118,7 @@ Una función en PostgreSQL es un bloque que:
 
 **Ejemplo en SQL:**{.verde} Función que devuelve el cuadrado de un número.
 
+```sql
     CREATE OR REPLACE FUNCTION cuadrado(x INTEGER)
     RETURNS INTEGER
     AS $$
@@ -123,17 +126,21 @@ Una función en PostgreSQL es un bloque que:
         RETURN x * x;
     END;
     $$ LANGUAGE plpgsql;
+```
 
 La llamada desde **SQL** sería:
 
+```sql
     SELECT cuadrado(5);  --Devuelve 25
+```
 
 **En Kotlin**{.verde} la llamada a la función sería:
 
 
 **Ejemplo_cuadrado.kt**
 
-       fun main() {
+```kotlin
+        fun main() {
 
             DatabaseLocal.getConnection().use { conn ->
                 val sql = "SELECT cuadrado(?)"
@@ -149,12 +156,13 @@ La llamada desde **SQL** sería:
                 }
             }
         }
+```
 
 **Fucniones que devuelven una tabla**{.azul}
 
 **Ejemplo en SQL:**{.verde} Función que devuelve todos los institutos junto con su población y comarca.
 
-
+```sql
         CREATE OR REPLACE FUNCTION obtener_instituts()
         RETURNS TABLE (
             codi TEXT,
@@ -173,15 +181,19 @@ La llamada desde **SQL** sería:
             JOIN comarca c ON p.nom_c = c.nom_c
             ORDER BY comarca, municipi;
         $$ LANGUAGE sql;
+```
 
 La llamada desde **SQL** sería:
 
+```sql
         SELECT * FROM obtener_instituts();
+```
 
 **En Kotlin**{.verde} la llamada a la función sería:
 
 **Ejemplo_fun_obtener_institutos.kt**
 
+```kotlin
         fun main() {
 
            DatabaseLocal.getConnection().use { conn ->
@@ -200,13 +212,14 @@ La llamada desde **SQL** sería:
                 }
             }
         }
+```
 
 
 **Fucniones que aceptan filtros como parámetros**{.azul}
 
 **Ejemplo en SQL:**{.verde} Función que devuelve los institutos de una comarca.
 
-
+```sql
         CREATE OR REPLACE FUNCTION instituts_de_comarca(p_nom_c TEXT)
         RETURNS TABLE (
             codi TEXT,
@@ -226,16 +239,20 @@ La llamada desde **SQL** sería:
             WHERE c.nom_c = p_nom_c
             ORDER BY municipi;
         $$ LANGUAGE sql;
+```
 
 La llamada desde **SQL** sería:
 
     
+```sql
         SELECT * FROM instituts_de_comarca('Plana Baixa');
+```
 
 **En Kotlin**{.verde} la llamada a la función sería:
       
 **Ejemplo_fun_instituts_de_comarca.kt**
 
+```kotlin
         fun main() {
 
             DatabaseLocal.getConnection().use { conn ->
@@ -255,6 +272,7 @@ La llamada desde **SQL** sería:
                 }
             }
         }
+```
 
 ## 🔹 Procedimientos (`PROCEDURE`)
 
@@ -268,6 +286,7 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
 - Agrupación de instrucciones dentro de una transacción
 
 !!!Warning "Sintaxis básica en PostgreSQL"
+    ```sql
         CREATE [OR REPLACE] PROCEDURE nombre_procedimiento(
             [[IN | OUT | INOUT] nombre_parámetro tipo],
             ...
@@ -277,9 +296,11 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
             -- cuerpo del procedimiento
         END;
         $$ LANGUAGE plpgsql;
+    ```
 
 **Ejemplo en SQL:**{.verde} Procedimiento que inserta un nuevo instituto y muestra un aviso.
 
+```sql
         CREATE OR REPLACE PROCEDURE insertar_institut_resultado(
             IN p_codi VARCHAR,
             IN p_nom VARCHAR,
@@ -307,16 +328,20 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
             resultado := 'INSERTADO';
         END;
         $$ LANGUAGE plpgsql;
+```
 
 La llamada desde **SQL** sería:
 
+```sql
         CALL insertar_institut_resultado('I999', 'Institut Experimental', 12028, NULL);
+```
 
 
 **En Kotlin**{.verde} la llamada al procedimiento sería:
       
 **Ejemplo_pro_insertar_institut_resultado.kt**
 
+```kotlin
         import java.sql.Types
 
         fun main() {
@@ -336,6 +361,7 @@ La llamada desde **SQL** sería:
                 }
             }
         }
+```
 
 
 ## 📊 Resumen de diferencias entre función y procedimiento en PostgreSQL

@@ -28,7 +28,7 @@ Las bases de datos relacionales (BDR) son esenciales en el desarrollo de aplicac
 **Modelo Relacional (Una breve introducción)**{.azul}
 
 
-![ref](img/modelo.png)
+![Esquema de una aplicación conectada a una base de datos relacional](img/modelo.png)
 
 El **modelo relacional** es un tipo de modelo de datos que organiza la información en tablas (también llamadas relaciones), y es la base teórica de las bases de datos relacionales.
 

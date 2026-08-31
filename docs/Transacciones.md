@@ -44,8 +44,10 @@ Para controlar correctamente una transacción desde el código, necesitamos usar
 !!!Note "autoCommit"
     Por defecto, muchas conexiones JDBC están en modo **auto-commit**, es decir, cada operación se ejecuta y confirma automáticamente. Para usar transacciones de forma manual, debes desactivar este modo justo después de abrir la conexión con la base de datos:
 
+    ```kotlin
         val conexion = DriverManager.getConnection("jdbc:sqlite:miBD.sqlite")
         conexion.autoCommit = false
+    ```
 
 !!!question "🤔 Comprueba tu comprensión"
 
@@ -98,6 +100,7 @@ graph TD
 ```
 
 
+```kotlin
         try {
             conexion.autoCommit = false
 
@@ -107,6 +110,7 @@ graph TD
             conexion.rollback()  // Algo falló → revertir
             println("Error en la transacción. Cambios anulados.")
         }
+```
 
 
 📌 “Una transacción sin control de errores no es una transacción segura. Siempre hay que estar preparado para deshacer todo si algo sale mal.”
@@ -122,6 +126,7 @@ Supongamos que quieres transferir 100 € del cliente A al cliente B. Debes:
 
 Ambas operaciones deben realizarse juntas, o ninguna.   
 
+```kotlin
         val url = "jdbc:postgresql://localhost:5432/banco"
         val user = "postgres"
         val pass = "admin"
@@ -150,6 +155,8 @@ Ambas operaciones deben realizarse juntas, o ninguna.
             }
         }
 
+```
+
 **Ejemplo sobre la BD Tienda.sqlite**{.verde}  
 
 La transacción hará lo siguiente:
@@ -162,6 +169,7 @@ La transacción hará lo siguiente:
 
 **Ejemplo_transaccion.kt**
 
+```kotlin
         package SQLite
 
         import java.sql.DriverManager
@@ -236,6 +244,8 @@ La transacción hará lo siguiente:
                 }
             }
         }
+
+```
 
 !!!Note "Nota"
     Si se produjera algún error durante la operación —por ejemplo, si no existiera el cliente o alguno de los artículos referenciados—, **la transacción se cancelaría por completo**. Esto significa que no se insertaría la factura ni sus líneas, evitando así la creación de registros huérfanos. De este modo, la integridad referencial se mantiene intacta y la base de datos permanece en un **estado consistente**.

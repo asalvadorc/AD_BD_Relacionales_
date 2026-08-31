@@ -10,6 +10,19 @@ En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos
 | 3 | CRUD con conexión reutilizable | PostgreSQL — `geo` |
 | 4 | Conversión de filas en objetos | `data class` de Kotlin |
 
+## 🧭 Índice de contenidos
+
+- [Objetos JDBC y métodos de ejecución](#peticiones-a-la-bd)
+- [CRUD con SQLite](#crud-con-sqlite)
+  - [Operaciones CRUD](#operaciones-crud-con-sqlite)
+  - [Liberación de recursos](#liberacion-de-recursos)
+- [CRUD con PostgreSQL](#crud-con-postgresql)
+  - [Preparación con Docker](#docker)
+  - [Operaciones CRUD](#operaciones-crud-con-postgresql)
+- [`data class`](#data-class)
+  - [Lectura de la BD `geo`](#uso-de-data-class-en-la-bd-geo)
+  - [Inserción, actualización y eliminación](#uso-de-una-data-class-en-operaciones-insert-update-y-delete)
+
 - **Connection**, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)
 
 - Los objetos **PreparedStatement** y **Statement** se utilizan para enviar consultas SQL desde el programa hacia la base de datos, pero se usan de forma distinta y ofrecen ventajas diferentes.
@@ -18,7 +31,7 @@ En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos
 
 - Los métodos **executeQuery()** y **executeUpdate()** se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.
 
-**Peticiones a la BD**{.azul}
+### Peticiones a la BD
 
 Cuando una aplicación se conecta a una base de datos, necesita ejecutar sentencias SQL desde el código. En JDBC (Java/Kotlin), existen dos métodos principales para ello: **executeQuery()** y **executeUpdate()**.
 
@@ -61,9 +74,11 @@ Cada vez que envías una sentencia SQL al motor de base de datos, el motor debe 
 
 Cada vez que llamas a executeQuery() o executeUpdate(), el SQL completo se envía como texto:
 
+```kotlin
     val stmt = conn.createStatement()
     stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Valencia'")
     stmt.executeQuery("SELECT * FROM clientes WHERE ciudad = 'Madrid'")
+```
 
 En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo cambia el valor de 'Valencia' a 'Madrid'.
 
@@ -73,12 +88,14 @@ En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo 
 
 Aquí, el SQL se envía una sola vez con parámetros (?):
 
+```kotlin
     val pstmt = conn.prepareStatement("SELECT * FROM clientes WHERE ciudad = ?")
     pstmt.setString(1, "Valencia")
     pstmt.executeQuery()
 
     pstmt.setString(1, "Madrid")
     pstmt.executeQuery()
+```
 
 El motor solo compila la consulta una vez, y después reutiliza el mismo plan de ejecución cambiando solo el valor del parámetro.
 
@@ -101,11 +118,11 @@ El motor solo compila la consulta una vez, y después reutiliza el mismo plan de
 
 Modelo Relacional|Datos|Paquete SQLite
 --|--|
-![ref](img/bd_factura.jpg)|![ref](img/campos_bd_factura.jpg)|![ref](img/carpeta_sqlite.png)|
+![Modelo relacional de Tienda.sqlite](img/bd_factura.jpg)|![Datos de las tablas de Tienda.sqlite](img/campos_bd_factura.jpg)|![Paquete SQLite del proyecto](img/carpeta_sqlite.png)|
 
 
 
-**Operaciones CRUD**{.azul}   
+### Operaciones CRUD con SQLite
 
 Las operaciones más habituales para modificar los datos en una base de datos relacional son las conocidas como **CRUD**:
 
@@ -119,6 +136,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
 **Ejemplo_Insert.kt**: Este fragmento añade un nuevo articulo "00001" a la tabla articles
 
+```kotlin
     package SQLite
     import java.sql.DriverManager
 
@@ -142,13 +160,14 @@ Las operaciones más habituales para modificar los datos en una base de datos re
             }
 
             }
-        }
-
+    }
+```
 
 **UPDATE**{.verde}
 
 **Ejemplo_Update.kt**: Este código actualiza la descripción del artículo "00001"
 
+```kotlin
         package SQLite
         import java.sql.DriverManager
 
@@ -169,11 +188,13 @@ Las operaciones más habituales para modificar los datos en una base de datos re
                 }
             }
         }
+```
 
 **DELETE**{.verde}
 
 **Ejemplo_Delete.kt**: Este fragmento elimina el articulo "00001"
 
+```kotlin
        package SQLite
        import java.sql.DriverManager
 
@@ -191,11 +212,13 @@ Las operaciones más habituales para modificar los datos en una base de datos re
                 }
             }
         }
+```
 
 **READ (SELECT)**{.verde}
 
 **Ejemplo_select_basico.kt**: Consulta la tabla article.
 
+```kotlin
         package SQLite
         import java.io.File
         import java.sql.DriverManager
@@ -237,8 +260,11 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
 
 
+```
+
 **Ejemplo_join.kt**: Este ejemplo obtiene las líneas de factura con nombre del artículo y ordenado por numero de factura y línea.
 
+```kotlin
         package SQLite
         import java.sql.DriverManager
 
@@ -278,6 +304,8 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
 
 
+```
+
 ## 🔹 Liberación de recursos
 
 Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:
@@ -301,6 +329,7 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 **Ejemplo_cierre_manual.kt:** Cierra los recurso de forma manual con close()
 
+```kotlin
         package SQLite
         import java.sql.DriverManager
         import java.sql.Connection
@@ -336,8 +365,11 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
         }
 
 
+```
+
 **Ejemplo_cierre_try_catch.kt:** Cierra los reursos con try-catch-finally
 
+```kotlin
         package SQLite
         import java.sql.Connection
         import java.sql.DriverManager
@@ -383,6 +415,8 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 
 
+```
+
 ## 🔹 CRUD con PostgreSQL
 
 
@@ -404,7 +438,7 @@ Opcionalmente, también se puede usar una instalación local nativa de PostgreSQ
 
 Modelo Relacional - Datos|Paquete Postgres
 --|
-![ref](img/geo_ad.jpg)|![ref](img/carpeta_postgres.png)
+![Modelo relacional de la base de datos geo](img/geo_ad.jpg)|![Paquete Postgres del proyecto](img/carpeta_postgres.png)
 
 
 
@@ -429,7 +463,8 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
 🔌 Una vez hemos creado la BD en local, ya podemos conectarnos a ella:    
 
 **DatabaseLocal.kt**
-        
+
+```kotlin
         package Postgres
         import java.sql.DriverManager
         object DatabaseLocal {
@@ -442,17 +477,22 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
         }
 
 
+```
+
 **Configuración de Dependencias (Gradle)**{.azul}
 
 Lo primero será incluir las dependencias necesarias en **build.gradle.kts**
 
+```kotlin
         // build.gradle.kts (para PostgreSQL)
         dependencies {
             implementation("org.postgresql:postgresql:42.7.1")
         }
 
 
-**Operaciones CRUD**{.azul}     
+```
+
+### Operaciones CRUD con PostgreSQL
 
 
 Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utilizando el objeto de conexión correspondiente.
@@ -461,6 +501,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 **Ejemplo_Select.kt**: Consulta todos los institutos
 
+```kotlin
             package Postgres
             fun main(args: Array<String>) {
             val sql = "SELECT * FROM institut"
@@ -480,6 +521,8 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 
 
+```
+
 ---
 
 **Create (INSERT)**{.verde}  
@@ -487,6 +530,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 **Ejemplo_Insert.kt**: inserta un instituto de prueba.
 
+```kotlin
         package Postgres
         fun main(args: Array<String>) {
 
@@ -508,11 +552,14 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 
 
+```
+
 **Update (UPDATE)**{.verde}    
 
 
 **Ejemplo_Update.kt**: actualiza el campo nombre del instituto de prueba insertado.
 
+```kotlin
         package Postgres
         fun main() {
             val sql = "UPDATE institut SET nom = ? WHERE codi = ?"
@@ -528,11 +575,14 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
         }
 
 
+```
+
 **Delete (DELETE)**{.verde}   
  
 
 **Ejemplo_Delete.kt**: elimina el instituto de prueba insertado anteriormente.
-        
+
+```kotlin
         package Postgres
         fun main() {
             val sql = "DELETE FROM institut WHERE codi = ?"
@@ -548,6 +598,8 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 
 
+```
+
 ## 🔹 `data class`
 
 Hasta ahora hemos trabajado con bases de datos relacionales utilizando JDBC, construyendo consultas SQL, procesando los resultados con ResultSet y mostrando la información directamente por consola o almacenándola en estructuras básicas como listas o mapas.
@@ -560,31 +612,38 @@ El compilador genera automáticamente métodos útiles como toString(), equals()
 
 Su sintaxis básica es:
 
-        data class NombreClase(val campo1: Tipo, val campo2: Tipo, ...)
+```kotlin
+data class NombreClase(val campo1: Tipo, val campo2: Tipo, ...)
+```
 
 
 🧩 **Ejemplo**: representación de una tabla cliente
 
 Supongamos que en la base de datos existe una tabla:
 
+```sql
         CREATE TABLE cliente (
             id INTEGER PRIMARY KEY,
             nombre TEXT,
             email TEXT
         );
+```
 
 
 Podemos definir la siguiente clase en Kotlin:
 
+```kotlin
         data class Cliente(
             val id: Int,
             val nombre: String,
             val email: String
         )
+```
 
 
 Y al realizar una consulta con JDBC:
 
+```kotlin
         val clientes = mutableListOf<Cliente>()
         val rs = stmt.executeQuery("SELECT * FROM cliente")
 
@@ -598,6 +657,8 @@ Y al realizar una consulta con JDBC:
             )
         }
 
+
+```
 
 En este ejemplo:
 
@@ -613,6 +674,7 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
 
 **Data classes de la BD geo**
 
+```kotlin
     package Postgres
 
     data class Comarca(
@@ -641,8 +703,11 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
         val codMunicipi: Int?
     )
 
+```
+
 **Ejemplo_dataclass_geo.kt**
 
+```kotlin
     package Postgres
 
     fun main() {
@@ -717,6 +782,8 @@ Cada fila recuperada desde JDBC se transforma en un objeto Kotlin con nombre y t
         instituts.take(3).forEach { println(it) }
     }
 
+```
+
 En este ejemplo se aprecia mejor la utilidad de las **data class**:
 
 - Cada tabla de la base de datos queda representada por una clase propia.
@@ -732,6 +799,7 @@ En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para 
 
 **Ejemplo_dataclass_crud.kt**
 
+```kotlin
     package Postgres
 
     data class Institut(
@@ -813,6 +881,8 @@ En el caso de la tabla `institut`, podemos trabajar con objetos `Institut` para 
         actualizarInstitut(institutActualitzat)
         eliminarInstitut(institutActualitzat.codi)
     }
+
+```
 
 En este segundo ejemplo, la **data class** actúa como contenedor de datos del instituto:
 

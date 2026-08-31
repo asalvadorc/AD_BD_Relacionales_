@@ -50,22 +50,26 @@ volumes:
 
 Posiciónate en el terminal en el directorio donde está el fichero `docker-compose.yml` y ejecuta:
 
-
-    docker compose up -d
+```shell
+docker compose up -d
+```
 
 
 ### 1.3. Verificar el contenedor
 
 Para comprobar que PostgreSQL está activo, ejecuta en el terminal:
 
-
-    docker ps
+```shell
+docker ps
+```
 
 
 El resultado debe mostrar una entrada similar a la siguiente:
 
+```text
     CONTAINER ID  IMAGE         COMMAND                  CREATED        STATUS       PORTS                   NAMES
     327fd50443a7  postgres:16.4  "docker-entrypoint.s…"   2 minutes ago  Up 2 minutes  0.0.0.0:5432->5432/tcp  mi_postgres
+```
 
 
 Si aparece el contenedor mi_postgres con estado Up, significa que el servicio de PostgreSQL está funcionando correctamente.
@@ -105,15 +109,18 @@ En la conexión local de PostgreSQL (ya desde DBeaver o cualquier cliente SQL), 
 
 ### 3.1. Creación de la tabla `COMARCA`
 
+```sql
     CREATE TABLE public.comarca (
         nom_c varchar(50) NOT NULL,
         provincia varchar(25) NULL,
         CONSTRAINT cp_com PRIMARY KEY (nom_c)
     );
+```
 
 
 ### 3.2. Creación de la tabla `POBLACIO`
 
+```sql
     CREATE TABLE public.poblacio (
         cod_m numeric(5) NOT NULL,
         nom varchar(50) NOT NULL,
@@ -129,8 +136,11 @@ En la conexión local de PostgreSQL (ya desde DBeaver o cualquier cliente SQL), 
             REFERENCES public.comarca(nom_c)
             ON UPDATE CASCADE
     );
+```
 
 ### 3.3. Creación de la tabla `INSTITUT`
+
+```sql
     CREATE TABLE public.institut (
         codi varchar(8) NOT NULL,
         nom varchar(60) NULL,
@@ -142,6 +152,7 @@ En la conexión local de PostgreSQL (ya desde DBeaver o cualquier cliente SQL), 
         CONSTRAINT ce_ins_pob FOREIGN KEY (cod_m)
             REFERENCES public.poblacio(cod_m)
     );
+```
 
 ## 4️⃣ Carga de datos iniciales
 
