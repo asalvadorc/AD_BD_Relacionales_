@@ -3,25 +3,6 @@
 
 En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los siguientes objetos y métodos:
 
-| Recorrido | Contenido | Entorno |
-|-----------|-----------|---------|
-| 1 | Objetos JDBC y tipos de ejecución | Conceptos comunes |
-| 2 | CRUD y liberación de recursos | SQLite — `Tienda.sqlite` |
-| 3 | CRUD con conexión reutilizable | PostgreSQL — `geo` |
-| 4 | Conversión de filas en objetos | `data class` de Kotlin |
-
-## 🧭 Índice de contenidos
-
-- [Objetos JDBC y métodos de ejecución](#peticiones-a-la-bd)
-- [CRUD con SQLite](#crud-con-sqlite)
-  - [Operaciones CRUD](#operaciones-crud-con-sqlite)
-  - [Liberación de recursos](#liberacion-de-recursos)
-- [CRUD con PostgreSQL](#crud-con-postgresql)
-  - [Preparación con Docker](#docker)
-  - [Operaciones CRUD](#operaciones-crud-con-postgresql)
-- [`data class`](#data-class)
-  - [Lectura de la BD `geo`](#uso-de-data-class-en-la-bd-geo)
-  - [Inserción, actualización y eliminación](#uso-de-una-data-class-en-operaciones-insert-update-y-delete)
 
 - **Connection**, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)
 
@@ -30,6 +11,14 @@ En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos
 - **ResultSet** es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.
 
 - Los métodos **executeQuery()** y **executeUpdate()** se utilizan para ejecutar sentencias SQL, pero se usan en contextos diferentes, dependiendo de si la consulta devuelve resultados o no.
+
+
+| Recorrido | Contenido | Entorno |
+|-----------|-----------|---------|
+| 1 | Objetos JDBC y tipos de ejecución | Conceptos comunes |
+| 2 | CRUD y liberación de recursos | SQLite — `Tienda.sqlite` |
+| 3 | CRUD con conexión reutilizable | PostgreSQL — `geo` |
+| 4 | Conversión de filas en objetos | `data class` de Kotlin |
 
 ### Peticiones a la BD
 
