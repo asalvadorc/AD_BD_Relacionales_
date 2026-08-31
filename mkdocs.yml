@@ -1,6 +1,10 @@
 site_url : https://asalvadorc.github.io/AD_BD_Relacionales_
 
-site_name: AD - Acceso a Datos
+site_name: AD - Acceso a Datos - Bases de Datos Relacionales
+# Material reservado: permanece en el repositorio, pero MkDocs no lo publica.
+exclude_docs: |
+  Examen.md
+
 copyright: >
   © 2026 Alicia Salvador —
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
@@ -93,12 +97,11 @@ nav:
   - index.md
   - 🔹RA y CE: RA_CE.md
   - 🔹Guía de estudio: Guia_estudio.md
-- Bases de Datos Relacionales:
+- Contenido:
   - 🔹Introducción: Introduccion.md
   - 🔹Herramientas y Conectores: Conectores.md
   - 🔹Operaciones sobre la BD: Operaciones.md
   - 🔹Transacciones y control de errores: Transacciones.md
   - 🔹Funciones y Procedimientos almacenados: Procedimientos.md
   - 📝 Ejercicio obligatorio: Ejercicio.md
-- Preparación de la BD geo: Docker_instrucciones.md  
-  # - Examen: Examen.md   
+- Preparación de la BD geo: Docker_instrucciones.md

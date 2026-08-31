@@ -3,9 +3,16 @@
 
 En **JDBC** (Java Database Connectivity), las operaciones sobre la base de datos se realizan  utilizando los siguientes objetos y métodos:
 
+| Recorrido | Contenido | Entorno |
+|-----------|-----------|---------|
+| 1 | Objetos JDBC y tipos de ejecución | Conceptos comunes |
+| 2 | CRUD y liberación de recursos | SQLite — `Tienda.sqlite` |
+| 3 | CRUD con conexión reutilizable | PostgreSQL — `geo` |
+| 4 | Conversión de filas en objetos | `data class` de Kotlin |
+
 - **Connection**, como ya se explicó en el apartado anterior, establece el canal de comunicación con el SGBD (PostgreSQL, MySQL, etc.)
 
-- Los objetos **PrepareStatement** y **CreateStatement** se utlizan  para enviar consultas SQL desde tu programa hacia la base de datos, pero se usan de forma distinta y tienen ventajas diferentes.
+- Los objetos **PreparedStatement** y **Statement** se utilizan para enviar consultas SQL desde el programa hacia la base de datos, pero se usan de forma distinta y ofrecen ventajas diferentes.
 
 - **ResultSet** es un objeto que contiene el resultado de una consulta SQL, y permite recorrer fila a fila el conjunto de resultados, accediendo a cada campo por nombre o por posición.
 
@@ -32,15 +39,15 @@ Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
         - false si el resultado es un entero (INSERT, UPDATE, DELETE,CREATE, ALTER)
 
 
-**PrepareStatement VS CreateStatement**{.azul}
+**PreparedStatement vs. Statement**{.azul}
 
 | Si necesitas...                                     | Usa...            |
 |-----------------------------------------------------|-------------------|
-| Consultas sin parámetros                            | `CreateStatement`       |
-| Consultas con datos del usuario                     | `PrepareStatement` |
-| Seguridad frente a inyecciones SQL                  | `PrepareStatement` |
-| Ejecutar muchas veces con distintos valores         | `PrepareStatement` |
-| Crear tablas o sentencias SQL complejas que no cambian | `CreateStatement`
+| Consultas sencillas sin parámetros                  | `Statement` |
+| Consultas con datos del usuario                     | `PreparedStatement` |
+| Seguridad frente a inyecciones SQL                  | `PreparedStatement` |
+| Ejecutar muchas veces con distintos valores         | `PreparedStatement` |
+| Crear tablas o sentencias SQL fijas                 | `Statement` |
 
 **Diferencia en la compilación entre Statement y PreparedStatement**
 
@@ -62,7 +69,7 @@ En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo 
 
 🔁 Es decir, se repite todo el trabajo de compilación cada vez, lo que reduce el rendimiento si haces muchas consultas parecidas.
 
-🔹 **Con PrepareStatement**
+🔹 **Con PreparedStatement**
 
 Aquí, el SQL se envía una sola vez con parámetros (?):
 
@@ -84,10 +91,10 @@ El motor solo compila la consulta una vez, y después reutiliza el mismo plan de
         Principalmente por **seguridad**, para evitar ataques de **Inyección SQL**. Al usar `PreparedStatement`, los datos introducidos por el usuario se tratan estrictamente como valores literales y nunca como código ejecutable. Además, mejora el rendimiento al compilar la consulta una sola vez.
 
 
-## 🔹CRUD - SQlite
+## 🔹 CRUD con SQLite
 
 !!!Tip "Kotlin - Instrucciones"
-    Dentro del paquete `SQlite` del proyecto  `BDRelacionales`, ya creado y conectado a la BD `Tienda.sqlite`, ubicada en la carpeta de **recursos**, incluiremos los ejemplos de este apartado.
+    Dentro del paquete `SQLite` del proyecto `BDRelacionales`, ya creado y conectado a la BD `Tienda.sqlite`, ubicada en la carpeta de **recursos**, incluiremos los ejemplos de este apartado.
     Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional ligera, utilizando las tablas `article`, `client`, `factura` y `linia_fac`, tal y como se aprecia en el modelo relacional de la siguiente imagen.
 
 **Tienda.sqlite**{.azul}
@@ -271,7 +278,7 @@ Las operaciones más habituales para modificar los datos en una base de datos re
 
 
 
-## 🔹Liberación de recursos
+## 🔹 Liberación de recursos
 
 Cuando una aplicación accede a una base de datos, abre varios recursos internos que consumen memoria y conexiones activas en el sistema:
 
@@ -376,7 +383,7 @@ Si no utilizas **use {}** en Kotlin (o try-with-resources en Java), entonces deb
 
 
 
-## 🔹CRUD - PostgreSQL
+## 🔹 CRUD con PostgreSQL
 
 
 Hasta ahora hemos trabajado con ejemplos de operaciones **CRUD** (Crear, Leer, Actualizar y Borrar) utilizando **SQLite**, una base de datos ligera, fácil de usar y sin necesidad de servidor, ideal para iniciarse en el acceso a datos desde Kotlin.
@@ -388,10 +395,12 @@ Actualmente trabajaremos con **PostgreSQL** en entorno local, replicando la base
 Opcionalmente, también se puede usar una instalación local nativa de PostgreSQL con los mismos scripts y consultas.
 
 !!!Tip "Kotlin - Instrucciones"
-    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación en Kotlin conectada a una base de datos relacional,llamada **geo**, utilizando las tablas `institut`, `poblacio` y `comarca`, tal y como se aprecia en el modelo relacional de la siguiente imagen.  
+    Dentro del paquete `Postgres` del proyecto `BDRelacionales`, incluiremos los ejemplos de este apartado. Estos ejemplos mostrarán cómo gestionar datos desde una aplicación Kotlin conectada a la base de datos **`geo`**, utilizando las tablas `institut`, `poblacio` y `comarca`.
+
+    La conexión común se definirá una sola vez en `Postgres/DatabaseLocal.kt` y será reutilizada por todos los ejemplos PostgreSQL.
 
 
-**Esquema de la BD geo_ad**{.azul} 
+**Esquema de la BD `geo`**{.azul}
 
 Modelo Relacional - Datos|Paquete Postgres
 --|
@@ -419,7 +428,7 @@ Para poder programar y probar nuestras aplicaciones sin depender de la conexión
 
 🔌 Una vez hemos creado la BD en local, ya podemos conectarnos a ella:    
 
-**Ejemplo_conexion_Postgres_local.kt**
+**DatabaseLocal.kt**
         
         package Postgres
         import java.sql.DriverManager
@@ -439,7 +448,7 @@ Lo primero será incluir las dependencias necesarias en **build.gradle.kts**
 
         // build.gradle.kts (para PostgreSQL)
         dependencies {
-            implementation("org.postgresql:postgresql:42.6.0")
+            implementation("org.postgresql:postgresql:42.7.1")
         }
 
 
@@ -539,7 +548,7 @@ Una vez conectados a la BD, ya podemos hacer operaciones CRUD sobre ella, utiliz
 
 
 
-## 🔹Data Class
+## 🔹 `data class`
 
 Hasta ahora hemos trabajado con bases de datos relacionales utilizando JDBC, construyendo consultas SQL, procesando los resultados con ResultSet y mostrando la información directamente por consola o almacenándola en estructuras básicas como listas o mapas.
 
@@ -596,7 +605,7 @@ En este ejemplo:
 - Todos los clientes recuperados se almacenan en una lista tipada (`List<Cliente>`).
 - Posteriormente se pueden mostrar, modificar o procesar con facilidad.
 
-### 📌 Uso de **data class** en la BD Geo
+### 📌 Uso de `data class` en la BD `geo`
 
 En la BD geo, este enfoque nos permitirá trabajar de manera más clara con las tablas `comarca`, `poblacio` e `institut`.
 
@@ -715,7 +724,7 @@ En este ejemplo se aprecia mejor la utilidad de las **data class**:
 - El código gana claridad porque cada campo se recupera con un significado explícito.
 - Después es mucho más fácil relacionar datos entre tablas, por ejemplo, asociar un instituto con su población o una población con su comarca.
 
-### 📌 Uso de una **data class** en operaciones `INSERT`, `UPDATE` y `DELETE`
+### 📌 Uso de una `data class` en operaciones `INSERT`, `UPDATE` y `DELETE`
 
 Las **data class** no solo resultan útiles al recuperar datos con `SELECT`. También permiten agrupar en un único objeto la información que queremos insertar o modificar en la base de datos.
 

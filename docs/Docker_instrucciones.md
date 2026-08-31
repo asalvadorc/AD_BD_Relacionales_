@@ -15,7 +15,7 @@
 Para crear un contenedor de **PostgreSQL** en nuestro equipo utilizaremos **Docker Compose**.
 
 > 💡 Si eres usuario de **Windows** o **Mac**, instala **Docker Desktop**.  
-> Si usas **Ubuntu** o **Debian**, asegúrate de tener instalado `docker` y `docker-compose`.
+> Si usas **Ubuntu** o **Debian**, asegúrate de tener instalados Docker Engine y el complemento Docker Compose.
 
 ---
 
@@ -24,21 +24,26 @@ Para crear un contenedor de **PostgreSQL** en nuestro equipo utilizaremos **Dock
 En una carpeta llamada, por ejemplo, `docker/postgres`, crea un archivo con el siguiente contenido:
 
 
-    version: '3.8'
-    services:
-    db:
-        image: postgres:16.4
-        container_name: mi_postgres
-        environment:
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_DB: geo
-        volumes:
-        - db_data:/var/lib/postgresql/data
-        ports:
-        - "5432:5432"
-    volumes: 
-    db_data:
+```yaml
+services:
+  db:
+    image: postgres:16.4
+    container_name: mi_postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: geo
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
+```
+
+!!! warning "Solo para el entorno de prácticas"
+    Las credenciales `postgres/postgres` simplifican el trabajo en local. No deben utilizarse en producción ni en un servidor accesible desde Internet.
 
 
 ### 1.2. Levantar el servicio
@@ -46,7 +51,7 @@ En una carpeta llamada, por ejemplo, `docker/postgres`, crea un archivo con el s
 Posiciónate en el terminal en el directorio donde está el fichero `docker-compose.yml` y ejecuta:
 
 
-    docker-compose up -d
+    docker compose up -d
 
 
 ### 1.3. Verificar el contenedor
@@ -60,7 +65,7 @@ Para comprobar que PostgreSQL está activo, ejecuta en el terminal:
 El resultado debe mostrar una entrada similar a la siguiente:
 
     CONTAINER ID  IMAGE         COMMAND                  CREATED        STATUS       PORTS                   NAMES
-    327fd50443a7  postgres:8    "docker-entrypoint.s…"   29 hours ago   Up 6 hours   0.0.0.0:5432->5432/tcp  docker_postgres
+    327fd50443a7  postgres:16.4  "docker-entrypoint.s…"   2 minutes ago  Up 2 minutes  0.0.0.0:5432->5432/tcp  mi_postgres
 
 
 Si aparece el contenedor mi_postgres con estado Up, significa que el servicio de PostgreSQL está funcionando correctamente.

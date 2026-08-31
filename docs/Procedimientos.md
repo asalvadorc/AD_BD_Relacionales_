@@ -1,6 +1,17 @@
-# Funciones y Procedimientos almacenados 
+# Funciones y procedimientos almacenados
+
+!!! warning "Entorno de los ejemplos"
+    Los ejemplos Kotlin de esta página se realizan en el proyecto **`BDRelacionales`**, dentro del paquete **`Postgres`**, y utilizan la base de datos local **`geo`**.
+
+    Reutiliza el objeto `DatabaseLocal` definido en `Postgres/DatabaseLocal.kt`. Las funciones y procedimientos SQL deben crearse previamente en `geo` desde DBeaver.
 
 Tanto **las funciones** como **los procedimientos almacenados** son bloques de código que se guardan en el servidor de la base de datos y que encapsulan una serie de instrucciones SQL.
+
+| Recorrido | Se ejecuta con | Finalidad principal |
+|-----------|----------------|---------------------|
+| Función | `SELECT` | Calcular y devolver un resultado |
+| Procedimiento | `CALL` | Ejecutar una acción sobre la base de datos |
+| Kotlin | JDBC | Invocar funciones y procedimientos ya creados |
 
 Se usan para:
 
@@ -65,7 +76,7 @@ Y desde Kotlin, se gestionan mediante objetos como **PreparedStatement** y **Cal
         - Para **calcular el sueldo medio**, usarías una **Función** (se llama con `SELECT`), ya que su objetivo es realizar un cálculo y devolver un valor o resultado que la aplicación necesita leer.
 
 
-## 🔹Funciones (FUNCTION)
+## 🔹 Funciones (`FUNCTION`)
 
 Una función en PostgreSQL es un bloque que:
 
@@ -98,7 +109,7 @@ Una función en PostgreSQL es un bloque que:
 
 
 !!!Tip ""   
-    Los siguientes ejemplos  se han creado utilizando el cliente **SQL DBeaver** y la BD **Geo_docker**.
+    Los siguientes ejemplos se han creado utilizando el cliente SQL **DBeaver** y la base de datos local **`geo`**.
 
 
 **Funciones que devuelve un valor**{.azul}:
@@ -117,7 +128,7 @@ La llamada desde **SQL** sería:
 
     SELECT cuadrado(5);  --Devuelve 25
 
-**En Kotlin**{.verde} la llamda a la función sería:
+**En Kotlin**{.verde} la llamada a la función sería:
 
 
 **Ejemplo_cuadrado.kt**
@@ -167,7 +178,7 @@ La llamada desde **SQL** sería:
 
         SELECT * FROM obtener_instituts();
 
-**En Kotlin**{.verde} la llamda a la función sería:
+**En Kotlin**{.verde} la llamada a la función sería:
 
 **Ejemplo_fun_obtener_institutos.kt**
 
@@ -221,7 +232,7 @@ La llamada desde **SQL** sería:
     
         SELECT * FROM instituts_de_comarca('Plana Baixa');
 
-**En Kotlin**{.verde} la llamda a la función sería:
+**En Kotlin**{.verde} la llamada a la función sería:
       
 **Ejemplo_fun_instituts_de_comarca.kt**
 
@@ -245,7 +256,7 @@ La llamada desde **SQL** sería:
             }
         }
 
-## 🔹Procedimientos (PROCEDURE)
+## 🔹 Procedimientos (`PROCEDURE`)
 
 
 Los procedimientos no devuelven valores directamente, a diferencia de las funciones, pero pueden tener parámetros de entrada (IN), salida (OUT) o ambos (INOUT). Se utilizan para realizar tareas como:
@@ -256,9 +267,9 @@ Los procedimientos no devuelven valores directamente, a diferencia de las funcio
 - Ejecución de lógica con control de flujo
 - Agrupación de instrucciones dentro de una transacción
 
-!!!Warning "Sintaxis básica en PostgreSql"
+!!!Warning "Sintaxis básica en PostgreSQL"
         CREATE [OR REPLACE] PROCEDURE nombre_procedimiento(
-            [parámetro1 tipo [IN|OUT|INOUT]],
+            [[IN | OUT | INOUT] nombre_parámetro tipo],
             ...
         )
         AS $$
@@ -302,7 +313,7 @@ La llamada desde **SQL** sería:
         CALL insertar_institut_resultado('I999', 'Institut Experimental', 12028, NULL);
 
 
-**En Kotlin**{.verde} la llamda a la función sería:
+**En Kotlin**{.verde} la llamada al procedimiento sería:
       
 **Ejemplo_pro_insertar_institut_resultado.kt**
 
@@ -310,7 +321,7 @@ La llamada desde **SQL** sería:
 
         fun main() {
            DatabaseLocal.getConnection().use { conn ->
-                val sql = "Call insertar_institut_resultado(?, ?, ?, ?)"
+                val sql = "CALL insertar_institut_resultado(?, ?, ?, ?)"
 
                 conn.prepareCall(sql).use { stmt ->
                     stmt.setString(1, "I999")
@@ -327,7 +338,7 @@ La llamada desde **SQL** sería:
         }
 
 
-## 📊 Resumen diferencias entre función y procedimiento en PostgreSQL
+## 📊 Resumen de diferencias entre función y procedimiento en PostgreSQL
 
 | Característica                    | FUNCIÓN (`FUNCTION`)                             | PROCEDIMIENTO (`PROCEDURE`)                        |
 |----------------------------------|--------------------------------------------------|----------------------------------------------------|

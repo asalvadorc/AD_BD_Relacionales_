@@ -4,7 +4,19 @@ Aunque en el módulo de Bases de Datos de 1º de DAM ya se estudiaron en profund
 
 En este módulo no nos centraremos en diseñar bases de datos (eso ya se vio), sino en conectarnos a ellas desde el código, consultar datos, modificarlos y automatizar operaciones con funciones, procedimientos y transacciones.
 
-## 🔹BD Relacionales
+## 🛠️ Organización de los ejemplos
+
+Todos los ejemplos Kotlin de la unidad se desarrollan en el proyecto Gradle **`BDRelacionales`**. Para evitar mezclar motores, conexiones y archivos, se utilizará esta estructura:
+
+| Entorno | Base de datos | Paquete Kotlin | Recurso o conexión |
+|---------|---------------|----------------|----------------------|
+| SQLite | `Tienda.sqlite` | `SQLite` | `src/main/resources/Tienda.sqlite` |
+| PostgreSQL local | `geo` | `Postgres` | `jdbc:postgresql://localhost:5432/geo` |
+
+!!! warning "Comprueba el entorno antes de ejecutar"
+    Los ejemplos de ambos motores pertenecen al mismo proyecto, pero deben conservar sus paquetes y conexiones correspondientes. No copies una URL de SQLite en el paquete `Postgres` ni una conexión PostgreSQL en el paquete `SQLite`.
+
+## 🔹 Bases de datos relacionales
 
 Una **base de datos relacional (BDR)** es un sistema de almacenamiento de información que **organiza los datos en tablas** compuestas por filas y columnas, donde cada fila representa un registro único y cada columna contiene un atributo específico de ese registro. Estas BD siguen el **Modelo Relacional**, desarrollado por Edgar F. Codd en la década de 1970, y permite establecer vínculos o **relaciones entre diferentes tablas** mediante **claves primarias y foráneas**, facilitando así la integridad, la coherencia y la eficiencia en el manejo de grandes volúmenes de datos.
 
@@ -76,7 +88,7 @@ SELECT nombre FROM clientes WHERE ciudad = 'Valencia'; -- (1)!
   1. Esta consulta extrae únicamente la columna `nombre` de todos los registros donde la ciudad coincide exactamente con el texto `Valencia`. 
 
 
-## 🔹Conectores VS ORM
+## 🔹 Conectores frente a ORM
 
 Cuando desarrollamos aplicaciones que trabajan con información persistente, necesitamos acceder a bases de datos relacionales para consultar, insertar, modificar o eliminar datos. Existen dos formas principales de hacerlo desde el código:
 
@@ -132,7 +144,7 @@ Room|	Java/Kotlin|	ORM oficial para bases de datos SQLite en Android
 
 Ambos métodos son útiles y complementarios: aprender JDBC ayuda a entender mejor lo que hace un ORM por debajo.
 
-## 🔹Tipos de SGBD relacionales
+## 🔹 Tipos de SGBD relacionales
 
 Conocer qué **tipo de gestor de base de datos** estás utilizando es esencial para poder **conectarte** correctamente desde tu aplicación, ya que cada uno necesita su propio conector o driver. No existe un único tipo de sistema gestor de bases de datos (SGBD): existen varios, con características y objetivos diferente:
 

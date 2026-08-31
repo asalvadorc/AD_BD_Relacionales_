@@ -22,10 +22,10 @@ Diseñar, crear y utilizar una **base de datos relacional SQLite** con al menos 
 
 - Desde un programa Kotlin con conexión JDBC a la base de datos SQLite:
     - Crear operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) en al menos 2 tablas.
-    - Utiliza **`PrepareStatement`** para todas las consultas.
-  - Representa al menos 2 tablas mediante **`data class`** y utilízalas en las operaciones de consulta o manipulación de datos.
+    - Utiliza **`PreparedStatement`** para todas las consultas con parámetros.
+    - Representa al menos 2 tablas mediante **`data class`** y utilízalas en las operaciones de consulta o manipulación de datos.
     - Muestra los resultados por consola de forma clara y legible.
-    - Toda la funcionalidad debe estar implementada **en un solo fichero main.kt**, aunque tengas que estructurar el progrma en varias funciones.
+    - Toda la funcionalidad debe estar implementada **en un solo fichero `Main.kt`**, aunque tengas que estructurar el programa en varias funciones.
 
 ### 3. Transacción
 
@@ -54,15 +54,15 @@ El código Kotlin debe incluir **comentarios explicativos** que:
 
 ## 📦 Estructura mínima del proyecto
 
-    tu-tema-kotlin/
-    ├── resources/
-    │ └── tu_basededatos.sqlite
-    │ └── imagenER.png
+    BDRelacionales_Ejercicio/
     └── src/
         └── main/
+            ├── resources/
+            │   ├── tu_basededatos.sqlite
+            │   └── imagenER.png
             └── kotlin/
                 └── tu_paquete/
-                        └── Main.kt
+                    └── Main.kt
 
 
 ---
@@ -71,8 +71,8 @@ El código Kotlin debe incluir **comentarios explicativos** que:
 
 Sube un archivo `.zip` con:
 
-- La base de datos `tu_basededatos.sqlite`.
-- El proyecto Kotlin con todas las operaciones implementadas en un solo fichero main.kt.
+- La base de datos `tu_basededatos.sqlite` dentro de `src/main/resources`.
+- El proyecto Kotlin con todas las operaciones implementadas en un solo fichero `Main.kt`.
 
 
 ---

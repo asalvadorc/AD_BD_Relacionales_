@@ -1,8 +1,19 @@
-# Transacciones y Manejo de Excepciones
+# Transacciones y manejo de excepciones
+
+!!! warning "Entorno del ejemplo principal"
+    Realiza `Ejemplo_transaccion.kt` en el proyecto **`BDRelacionales`**, dentro del paquete **`SQLite`**. El ejemplo utiliza `src/main/resources/Tienda.sqlite`.
+
+    El ejemplo bancario anterior es únicamente ilustrativo; la práctica completa de esta página se realiza sobre SQLite.
 
 La gestión de transacciones y el manejo de excepciones son dos aspectos fundamentales en el desarrollo de aplicaciones que interactúan con bases de datos, ya que garantizan la integridad, la consistencia y la robustez de los sistemas.
 
-## 🔹Transacciones
+| Recorrido | Objetivo |
+|-----------|----------|
+| 1. Transacciones | Comprender `autoCommit`, `commit()` y `rollback()` |
+| 2. Excepciones | Revertir los cambios cuando una operación falla |
+| 3. Ejemplo completo | Aplicar ambos conceptos sobre `Tienda.sqlite` |
+
+## 🔹 Transacciones
 
 Una transacción es una secuencia de una o más operaciones sobre una base de datos que deben ejecutarse como una unidad indivisible. El objetivo es asegurar que todas las operaciones se completen con éxito o, en caso de fallo, ninguna de ellas se aplique, manteniendo así la base de datos en un estado consistente. Por ejemplo, en una transferencia bancaria, si falla el abono en una cuenta, se cancela el débito en la otra.
 
@@ -45,7 +56,7 @@ Para controlar correctamente una transacción desde el código, necesitamos usar
 
 
 
-## 🔹Manejo de excepciones
+## 🔹 Manejo de excepciones
 
 
 El manejo de excepciones en las transacciones es absolutamente necesario para garantizar que los datos de la base de datos no queden en un estado inconsistente o corrupto cuando ocurre un error durante una operación.
@@ -143,7 +154,7 @@ Ambas operaciones deben realizarse juntas, o ninguna.
 
 La transacción hará lo siguiente:
 
-- Insertar una nueva factura: "1001" del clente 3.
+- Insertar una nueva factura: "1001" del cliente 3.
 - Insertar dos líneas de factura correspondientes a esa factura con los artículos "B10000B" y "B10005B"
 - Actualizar el stock de los artículos implicados.
 - Confirmar la transacción si todo va bien.
@@ -151,14 +162,20 @@ La transacción hará lo siguiente:
 
 **Ejemplo_transaccion.kt**
 
+        package SQLite
+
         import java.sql.DriverManager
         import java.sql.SQLException
 
         fun main() {
-           val url = "jdbc:sqlite:Factura.sqlite"
+           val dbPath = "src/main/resources/Tienda.sqlite"
+           val dbFile = java.io.File(dbPath)
+           val url = "jdbc:sqlite:${dbFile.absolutePath}"
 
             DriverManager.getConnection(url).use { conn ->
-                conn.createStatement().execute("PRAGMA foreign_keys = ON;") // Activa claves foráneas en SQLite
+                conn.createStatement().use { stmt ->
+                    stmt.execute("PRAGMA foreign_keys = ON;") // Activa claves foráneas en SQLite
+                }
                 try {
                     conn.autoCommit = false // Inicia la transacción
 
@@ -167,7 +184,9 @@ La transacción hará lo siguiente:
                         INSERT INTO factura (num_f, data, cod_cli, iva)
                         VALUES (1001, '2025-07-31', 3, 21)
                     """
-                    conn.prepareStatement(insertFactura).executeUpdate()
+                    conn.prepareStatement(insertFactura).use { stmt ->
+                        stmt.executeUpdate()
+                    }
 
                     // 2. Insertar líneas de factura
                     val insertLinea = """
@@ -196,11 +215,11 @@ La transacción hará lo siguiente:
                     """
                     conn.prepareStatement(updateStock).use { stmt ->
                         stmt.setInt(1, 3)
-                        stmt.setString(2, "A001")
+                        stmt.setString(2, "B10000B")
                         stmt.executeUpdate()
 
                         stmt.setInt(1, 2)
-                        stmt.setString(2, "A002")
+                        stmt.setString(2, "B10005B")
                         stmt.executeUpdate()
                     }
 
