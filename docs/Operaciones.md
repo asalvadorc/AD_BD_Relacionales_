@@ -43,16 +43,6 @@ Método|	Uso principal|	Tipo de sentencia SQL|	Resultado que devuelve
 
 **PreparedStatement vs. Statement**{.azul}
 
-!!! note "`PreparedStatement` y `prepareStatement()` no son lo mismo"
-    **`PreparedStatement`** es la clase o tipo de objeto JDBC que representa una sentencia SQL preparada.
-
-    **`prepareStatement(sql)`** es el método de `Connection` que crea y devuelve un objeto de tipo `PreparedStatement`.
-
-    ```kotlin
-    val stmt: PreparedStatement = conn.prepareStatement(sql)
-    ```
-
-    La forma `preparedStatement` no pertenece a la API JDBC.
 
 | Si necesitas...                                     | Usa...            |
 |-----------------------------------------------------|-------------------|
@@ -84,7 +74,18 @@ En este caso, el motor parsea y compila de nuevo las dos consultas, aunque solo 
 
 🔁 Es decir, se repite todo el trabajo de compilación cada vez, lo que reduce el rendimiento si haces muchas consultas parecidas.
 
+
+
 🔹 **Con PreparedStatement**
+
+!!! note "`PreparedStatement` y `prepareStatement()` no son lo mismo"
+    **`PreparedStatement`** es la clase o tipo de objeto JDBC que representa una sentencia SQL preparada.
+
+    **`prepareStatement(sql)`** es el método de `Connection` que crea y devuelve un objeto de tipo `PreparedStatement`.
+
+    ```kotlin
+    val stmt: PreparedStatement = conn.prepareStatement(sql)
+    ```
 
 Aquí, el SQL se envía una sola vez con parámetros (?):
 

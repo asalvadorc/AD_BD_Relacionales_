@@ -1048,6 +1048,76 @@ body.lightbox-open {
     }
 }
 
+/* =========================================================
+   📱 AJUSTES PARA MÓVIL
+   ========================================================= */
+@media screen and (max-width: 59.984375em) {
+    .md-content__inner {
+        padding: 1.25rem 1rem 2rem !important;
+    }
+
+    .md-typeset {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .md-typeset p,
+    .md-typeset li {
+        text-align: left;
+    }
+
+    .md-typeset h1 {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        line-height: 1.2;
+        overflow-wrap: break-word;
+    }
+
+    .md-typeset h2 {
+        font-size: 1.45rem;
+        line-height: 1.25;
+    }
+
+    .md-typeset h3 {
+        font-size: 1.2rem;
+    }
+
+    .md-typeset__table {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .md-typeset__table table,
+    .md-typeset table {
+        width: max-content;
+        min-width: 100%;
+        overflow: visible;
+    }
+
+    .md-typeset .highlight,
+    .md-typeset .codehilite,
+    .md-typeset pre {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .md-typeset img,
+    .md-typeset svg,
+    .md-typeset .mermaid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .md-typeset .admonition,
+    .md-typeset details {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
 /* Clases anteriores */
 .rojo { color: #e53935 !important; font-weight: 600; }
 .azul { color: #2980B9 !important; font-size: 18px; }
