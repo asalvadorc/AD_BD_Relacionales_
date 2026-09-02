@@ -1,6 +1,6 @@
 site_url : https://asalvadorc.github.io/AD_BD_Relacionales_
 
-site_name: AD - Acceso a Datos - Bases de Datos Relacionales
+site_name: AD - Bases de Datos Relacionales
 # Material reservado: permanece en el repositorio, pero MkDocs no lo publica.
 exclude_docs: |
   Examen.md
