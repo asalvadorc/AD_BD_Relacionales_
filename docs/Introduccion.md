@@ -1,20 +1,11 @@
+
 # Introducción
 
 Aunque en el módulo de Bases de Datos de 1º de DAM ya se estudiaron en profundidad, conviene repasar brevemente algunos conceptos clave de las bases de datos relacionales, ya que en este módulo (Acceso a Datos) trabajaremos con ellas desde el código.
 
 En este módulo no nos centraremos en diseñar bases de datos (eso ya se vio), sino en conectarnos a ellas desde el código, consultar datos, modificarlos y automatizar operaciones con funciones, procedimientos y transacciones.
 
-## 🛠️ Organización de los ejemplos
-
-Todos los ejemplos Kotlin de la unidad se desarrollan en el proyecto Gradle **`BDRelacionales`**. Para evitar mezclar motores, conexiones y archivos, se utilizará esta estructura:
-
-| Entorno | Base de datos | Paquete Kotlin | Recurso o conexión |
-|---------|---------------|----------------|----------------------|
-| SQLite | `Tienda.sqlite` | `SQLite` | `src/main/resources/Tienda.sqlite` |
-| PostgreSQL local | `geo` | `Postgres` | `jdbc:postgresql://localhost:5432/geo` |
-
-!!! warning "Comprueba el entorno antes de ejecutar"
-    Los ejemplos de ambos motores pertenecen al mismo proyecto, pero deben conservar sus paquetes y conexiones correspondientes. No copies una URL de SQLite en el paquete `Postgres` ni una conexión PostgreSQL en el paquete `SQLite`.
+Antes de ejecutar los ejemplos, revisa el [entorno y la ubicación de los ejemplos](Entorno.md).
 
 ## 🔹 Bases de datos relacionales
 
@@ -44,10 +35,10 @@ Una tabla representa un conjunto de datos relacionados. Tiene:
 
 Ejemplo de tabla `clientes`:
 
-| id_cliente | nombre   | ciudad     |
-|------------|----------|------------|
-| 1          | Lucía    | Valencia   |
-| 2          | Carlos   | Madrid     |
+| id_cliente | nombre   | correo                | teléfono   |
+|------------|----------|-----------------------|------------|
+| 1          | Lucía    | lucia@correo.com      | 611223344  |
+| 2          | Carlos   | carlos@correo.com     | 622334455  |
 
 ---
 
@@ -95,7 +86,7 @@ Cuando desarrollamos aplicaciones que trabajan con información persistente, nec
 - Acceso mediante **conectores**
 -  Acceso mediante **ORM**
 
-**1-. Acceso mediante conectores (JDBC - Java Database Connectivity)**{.azul}
+### 1-. Acceso mediante conectores (JDBC - Java Database Connectivity)
 
 **JDBC** es una API estándar de Java (y compatible con Kotlin) que permite conectarse a una base de datos, enviar instrucciones SQL y procesar los resultados manualmente. Es el método de más bajo nivel, pero ofrece un control total sobre lo que ocurre en la base de datos.
 
@@ -113,18 +104,27 @@ PostgreSQL|	org.postgresql.Driver| jdbc:postgresql://host:puerto/basedatos
 MySQL / MariaDB|	com.mysql.cj.jdbc.Driver| jdbc:mysql://host:puerto/basedatos
 SQLite (embebido)|	org.sqlite.JDBC	|jdbc:sqlite:ruta_al_fichero.db
 
-**2- Acceso mediante ORM (Object-Relational Mapping)**{.azul}
+### 2- Acceso mediante ORM (Object-Relational Mapping)
 
-Un **ORM** es una herramienta que permite trabajar con la base de datos como si fuera un conjunto de objetos, evitando tener que escribir directamente SQL. El **ORM** se encarga de mapear las tablas a clases y los registros a objetos, y traduce automáticamente las operaciones del código a consultas SQL.
+**El desfase objeto-relacional**{.azul}
 
-**Características:**  
+
+El desfase objeto-relacional es la diferencia entre cómo representa los datos una aplicación —mediante objetos, referencias y colecciones— y cómo los almacena una base de datos relacional —en tablas, filas y claves foráneas—. Por ejemplo, un objeto Cliente puede contener una lista de pedidos, mientras que en la base de datos se guardan en tablas relacionadas.
+
+Un **ORM**, como Hibernate o EclipseLink, facilita la traducción entre ambas representaciones y automatiza muchas operaciones SQL, reduciendo el código repetitivo. 
+
+**JPA** es la especificación que define las reglas y anotaciones para ese mapeo en Java y Kotlin.
+
+
+**JPA** y **el ORM** trabajan juntos: JPA define las reglas para relacionar las clases y los objetos de Java o Kotlin con las tablas de una base de datos, y un ORM que implementa JPA, lleva esas reglas a la práctica.  
+
+
+**Características de un ORM:**  
 
  - Se trabaja con clases en lugar de tablas SQL.
  - Ahorra mucho código repetitivo.
  - Ideal para proyectos medianos o grandes que requieren mantener muchas entidades.
 
-
-**JPA** (Java Persistence API) es una especificación estándar de Java que define cómo se deben mapear objetos Java (o Kotlin) a tablas de bases de datos relacionales. Es decir, permite gestionar la persistencia de datos de forma orientada a objetos, sin necesidad de escribir SQL directamente. Es el estándar utilizado por las herramientas ORM como Hibernate, EclipseLink, o Spring Data JPA.
 
 
 **Algunos ejemplos de ORMs**
@@ -133,7 +133,7 @@ ORM / Framework|	Lenguaje|	Descripción
 ---------------|---------|-----------------
 Hibernate|	Java/Kotlin|	El ORM más utilizado con JPA
 Exposed|	Kotlin|	ORM ligero y expresivo creado por JetBrains
-Spring Data JPA|	Java/Kotlin|	Abstracción que automatiza el acceso a datos
+Spring Data JPA|	Java/Kotlin|	Framework que simplifica el uso de JPA mediante repositorios.
 Room|	Java/Kotlin|	ORM oficial para bases de datos SQLite en Android    
 
 
@@ -143,6 +143,9 @@ Room|	Java/Kotlin|	ORM oficial para bases de datos SQLite en Android
 - ORM es ideal para trabajar de forma más productiva en aplicaciones complejas.
 
 Ambos métodos son útiles y complementarios: aprender JDBC ayuda a entender mejor lo que hace un ORM por debajo.
+
+!!!Tip "Nota"
+    En este tema trabajaremos con JDBC y el conector de cada gestor, escribiendo las sentencias SQL y transformando sus resultados en objetos de forma manual. En el tema siguiente -Spring Boot con BD relacionales- veremos JPA y Spring Data JPA, aprovechando lo aprendido para simplificar la persistencia de datos.
 
 ## 🔹 Tipos de SGBD relacionales
 
@@ -164,10 +167,3 @@ SQLite, H2, Derby...
 - Base de datos ligera, sin servidor, ideal para aplicaciones móviles o de escritorio donde no se requiere gestión centralizada.
 - Fácil de configurar y desplegar, ya que la base de datos reside en un archivo local.
 - Casos de uso: aplicaciones de escritorio, móviles, prototipos, pruebas unitarias.
-
-
-
-
-
-
-

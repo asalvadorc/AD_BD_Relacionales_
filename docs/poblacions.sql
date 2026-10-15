@@ -1,4 +1,4 @@
- INSERT INTO public.poblacions (cod_m,nom,poblacio,extensio,altura,longitud,latitud,llengua,nom_c) VALUES
+ INSERT INTO public.poblacio (cod_m,nom,poblacio,extensio,altura,longitud,latitud,llengua,nom_c) VALUES
       (46001,'Ademuz',1179,100.40,660,'1º17''06"W','40º04''15"N','C','Racó'),
       (46111,'Chiva',15029,178.70,240,'0º43''06"W','39º28''25"N','C','Foia de Bunyol'),
       (3003,'Agres',583,25.80,722,'0º30''58"W','38º46''47"N','V','Comtat'),

@@ -1,32 +1,28 @@
 
-# Herramientas y conectores
+## Conexión
 
-
-De todas las formas posibles de interactuar con una base de datos, nos vamos a centrar en el uso de **conectores**, porque son la forma más directa y habitual de acceder a la base de datos desde un lenguaje de programación, como Kotlin, que es el que estamos utilizando en este módulo.
-
-| Recorrido | Herramienta | Para qué se utiliza |
-|-----------|-------------|----------------------|
-| 1 | JDBC | Comprender el mecanismo común de conexión |
-| 2 | IntelliJ | Inspeccionar y consultar la base de datos desde el IDE |
-| 3 | DBeaver | Administrar la base de datos con una herramienta externa |
-| 4 | Kotlin | Abrir y reutilizar una conexión desde el programa |
+**JDBC** (Java Database Connectivity) es una API estándar de Java que permite a los programas escritos en Java (y por extensión en Kotlin) conectarse y trabajar con bases de datos relacionales.
 
 En la introducción ya vimos que un **conector** (también llamado driver) es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa. Sin un conector, tu aplicación no podría comunicarse con la base de datos.
 
-- En herramientas gráficas como **DBeaver**, los drivers se gestionan automáticamente.
-- En **proyectos en código**, se añaden como dependencia (por ejemplo, en Maven, Gradle, pip…).
+**Para conectarse a una base de datos mediante JDBC desde Java o Kotlin necesitamos:**
+
+| Elemento | Para qué sirve | Ejemplo |
+|---|---|---|
+| **Driver o conector JDBC** | Permite comunicarse con el gestor elegido. Se añade como dependencia del proyecto. | org.postgresql:postgresql:42.7.1|
+| **URL de conexión** | Indica el gestor y la ubicación de la base de datos. | jdbc:postgresql://localhost:5432/geo |
+| **Credenciales, si se requieren** | Identifican al usuario y permiten acceder a la base de datos. | Usuario y contraseña de PostgreSQL. |
+| **Base de datos accesible** | Debe estar disponible en la ubicación indicada. | Un fichero SQLite o un servidor PostgreSQL en funcionamiento. |
 
 
-Una base de datos puede ser accedida desde diferentes orígenes o herramientas, siempre que tengamos:
 
-- Las credenciales de acceso (usuario y contraseña)
-- El host/servidor donde se encuentra la base de datos
-- El motor de base de datos (PostgreSQL, MySQL, SQLite, etc.)
-- Los puertos habilitados y los permisos correctos
-
-
+!!!Note "Para saber más"
+    - **Código estándar**: gracias a JDBC, el mismo código Java/Kotlin puede trabajar con distintas bases de datos cambiando solo la URL y el driver.
+    - En herramientas gráficas como **DBeaver**, los drivers se gestionan automáticamente.
+    - En **proyectos en código**, los drivers se añaden como dependencia (por ejemplo, en Maven, Gradle…).
 
 **Principales formas de conectarse a una base de datos**{.azul}
+
 
 | Medio de conexión                         | Descripción                                                                 |
 |-------------------------------------------|-----------------------------------------------------------------------------|
@@ -38,30 +34,9 @@ Una base de datos puede ser accedida desde diferentes orígenes o herramientas, 
 | 📱 Aplicaciones móviles                   | Apps Android/iOS que acceden a BD locales (como **SQLite**) o remotas (vía **Firebase**, API REST, etc.). |
 | 📂 Herramientas de integración de datos   | Software como **Talend**, **Pentaho**, **Apache Nifi** para migrar, transformar o sincronizar datos entre sistemas. |
 
-## 🔹 JDBC
 
-JDBC (Java Database Connectivity) es una API estándar de Java que permite a los programas escritos en Java (y por extensión en Kotlin) conectarse y trabajar con bases de datos relacionales.
-
-
-- **Driver JDBC**: cada gestor de BD proporciona un "driver" específico (un .jar) que implementa la interfaz de JDBC.
-
-    `mysql-connector-j, postgresql-42.x.jar, sqlite-jdbc.jar.`
-
-- **URL de conexión**: se usa una cadena con formato `jdbc:<gestor>://<host>:<puerto>/<nombre_base_datos>` para indicar cómo llegar a la BD.
-
-    Gestor de Base de Datos|	URL de conexión
-    -----------------------|---------------------
-    PostgreSQL|	jdbc:postgresql://localhost:5432/empresa
-    MySQL|	jdbc:mysql://localhost:3306/empresa
-    SQLite|	jdbc:sqlite:empresa.sqlite    
-
-- **Código estándar**: gracias a JDBC, el mismo código Java/Kotlin puede trabajar con distintas bases de datos cambiando solo la URL y el driver.
-
-
-   
 !!!Tip ""
-    En los siguientes apartados veremos como conectarnos a una BD Relacional, tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
-
+    En los siguientes apartados veremos como conectarnos a una BD Relacional, [Tienda.sqlite](../Tienda.sqlite), tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
 
 ## 🔹 Desde IntelliJ
 
@@ -75,7 +50,8 @@ JDBC (Java Database Connectivity) es una API estándar de Java que permite a los
 - ⚡ Ver los cambios reflejados inmediatamente tras ejecutar una operación desde el código
 - ✅ Probar consultas antes de implementarlas en el programa
 
-Las siguientes imágenes muestran cómo configurar esta herramienta para conectarnos a la BD de ejemplo **Tienda.sqlite**, disponible en Aules:
+Las siguientes imágenes muestran cómo configurar esta herramienta para conectarnos a la BD de ejemplo
+[Tienda.sqlite](../Tienda.sqlite), disponible también en Aules:
 
 
 **1. Crea un nuevo proyecto en Kotlin y Gradle**{.azul}
@@ -123,7 +99,7 @@ Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no e
 ## 🔹 Desde DBeaver
 
 
-**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD  **Tienda.sqlite**, disponible en Aules, son los siguientes:
+**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD [Tienda.sqlite](../Tienda.sqlite), disponible en Aules, son los siguientes:
 
 
 **1. Abre DBeaver**{.azul}
@@ -207,8 +183,6 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 
 ```kotlin
         dependencies {
-            implementation("org.postgresql:postgresql:42.7.1") //Postgres
-            implementation("com.mysql:mysql-connector-j:8.3.0") //MySQL
             implementation("org.xerial:sqlite-jdbc:3.43.0.0") //SQLite
         }
 ```
@@ -249,7 +223,7 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
     No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.
 
 
-!!!Tip ""
+!!!Tip "Buenas prácticas"
     Podemos encapsular la conexión a la base de datos dentro de un objeto, de manera que pueda reutilizarse tantas veces como sea necesario. Así evitamos duplicar código y reducimos posibles errores. Por ejemplo, si la base de datos cambia de ubicación, solo habría que actualizar la ruta en el objeto y no en cada uno de los programas.
 
 **Ejemplo_Conexion_SQLite_obj.kt**
@@ -302,3 +276,5 @@ Para que la conexión funcione, es necesario **añadir el conector JDBC** corres
 2. `prepareStatement` prepara la sentencia SQL antes de ejecutarla.
 3. Una consulta `SELECT` devuelve un `ResultSet`, que también se cierra con `use`.
 4. `next()` avanza a la siguiente fila y devuelve `false` cuando ya no quedan resultados.
+
+

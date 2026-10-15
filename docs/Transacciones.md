@@ -1,10 +1,5 @@
 # Transacciones y manejo de excepciones
 
-!!! warning "Entorno del ejemplo principal"
-    Realiza `Ejemplo_transaccion.kt` en el proyecto **`BDRelacionales`**, dentro del paquete **`SQLite`**. El ejemplo utiliza `src/main/resources/Tienda.sqlite`.
-
-    El ejemplo bancario anterior es únicamente ilustrativo; la práctica completa de esta página se realiza sobre SQLite.
-
 La gestión de transacciones y el manejo de excepciones son dos aspectos fundamentales en el desarrollo de aplicaciones que interactúan con bases de datos, ya que garantizan la integridad, la consistencia y la robustez de los sistemas.
 
 | Recorrido | Objetivo |

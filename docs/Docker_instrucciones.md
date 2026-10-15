@@ -1,27 +1,48 @@
-# 🐘 Instalación de PostgreSQL y creación de la BD geo con Docker y DBeaver
+# Preparación de PostgreSQL y la BD geo
 
-## 📋 Resumen de la práctica
+Hasta ahora hemos trabajado con ejemplos de operaciones **CRUD** (Crear, Leer, Actualizar y Borrar) utilizando **SQLite**, una base de datos ligera, fácil de usar y sin necesidad de servidor, ideal para iniciarse en el acceso a datos desde Kotlin.
 
-1. Se instala **PostgreSQL** con **Docker** usando un `docker-compose.yml`.  
-2. Se arranca el contenedor y se verifica con `docker ps`.  
-3. Se conecta la base de datos con **DBeaver** (`localhost:5432`).  
-4. Se crean las tablas `COMARCA`, `POBLACIO` e `INSTITUT`.  
-5. Se insertan los datos iniciales desde los scripts `.sql`.
+Sin embargo, en entornos reales y profesionales, lo más habitual es trabajar con sistemas de gestión de bases de datos más potentes y completos, como **PostgreSQL**.
+
+Actualmente trabajaremos con **PostgreSQL** en entorno local, replicando la base de datos mediante **Docker**. Este enfoque garantiza que todos los equipos tengan la misma configuración y evita depender de servicios remotos externos.
+
+Opcionalmente, también se puede usar una instalación local nativa de PostgreSQL con los mismos scripts y consultas.
+
+
+
+Vamos a replicar la base de datos **`geo`** en un servidor PostgreSQL ejecutado dentro de un **contenedor Docker**, creando sus tablas y cargando los datos necesarios para las prácticas. La imagen del modelo relacional que aparece a continuación muestra la estructura de esta base de datos: las tablas `comarca`, `poblacio` e `institut`, sus campos y las relaciones entre ellas.
+
+**Esquema de la BD `geo`**{.azul}
+
+
+![Modelo relacional de la base de datos geo](img/geo_ad.jpg)
+
+
+
+!!!Tip "Pasos para replicar la BD geo en Docker"
+    1. Se instala **PostgreSQL** con **Docker** usando un `docker-compose.yml`.  
+    2. Se arranca el contenedor y se verifica con `docker ps`.  
+    3. Se conecta la base de datos con **DBeaver** (`localhost:5432`).  
+    4. Se crean las tablas `COMARCA`, `POBLACIO` e `INSTITUT`.  
+    5. Se insertan los datos iniciales desde los scripts `.sql`.
 
 ---
 
-## 1️⃣ Instalación de PostgreSQL con Docker
+## 1️⃣ Instalación de PostgreSQL con 🐳 Docker
 
 Para crear un contenedor de **PostgreSQL** en nuestro equipo utilizaremos **Docker Compose**.
 
 > 💡 Si eres usuario de **Windows** o **Mac**, instala **Docker Desktop**.  
+> Después de instalarlo, inicia **Docker Desktop** y espera a que indique que Docker está en ejecución antes de continuar.  
 > Si usas **Ubuntu** o **Debian**, asegúrate de tener instalados Docker Engine y el complemento Docker Compose.
 
 ---
 
-### 1.1. Crear el archivo `docker-compose.yml`
+### 1.1. Docker-compose.yml
 
-En una carpeta llamada, por ejemplo, `docker/postgres`, crea un archivo con el siguiente contenido:
+Para configurar y gestionar los servicios de la aplicación mediante Docker Compose, es necesario crear un archivo de configuración que defina los servicios y sus parámetros.
+
+Crea un archivo llamado **docker-compose.yml** con el contenido que se indica a continuación. Puedes guardarlo en cualquier carpeta de tu sistema.
 
 
 ```yaml
@@ -87,17 +108,27 @@ Una vez el contenedor de PostgreSQL está activo, podemos conectarnos mediante e
 2. Selecciona **Nueva conexión → PostgreSQL**.  
 3. Introduce los siguientes datos de conexión:
 
-| Campo | Valor |
-|-------|--------|
-| Nombre de conexión | `docker-geo` |
-| Server host | `localhost` |
-| Port | `5432` |
-| Database | `geo` |
-| User name | `postgres` |
-| Password | `postgres` |
+<div class="conexion-dbeaver">
+<div class="conexion-dbeaver__layout">
+<table>
+<thead>
+<tr><th>Campo</th><th>Valor</th></tr>
+</thead>
+<tbody>
+<tr><td>Nombre de conexión</td><td><code>mi_postgres</code></td></tr>
+<tr><td>Server host</td><td><code>localhost</code></td></tr>
+<tr><td>Port</td><td><code>5432</code></td></tr>
+<tr><td>Database</td><td><code>geo</code></td></tr>
+<tr><td>User name</td><td><code>postgres</code></td></tr>
+<tr><td>Password</td><td><code>postgres</code></td></tr>
+</tbody>
+</table>
+<img src="../image-2.png" alt="Configuración de la conexión en DBeaver">
+</div>
+</div>
+
 
 Haz clic en **Test Connection** para comprobar la conexión.  
-Si la prueba es satisfactoria, guarda la conexión.
 
 ---
 
@@ -154,7 +185,7 @@ En la conexión local de PostgreSQL (ya desde DBeaver o cualquier cliente SQL), 
     );
 ```
 
-## 4️⃣ Carga de datos iniciales
+## 4️⃣ Carga de datos iniciales {#carga-datos}
 
 Para completar la base de datos, ejecuta los siguientes scripts SQL desde **DBeaver** o desde el terminal de **PostgreSQL**.
 
@@ -168,3 +199,4 @@ Cada script se encarga de insertar los datos de las tablas creadas previamente.
 
 📂 [Inserción de insitut](instituts.sql)
 
+Una vez preparadas las tablas y los datos, continúa con la [conexión a PostgreSQL desde Kotlin](Conectores.md#conexion-postgresql).

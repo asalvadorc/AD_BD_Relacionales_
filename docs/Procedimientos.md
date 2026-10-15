@@ -401,3 +401,13 @@ La llamada desde **SQL** sería:
 | 🔄 Puede devolver tablas         | ✅ Sí (`RETURNS TABLE` o `SETOF`)                | ❌ No directamente                                 |
 | 🔁 Puede usar `RETURN`           | ✅ Obligatorio                                   | ❌ No se usa `RETURN`, sino solo `CALL`            |
 | 🧱 Uso típico                    | Cálculos, validaciones, funciones reutilizables | Procesos complejos, lógica de negocio, transacciones |
+
+## Comprueba tu comprensión
+
+!!! question "1. ¿Por qué una función o procedimiento debe existir antes de invocarlo desde Kotlin?"
+    ??? success "Ver respuesta"
+        Porque su código está **almacenado y se ejecuta en PostgreSQL**. Kotlin envía una sentencia para invocarlo, pero esa llamada no lo crea. Primero debemos definirlo en la base de datos mediante `CREATE FUNCTION` o `CREATE PROCEDURE`, por ejemplo desde DBeaver. Si no existe una función o procedimiento que coincida con el nombre y los tipos de los argumentos de la llamada, PostgreSQL devolverá un error.
+
+!!! question "2. ¿Qué diferencia hay entre escribir una función Kotlin y crear una función almacenada en PostgreSQL?"
+    ??? success "Ver respuesta"
+        Una **función Kotlin** forma parte de la aplicación y se ejecuta donde se ejecuta el programa. Puede acceder a la base de datos enviando sentencias mediante JDBC. Una **función almacenada en PostgreSQL** se define en la base de datos, por ejemplo en SQL o PL/pgSQL, y se ejecuta en el servidor. Kotlin puede invocarla mediante una consulta como `SELECT nombre_funcion(...)` y recoger su resultado. También puede ser utilizada por otras aplicaciones que tengan los permisos necesarios.
