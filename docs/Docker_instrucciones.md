@@ -199,4 +199,4 @@ Cada script se encarga de insertar los datos de las tablas creadas previamente.
 
 📂 [Inserción de insitut](instituts.sql)
 
-Una vez preparadas las tablas y los datos, continúa con la [conexión a PostgreSQL desde Kotlin](Conectores.md#conexion-postgresql).
+Una vez preparadas las tablas y los datos, continúa con la [conexión a PostgreSQL desde Kotlin](Conectores_PostgreSQL.md).
