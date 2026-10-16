@@ -36,7 +36,7 @@ En la introducción ya vimos que un **conector** (también llamado driver) es un
 
 
 !!!Tip ""
-    En los siguientes apartados veremos como conectarnos a una BD Relacional, [Tienda.sqlite](../Tienda.sqlite), tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
+    En los siguientes apartados veremos como conectarnos a una BD Relacional, [Tienda.sqlite](Tienda.sqlite), tanto desde la herramienta gráfica de BD integrada de **IntelliJ**  como desde la herramienta universal para la gestión de bases de datos **DBeaver** y también desde una aplicación desarrollada en **Kotlin**.
 
 ## 🔹 Desde IntelliJ
 
@@ -51,7 +51,7 @@ En la introducción ya vimos que un **conector** (también llamado driver) es un
 - ✅ Probar consultas antes de implementarlas en el programa
 
 Las siguientes imágenes muestran cómo configurar esta herramienta para conectarnos a la BD de ejemplo
-[Tienda.sqlite](../Tienda.sqlite), disponible también en Aules:
+[Tienda.sqlite](Tienda.sqlite), disponible también en Aules:
 
 
 **1. Crea un nuevo proyecto en Kotlin y Gradle**{.azul}
@@ -99,7 +99,7 @@ Al aceptar, se nos pedirá que instalemos **el driver** correspondiente, si no e
 ## 🔹 Desde DBeaver
 
 
-**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD [Tienda.sqlite](../Tienda.sqlite), disponible en Aules, son los siguientes:
+**DBeaver** es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD [Tienda.sqlite](Tienda.sqlite), disponible en Aules, son los siguientes:
 
 
 **1. Abre DBeaver**{.azul}
