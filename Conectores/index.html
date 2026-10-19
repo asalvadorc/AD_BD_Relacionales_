@@ -1,0 +1,1584 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Conectores/">
+      
+      
+        <link rel="prev" href="../Introduccion/">
+      
+      
+        <link rel="next" href="../Sentencias/">
+      
+      
+      <link rel="icon" href="../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>🔹Conexión - AD - Bases de Datos Relacionales</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#conexion" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="AD - Bases de Datos Relacionales" class="md-header__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AD - Bases de Datos Relacionales
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🔹Conexión
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartir" aria-label="Compartir" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+    
+  
+  🏠 Inicio
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Entorno/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  T5. BD relacionales
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AD - Bases de Datos Relacionales" class="md-nav__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    AD - Bases de Datos Relacionales
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href=".." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    🏠 Inicio
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            🏠 Inicio
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RA_CE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹RA y CE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Guia_estudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Guía de estudio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    T5. BD relacionales
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            T5. BD relacionales
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entorno/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y ubicación de los ejemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Introducción
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹JDBC
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            🔹JDBC
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conexión
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-intellij" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde IntelliJ
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-dbeaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde DBeaver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-kotlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde Kotlin
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sentencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Peticiones a la BD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹SQLite
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            🔹SQLite
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entorno_SQlite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD Tienda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Operaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Objetos_Kotlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ejercicio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de SQLite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹PostgreSQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            🔹PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker_instrucciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD geo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conectores_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión a PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Objetos_Kotlin_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Procedimientos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Funciones y procedimientos almacenados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹Recursos, errores y transacciones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            🔹Recursos, errores y transacciones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Recursos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Gestión de recursos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Transacciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Transacciones y control de errores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ejercicio_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conexión
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-intellij" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde IntelliJ
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-dbeaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde DBeaver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desde-kotlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Desde Kotlin
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>🔹Conexión</h1>
+
+<h2 id="conexion">Conexión<a class="headerlink" href="#conexion" title="Permanent link">&para;</a></h2>
+<p><strong>JDBC</strong> (Java Database Connectivity) es una API estándar de Java que permite a los programas escritos en Java (y por extensión en Kotlin) conectarse y trabajar con bases de datos relacionales.</p>
+<p>En la introducción ya vimos que un <strong>conector</strong> (también llamado driver) es una librería software que permite que una aplicación se comunique con un gestor de base de datos (SGBD). Actúa como un puente entre nuestro código y la base de datos, traduciendo las instrucciones SQL a un lenguaje que el gestor puede entender y viceversa. Sin un conector, tu aplicación no podría comunicarse con la base de datos.</p>
+<p><strong>Para conectarse a una base de datos mediante JDBC desde Java o Kotlin necesitamos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Elemento</th>
+<th>Para qué sirve</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Driver o conector JDBC</strong></td>
+<td>Permite comunicarse con el gestor elegido. Se añade como dependencia del proyecto.</td>
+<td>org.postgresql:postgresql:42.7.1</td>
+</tr>
+<tr>
+<td><strong>URL de conexión</strong></td>
+<td>Indica el gestor y la ubicación de la base de datos.</td>
+<td>jdbc:postgresql://localhost:5432/geo</td>
+</tr>
+<tr>
+<td><strong>Credenciales, si se requieren</strong></td>
+<td>Identifican al usuario y permiten acceder a la base de datos.</td>
+<td>Usuario y contraseña de PostgreSQL.</td>
+</tr>
+<tr>
+<td><strong>Base de datos accesible</strong></td>
+<td>Debe estar disponible en la ubicación indicada.</td>
+<td>Un fichero SQLite o un servidor PostgreSQL en funcionamiento.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Para saber más</p>
+<ul>
+<li><strong>Código estándar</strong>: gracias a JDBC, el mismo código Java/Kotlin puede trabajar con distintas bases de datos cambiando solo la URL y el driver.</li>
+<li>En herramientas gráficas como <strong>DBeaver</strong>, los drivers se gestionan automáticamente.</li>
+<li>En <strong>proyectos en código</strong>, los drivers se añaden como dependencia (por ejemplo, en Maven, Gradle…).</li>
+</ul>
+</div>
+<p><strong class="azul">Principales formas de conectarse a una base de datos</strong></p>
+<table>
+<thead>
+<tr>
+<th>Medio de conexión</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🖥️ Aplicaciones de escritorio</td>
+<td>Herramientas gráficas como <strong>DBeaver</strong>, <strong>pgAdmin</strong>, <strong>MySQL Workbench</strong>, <strong>DB Browser for SQLite</strong>. Permiten explorar, consultar y administrar BD de forma visual.</td>
+</tr>
+<tr>
+<td>💻 Aplicaciones desarrolladas en código</td>
+<td>Programas en <strong>Kotlin</strong>, <strong>Java</strong>, <strong>Python</strong>, <strong>C#</strong>, etc., mediante <strong class="verde">conectores</strong> como <strong>JDBC</strong>, <strong>psycopg2</strong>, <strong>ODBC</strong>, etc. para acceder a BD desde código.</td>
+</tr>
+<tr>
+<td>🔠 Línea de comandos</td>
+<td>Clientes como <code>psql</code> (PostgreSQL), <code>mysql</code>, <code>sqlite3</code>. Permiten ejecutar comandos SQL directamente desde terminal.</td>
+</tr>
+<tr>
+<td>🌐 Aplicaciones web</td>
+<td>Sitios web que acceden a BD desde el backend (por ejemplo, en Spring Boot, Node.js, Django, etc.).</td>
+</tr>
+<tr>
+<td>🔄 APIs REST o servidores intermedios</td>
+<td>Servicios web que conectan la BD con otras aplicaciones, actuando como puente o capa de seguridad.</td>
+</tr>
+<tr>
+<td>📱 Aplicaciones móviles</td>
+<td>Apps Android/iOS que acceden a BD locales (como <strong>SQLite</strong>) o remotas (vía <strong>Firebase</strong>, API REST, etc.).</td>
+</tr>
+<tr>
+<td>📂 Herramientas de integración de datos</td>
+<td>Software como <strong>Talend</strong>, <strong>Pentaho</strong>, <strong>Apache Nifi</strong> para migrar, transformar o sincronizar datos entre sistemas.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p>En los siguientes apartados veremos como conectarnos a una BD Relacional, <a href="../Tienda.sqlite">Tienda.sqlite</a>, tanto desde la herramienta gráfica de BD integrada de <strong>IntelliJ</strong>  como desde la herramienta universal para la gestión de bases de datos <strong>DBeaver</strong> y también desde una aplicación desarrollada en <strong>Kotlin</strong>.</p>
+</div>
+<h2 id="desde-intellij">🔹 Desde IntelliJ<a class="headerlink" href="#desde-intellij" title="Permanent link">&para;</a></h2>
+<p><strong>IntelliJ</strong> incorpora una potente herramienta de gestión de bases de datos que permite visualizar la base de datos directamente desde el entorno de desarrollo (IDE), lo que permite:</p>
+<ul>
+<li>📂 Explorar la estructura de la base de datos (tablas, vistas, claves, relaciones…)</li>
+<li>🔎 Consultar datos en tiempo real con editores SQL integrados</li>
+<li>🛠️ Modificar tablas, añadir registros o ejecutar scripts SQL sin salir del proyecto</li>
+<li>⚡ Ver los cambios reflejados inmediatamente tras ejecutar una operación desde el código</li>
+<li>✅ Probar consultas antes de implementarlas en el programa</li>
+</ul>
+<p>Las siguientes imágenes muestran cómo configurar esta herramienta para conectarnos a la BD de ejemplo
+<a href="../Tienda.sqlite">Tienda.sqlite</a>, disponible también en Aules:</p>
+<p><strong class="azul">1. Crea un nuevo proyecto en Kotlin y Gradle</strong></p>
+<p>Al nuevo proyecto lo llamaremos <strong>BDRelacionales</strong>.</p>
+<p><img alt="Creación del proyecto BDRelacionales en IntelliJ" src="../img/new_project.png" /></p>
+<p><strong class="azul">2. Copia el archivo de la BD a nuestro proyecto</strong></p>
+<p>La ubicaremos en <strong><code>src/main/resources/Tienda.sqlite</code></strong>. La carpeta <code>resources</code> forma parte del <strong>classpath</strong> del proyecto. Allí se colocan archivos que necesita la aplicación en tiempo de ejecución. Cuando compilas el proyecto, su contenido se copia al resultado de la compilación, manteniendo la misma estructura. Además, si compartes el proyecto, la base de datos viaja con él.</p>
+<p><img alt="Archivo Tienda.sqlite dentro de la carpeta resources" src="../img/resources_Tienda.png" /></p>
+<p><strong class="azul">3. Elige el conector a la base de datos</strong></p>
+<p>En la herramienta <strong>Database -&gt; Data Source</strong> elegimos el conector <strong>SQLite</strong>. </p>
+<p><img alt="Selección de SQLite como origen de datos en IntelliJ" src="../img/DataSource.png" /></p>
+<p><strong class="azul">4. Selecciona la ubicación de la BD</strong></p>
+<p>Podemos comprobar la conexión con <strong>Test Connection</strong> antes de aceptar.</p>
+<p>Al aceptar, se nos pedirá que instalemos <strong>el driver</strong> correspondiente, si no estuviera instalado.</p>
+<p><img alt="Configuración y prueba de la conexión SQLite en IntelliJ" src="../img/dialogo_conexion_sqlite.png" /></p>
+<p><strong class="azul">5. Comprueba consultas antes de implementarlas</strong></p>
+<p>Una vez configurado el acceso a la BD podemos ver en diferentes ventanas la estructura de la BD y el resultado de ejecutar las sentencias SQL, haciendo click derecho sobre la conexión y seleccionando la opción <strong>New &gt; QueryConsole</strong>.</p>
+<p><img alt="Creación de una consola de consultas en IntelliJ" src="../img/query_consola.png" /></p>
+<p><img alt="Ejecución de una consulta SQL desde IntelliJ" src="../img/consola_sql.png" /></p>
+<h2 id="desde-dbeaver">🔹 Desde DBeaver<a class="headerlink" href="#desde-dbeaver" title="Permanent link">&para;</a></h2>
+<p><strong>DBeaver</strong> es una herramienta gráfica y gratuita que permite gestionar múltiples bases de datos de forma visual. Los pasos para conectarse a la BD <a href="../Tienda.sqlite">Tienda.sqlite</a>, disponible en Aules, son los siguientes:</p>
+<p><strong class="azul">1. Abre DBeaver</strong></p>
+<p>Inicia el programa <strong>DBeaver</strong>. Aparecerá la ventana principal con el panel lateral de conexiones.</p>
+<p><img alt="Pantalla principal de DBeaver" src="../img/dbeaver0.jpg" /></p>
+<p>Haz clic en el botón <strong>"Nueva conexión"</strong> (ícono de enchufe) o ve al menú <strong>Archivo &gt; Nueva conexión</strong>.</p>
+<p><img alt="Botón para crear una conexión en DBeaver" src="../img/dbeaver2.jpg" /></p>
+<hr />
+<p><strong class="azul">2. Selecciona el tipo de base de datos</strong></p>
+<p>En la ventana de selección, elige <strong>SQLite</strong> y pulsa <strong>Siguiente</strong>.</p>
+<p><img alt="Selección del controlador SQLite en DBeaver" src="../img/dbeaver3.jpg" /></p>
+<hr />
+<p><strong class="azul">3. Introduce la ruta donde se encuentra la BD</strong></p>
+<p><img alt="Selección del archivo Tienda.sqlite en DBeaver" src="../img/dbeaver4.jpg" /></p>
+<hr />
+<p><strong class="azul">4. Prueba la conexión</strong></p>
+<p>Haz clic en <strong>"Probar conexión"</strong>. Si todo está correcto, verás un mensaje de éxito.<br />
+Si DBeaver necesita un controlador (driver), te lo ofrecerá para descargar automáticamente.</p>
+<p><img alt="Prueba correcta de la conexión SQLite en DBeaver" src="../img/dbeaver5.jpg" /></p>
+<hr />
+<p><strong class="azul">5. Finaliza y explora</strong></p>
+<p>Haz clic en <strong>"Finalizar"</strong>. La nueva conexión aparecerá en el panel lateral izquierdo.<br />
+Desde allí puedes:</p>
+<ul>
+<li>Ver tablas, vistas, funciones y procedimientos</li>
+<li>Ejecutar sentencias SQL</li>
+<li>Consultar y modificar registros</li>
+<li>Exportar datos en distintos formatos</li>
+</ul>
+<p><img alt="Base de datos SQLite abierta en DBeaver" src="../img/dbeaver6.jpg" /></p>
+<h2 id="desde-kotlin">🔹 Desde Kotlin<a class="headerlink" href="#desde-kotlin" title="Permanent link">&para;</a></h2>
+<p>Para que una aplicación (escrita en Kotlin, Java u otro lenguaje) pueda leer, insertar o modificar información almacenada en una base de datos relacional (BDR), debe establecer una conexión con ella. Esto implica una serie de <strong>pasos técnicos</strong> y el uso de componentes específicos:</p>
+<ul>
+<li>Conectarse al gestor de base de datos (PostgreSQL, MySQL, SQLite…)</li>
+<li>Enviar consultas SQL (SELECT, INSERT, UPDATE, DELETE…)</li>
+<li>Recibir y procesar resultados (ResultSet, listas de objetos…)</li>
+<li>Cerrar correctamente los recursos utilizados</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Kotlin - Instrucciones</p>
+<p>En el proyecto <code>BDRelacionales</code>, ya creado y conectado a la BD <code>Tienda.sqlite</code>, crearemos un <strong>paquete</strong> nuevo llamado <code>SQLite</code>. En este paquete incluiremos los ejemplos de este apartado.</p>
+<p>La base de datos debe estar en <code>src/main/resources/Tienda.sqlite</code>.</p>
+<p><img alt="Paquete SQLite dentro del proyecto Kotlin" src="../img/carpeta_sqlite.png" /></p>
+</div>
+<p>Para que la conexión funcione, es necesario <strong>añadir el conector JDBC</strong> correspondiente. Para ello utilizaremos la herramienta <strong>Gradle</strong>, que permite automatizar la gestión de dependencias sin tener que configurar nada a mano.</p>
+<ul>
+<li><strong>build.gradle.kts</strong> : </li>
+</ul>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">        </span><span class="n">dependencies</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">            </span><span class="n">implementation</span><span class="p">(</span><span class="s">"org.xerial:sqlite-jdbc:3.43.0.0"</span><span class="p">)</span><span class="w"> </span><span class="c1">//SQLite</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="p">}</span>
+</span></code></pre></div>
+<p><strong class="azul">Ejemplo de conexión a SQLite</strong></p>
+<p><strong>Ejemplo_Conexion_SQLite.kt</strong>: El siguiente programa conecta con la BD <strong>Tienda.sqlite</strong>.</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="w">        </span><span class="k">package</span><span class="w"> </span><span class="nn">SQLite</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="k">import</span><span class="w"> </span><span class="nn">java.io.File</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="k">import</span><span class="w"> </span><span class="nn">java.sql.DriverManager</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="kd">fun</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">            </span><span class="c1">// Ruta al archivo de base de datos SQLite</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">dbPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"src/main/resources/Tienda.sqlite"</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">dbFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">            </span><span class="n">println</span><span class="p">(</span><span class="s">"Ruta de la BD: </span><span class="si">${</span><span class="n">dbFile</span><span class="p">.</span><span class="na">absolutePath</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"jdbc:sqlite:</span><span class="si">${</span><span class="n">dbFile</span><span class="p">.</span><span class="na">absolutePath</span><span class="si">}</span><span class="s">"</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">            </span><span class="c1">// Conexión y prueba</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">            </span><span class="n">DriverManager</span><span class="p">.</span><span class="na">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">).</span><span class="na">use</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">                </span><span class="n">println</span><span class="p">(</span><span class="s">"Conexión establecida correctamente con SQLite."</span><span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>La URL JDBC identifica el controlador <code>sqlite</code> y la ruta absoluta del archivo que se abrirá.</li>
+<li><code>DriverManager</code> solicita la conexión al controlador JDBC. <code>use</code> garantiza su cierre automático al terminar el bloque.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Recuerda</p>
+<p>No se necesita usuario ni contraseña con SQLite, ya que es una base de datos local y embebida.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Buenas prácticas</p>
+<p>Podemos encapsular la conexión a la base de datos dentro de un objeto, de manera que pueda reutilizarse tantas veces como sea necesario. Así evitamos duplicar código y reducimos posibles errores. Por ejemplo, si la base de datos cambia de ubicación, solo habría que actualizar la ruta en el objeto y no en cada uno de los programas.</p>
+</div>
+<p><strong>Ejemplo_Conexion_SQLite_obj.kt</strong></p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="w">        </span><span class="k">package</span><span class="w"> </span><span class="nn">SQLite</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="k">import</span><span class="w"> </span><span class="nn">java.io.File</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="k">import</span><span class="w"> </span><span class="nn">java.sql.DriverManager</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="kd">object</span><span class="w"> </span><span class="nc">DatabaseTienda</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="c1">// Ruta al archivo de base de datos SQLite</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">dbPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"src/main/resources/Tienda.sqlite"</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">dbFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">dbPath</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"jdbc:sqlite:</span><span class="si">${</span><span class="n">dbFile</span><span class="p">.</span><span class="na">absolutePath</span><span class="si">}</span><span class="s">"</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">            </span><span class="kd">fun</span><span class="w"> </span><span class="nf">getConnection</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DriverManager</span><span class="p">.</span><span class="na">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>La conexión queda configurada una sola vez para todos los ejemplos que utilizan <code>Tienda.sqlite</code>.</li>
+<li>Cada llamada devuelve una conexión nueva. Quien la solicite debe cerrarla, normalmente mediante <code>use</code>.</li>
+</ol>
+<p><strong>Ejemplo_basico_conexion_objeto.kt</strong></p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">            </span><span class="k">package</span><span class="w"> </span><span class="nn">SQLite</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">            </span><span class="kd">fun</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">                </span><span class="kd">val</span><span class="w"> </span><span class="nv">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"SELECT * FROM article"</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">                </span><span class="n">DatabaseTienda</span><span class="p">.</span><span class="na">getConnection</span><span class="p">().</span><span class="na">use</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">                    </span><span class="n">conn</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">).</span><span class="na">use</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">stmt</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">                        </span><span class="n">stmt</span><span class="p">.</span><span class="na">executeQuery</span><span class="p">().</span><span class="na">use</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">rs</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="c1">// (3)!</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">                            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">rs</span><span class="p">.</span><span class="na">next</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// (4)!</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">                                </span><span class="c1">//código</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">                            </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">            </span><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>Se obtiene una conexión reutilizando el objeto común <code>DatabaseTienda</code>.</li>
+<li><code>prepareStatement</code> prepara la sentencia SQL antes de ejecutarla.</li>
+<li>Una consulta <code>SELECT</code> devuelve un <code>ResultSet</code>, que también se cierra con <code>use</code>.</li>
+<li><code>next()</code> avanza a la siguiente fila y devuelve <code>false</code> cuando ya no quedan resultados.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="../Introduccion/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: 🔹Introducción">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                🔹Introducción
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Sentencias/" class="md-footer__link md-footer__link--next" aria-label="Siguiente: 🔹Peticiones a la BD">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              <div class="md-ellipsis">
+                🔹Peticiones a la BD
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Alicia Salvador — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"> Licencia CC BY-NC-SA 4.0 </a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["toc.follow", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.indexes", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view", "header.autohide"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../js/lightbox.js"></script>
+      
+    
+  </body>
+</html>

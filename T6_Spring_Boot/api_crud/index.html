@@ -1,0 +1,1480 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/T6_Spring_Boot/api_crud/">
+      
+      
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Crear y modificar datos desde la API - AD - Bases de Datos Relacionales</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#crear-y-modificar-datos-desde-la-api" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="AD - Bases de Datos Relacionales" class="md-header__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AD - Bases de Datos Relacionales
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Crear y modificar datos desde la API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartir" aria-label="Compartir" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  🏠 Inicio
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Entorno/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  T5. BD relacionales
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AD - Bases de Datos Relacionales" class="md-nav__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    AD - Bases de Datos Relacionales
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    🏠 Inicio
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            🏠 Inicio
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RA_CE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹RA y CE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guia_estudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Guía de estudio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    T5. BD relacionales
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            T5. BD relacionales
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Entorno/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y ubicación de los ejemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Introducción
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹JDBC
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            🔹JDBC
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Conectores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Sentencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Peticiones a la BD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹SQLite
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            🔹SQLite
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Entorno_SQlite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD Tienda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Operaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Objetos_Kotlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ejercicio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de SQLite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹PostgreSQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            🔹PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker_instrucciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD geo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Conectores_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión a PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Objetos_Kotlin_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Procedimientos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Funciones y procedimientos almacenados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹Recursos, errores y transacciones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            🔹Recursos, errores y transacciones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Recursos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Gestión de recursos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Transacciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Transacciones y control de errores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ejercicio_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#peticiones-y-respuestas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peticiones y respuestas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dto-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      DTO de entrada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comunicar-errores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comunicar errores
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ampliar-el-servicio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ampliar el servicio
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ampliar-el-controlador-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ampliar el controlador REST
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probar-con-postman" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probar con Postman
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="crear-y-modificar-datos-desde-la-api">Crear y modificar datos desde la API<a class="headerlink" href="#crear-y-modificar-datos-desde-la-api" title="Permanent link">&para;</a></h1>
+<p>Hasta ahora la API devuelve JSON, mientras que las modificaciones se realizan con formularios HTML. Ahora aceptaremos <strong>JSON como entrada</strong> y utilizaremos el servicio para crear, modificar y eliminar comarcas de prueba.</p>
+<p>Seguimos con <code>Comarca</code> para no introducir todavía relaciones nuevas. <strong>No se crean otros controladores ni servicios de comarcas</strong>: ampliamos los del apartado anterior.</p>
+<h2 id="peticiones-y-respuestas">Peticiones y respuestas<a class="headerlink" href="#peticiones-y-respuestas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Petición</th>
+<th>Operación</th>
+<th>Respuesta correcta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /api/comarcas/{id}</code></td>
+<td>Consultar una comarca</td>
+<td>200 y DTO</td>
+</tr>
+<tr>
+<td><code>POST /api/comarcas</code></td>
+<td>Crear una comarca</td>
+<td>201 y DTO</td>
+</tr>
+<tr>
+<td><code>PUT /api/comarcas/{id}</code></td>
+<td>Cambiar la provincia</td>
+<td>200 y DTO</td>
+</tr>
+<tr>
+<td><code>DELETE /api/comarcas/{id}</code></td>
+<td>Eliminar una comarca</td>
+<td>204, sin cuerpo</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Navegador y Postman</p>
+<p>La barra de direcciones del navegador sirve para las consultas GET, pero no para enviar estos cuerpos JSON con POST o PUT. Utilizaremos Postman al final.</p>
+</div>
+<h2 id="dto-de-entrada">DTO de entrada<a class="headerlink" href="#dto-de-entrada" title="Permanent link">&para;</a></h2>
+<p>Crea <strong><code>dto/ComarcaEntrada.kt</code></strong>. Las dos clases pueden estar en este archivo:</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">package</span><span class="w"> </span><span class="nn">org.example.springjpa.dto</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">CrearComarcaDTO</span><span class="p">(</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">nomC</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">provincia</span><span class="p">:</span><span class="w"> </span><span class="kt">String?</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">ActualizarComarcaDTO</span><span class="p">(</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">provincia</span><span class="p">:</span><span class="w"> </span><span class="kt">String?</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>El alta admite nombre y provincia. El valor inicial vacío permite comprobar en el servicio si falta el nombre.</li>
+<li>La actualización solo admite la provincia. La clave se obtiene de la URL y no se cambia.</li>
+</ol>
+<h2 id="comunicar-errores">Comunicar errores<a class="headerlink" href="#comunicar-errores" title="Permanent link">&para;</a></h2>
+<p>Queremos distinguir una entrada incorrecta (400), un registro inexistente (404) y un conflicto (409). Para ello creamos una excepción sencilla y un componente que la convierte en respuesta HTTP.</p>
+<p>Crea <strong><code>service/ErrorOperacion.kt</code></strong>:</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">package</span><span class="w"> </span><span class="nn">org.example.springjpa.service</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">class</span><span class="w"> </span><span class="nc">ErrorOperacion</span><span class="p">(</span><span class="kd">val</span><span class="w"> </span><span class="nv">estado</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">mensaje</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">RuntimeException</span><span class="p">(</span><span class="n">mensaje</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Crea <strong><code>controller/ErroresApi.kt</code></strong>:</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">package</span><span class="w"> </span><span class="nn">org.example.springjpa.controller</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.service.ErrorOperacion</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.dao.DataIntegrityViolationException</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.http.ResponseEntity</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.ExceptionHandler</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RestController</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RestControllerAdvice</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nd">@RestControllerAdvice</span><span class="p">(</span><span class="n">annotations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">RestController</span><span class="o">::</span><span class="n">class</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="kd">class</span><span class="w"> </span><span class="nc">ErroresApi</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nd">@ExceptionHandler</span><span class="p">(</span><span class="n">ErrorOperacion</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">operacion</span><span class="p">(</span><span class="n">error</span><span class="p">:</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">):</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">        </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">status</span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="na">estado</span><span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">            </span><span class="p">.</span><span class="na">body</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span><span class="s">"mensaje"</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="na">message</span><span class="w"> </span><span class="o">?:</span><span class="w"> </span><span class="s">"Operacion no realizada"</span><span class="p">)))</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="nd">@ExceptionHandler</span><span class="p">(</span><span class="n">DataIntegrityViolationException</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">integridad</span><span class="p">():</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">status</span><span class="p">(</span><span class="m">409</span><span class="p">)</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">            </span><span class="p">.</span><span class="na">body</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span><span class="s">"mensaje"</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">"Los datos incumplen una restriccion o tienen registros relacionados."</span><span class="p">))</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>Centraliza estos errores para los controladores REST. No cambia las respuestas de los controladores de formularios HTML.</li>
+<li>Envía el estado HTTP y un mensaje JSON. No devolvemos al cliente detalles internos de la base de datos. El segundo manejador cubre, por ejemplo, una clave duplicada o un borrado impedido por una relación.</li>
+</ol>
+<h2 id="ampliar-el-servicio">Ampliar el servicio<a class="headerlink" href="#ampliar-el-servicio" title="Permanent link">&para;</a></h2>
+<p>En <strong><code>ComarcaService.kt</code></strong>, añade estos imports sin eliminar los existentes:</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.dto.CrearComarcaDTO</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.dto.ActualizarComarcaDTO</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.model.Comarca</span>
+</span></code></pre></div>
+<p>Añade los siguientes métodos <strong>dentro de las llaves de la clase <code>ComarcaService</code></strong>, conservando los de listado y búsqueda.</p>
+<div class="admonition note">
+<p class="admonition-title">Recuerda</p>
+<p>La clase tiene <code>@Transactional(readOnly = true)</code>. Por eso añadimos <strong><code>@Transactional</code> a <code>crear</code>, <code>actualizar</code> y <code>eliminar</code></strong>: estos métodos necesitan una transacción de escritura. <code>obtenerPorId</code> conserva la configuración de lectura de la clase. Puedes repasar la <a href="../dto/#por-que-utilizamos-transactional">explicación de las transacciones en el servicio</a>.</p>
+</div>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">obtenerPorId</span><span class="p">(</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">comarca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="p">.</span><span class="na">orElseThrow</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">404</span><span class="p">,</span><span class="w"> </span><span class="s">"Comarca no encontrada"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="p">(</span><span class="n">comarca</span><span class="p">.</span><span class="na">nomC</span><span class="p">,</span><span class="w"> </span><span class="n">comarca</span><span class="p">.</span><span class="na">provincia</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">}</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nd">@Transactional</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">crear</span><span class="p">(</span><span class="n">datos</span><span class="p">:</span><span class="w"> </span><span class="n">CrearComarcaDTO</span><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">datos</span><span class="p">.</span><span class="na">nomC</span><span class="p">.</span><span class="na">isBlank</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">datos</span><span class="p">.</span><span class="na">nomC</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">400</span><span class="p">,</span><span class="w"> </span><span class="s">"El nombre debe tener entre 1 y 50 caracteres"</span><span class="p">)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="n">comprobarProvincia</span><span class="p">(</span><span class="n">datos</span><span class="p">.</span><span class="na">provincia</span><span class="p">)</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">existsById</span><span class="p">(</span><span class="n">datos</span><span class="p">.</span><span class="na">nomC</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">409</span><span class="p">,</span><span class="w"> </span><span class="s">"La comarca ya existe"</span><span class="p">)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">comarca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">Comarca</span><span class="p">(</span><span class="n">datos</span><span class="p">.</span><span class="na">nomC</span><span class="p">,</span><span class="w"> </span><span class="n">datos</span><span class="p">.</span><span class="na">provincia</span><span class="p">))</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="p">(</span><span class="n">comarca</span><span class="p">.</span><span class="na">nomC</span><span class="p">,</span><span class="w"> </span><span class="n">comarca</span><span class="p">.</span><span class="na">provincia</span><span class="p">)</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="p">}</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="nd">@Transactional</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">actualizar</span><span class="p">(</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="n">datos</span><span class="p">:</span><span class="w"> </span><span class="n">ActualizarComarcaDTO</span><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">    </span><span class="n">comprobarProvincia</span><span class="p">(</span><span class="n">datos</span><span class="p">.</span><span class="na">provincia</span><span class="p">)</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">comarca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">        </span><span class="p">.</span><span class="na">orElseThrow</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">404</span><span class="p">,</span><span class="w"> </span><span class="s">"Comarca no encontrada"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span><span class="n">comarca</span><span class="p">.</span><span class="na">provincia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">datos</span><span class="p">.</span><span class="na">provincia</span><span class="w"> </span><span class="c1">// (3)!</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">    </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">comarca</span><span class="p">)</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="p">(</span><span class="n">comarca</span><span class="p">.</span><span class="na">nomC</span><span class="p">,</span><span class="w"> </span><span class="n">comarca</span><span class="p">.</span><span class="na">provincia</span><span class="p">)</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="p">}</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="nd">@Transactional</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">eliminar</span><span class="p">(</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">comarca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">        </span><span class="p">.</span><span class="na">orElseThrow</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">404</span><span class="p">,</span><span class="w"> </span><span class="s">"Comarca no encontrada"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="w">    </span><span class="n">comarcaRepository</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">comarca</span><span class="p">)</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="p">}</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="kd">private</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">comprobarProvincia</span><span class="p">(</span><span class="n">provincia</span><span class="p">:</span><span class="w"> </span><span class="kt">String?</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">provincia</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">provincia</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">25</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">ErrorOperacion</span><span class="p">(</span><span class="m">400</span><span class="p">,</span><span class="w"> </span><span class="s">"La provincia admite como maximo 25 caracteres"</span><span class="p">)</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li><code>findById</code> devuelve un <code>Optional</code>: puede contener una entidad o estar vacío. <code>orElseThrow</code> recupera el valor o lanza la excepción indicada.</li>
+<li>Esta anotación sustituye la configuración de solo lectura de la clase para este método. Spring gestiona la transacción cuando el controlador llama al servicio: confirma al terminar correctamente y revierte si sale una excepción no comprobada, como <code>ErrorOperacion</code>. No escribimos <code>commit()</code> ni <code>rollback()</code> manualmente.</li>
+<li>Modificamos únicamente el campo permitido de la entidad recuperada. El identificador sigue siendo el de la URL.</li>
+</ol>
+<p>La base de datos sigue aplicando sus restricciones aunque comprobemos antes los datos. Por ejemplo, no podemos borrar una comarca que tenga poblaciones asociadas.</p>
+<h2 id="ampliar-el-controlador-rest">Ampliar el controlador REST<a class="headerlink" href="#ampliar-el-controlador-rest" title="Permanent link">&para;</a></h2>
+<h3 id="codigo-del-controlador">Código del controlador<a class="headerlink" href="#codigo-del-controlador" title="Permanent link">&para;</a></h3>
+<p>En <strong><code>ComarcaRestController.kt</code></strong>, añade estos imports:</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.dto.CrearComarcaDTO</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.example.springjpa.dto.ActualizarComarcaDTO</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">import</span><span class="w"> </span><span class="nn">org.springframework.http.HttpStatus</span>
+</span></code></pre></div>
+<p>Añade estos métodos <strong>dentro de la clase <code>ComarcaController</code></strong>, sin borrar los de listado y búsqueda. Conserva los imports anteriores, incluido <code>org.springframework.web.bind.annotation.*</code>.</p>
+<div class="language-kotlin highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">"/{id}"</span><span class="p">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">obtenerPorId</span><span class="p">(</span><span class="nd">@PathVariable</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="c1">// (1)!</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">comarcaService</span><span class="p">.</span><span class="na">obtenerPorId</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nd">@PostMapping</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nd">@ResponseStatus</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">CREATED</span><span class="p">)</span><span class="w"> </span><span class="c1">// (2)!</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">crear</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">datos</span><span class="p">:</span><span class="w"> </span><span class="n">CrearComarcaDTO</span><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="c1">// (3)!</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">comarcaService</span><span class="p">.</span><span class="na">crear</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nd">@PutMapping</span><span class="p">(</span><span class="s">"/{id}"</span><span class="p">)</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">actualizar</span><span class="p">(</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="nd">@PathVariable</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">datos</span><span class="p">:</span><span class="w"> </span><span class="n">ActualizarComarcaDTO</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="p">):</span><span class="w"> </span><span class="n">ComarcaDTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">comarcaService</span><span class="p">.</span><span class="na">actualizar</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">datos</span><span class="p">)</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="nd">@DeleteMapping</span><span class="p">(</span><span class="s">"/{id}"</span><span class="p">)</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="nd">@ResponseStatus</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">NO_CONTENT</span><span class="p">)</span><span class="w"> </span><span class="c1">// (4)!</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">eliminar</span><span class="p">(</span><span class="nd">@PathVariable</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="n">comarcaService</span><span class="p">.</span><span class="na">eliminar</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li><code>@PathVariable</code> toma el identificador del segmento de la URL. No es lo mismo que <code>@RequestParam</code>, que lee parámetros como <code>?provincia=Alacant</code>.</li>
+<li>Un alta correcta responde con 201. El DTO devuelto se convierte a JSON.</li>
+<li><code>@RequestBody</code> convierte el cuerpo JSON en el DTO de entrada. Los formularios HTML anteriores utilizaban <code>@ModelAttribute</code>.</li>
+<li>Un borrado correcto responde con 204, sin cuerpo.</li>
+</ol>
+<details class="note">
+<summary>¿Es necesario HttpStatus? ¿Por qué lo utilizamos?</summary>
+<p><strong>No es obligatorio utilizar <code>HttpStatus</code></strong>, pero conviene devolver el código HTTP adecuado. Sin <code>@ResponseStatus</code>, los métodos de este ejemplo responderían normalmente con 200 si terminan correctamente. La operación seguiría funcionando, pero no distinguiríamos la creación (201) ni el borrado sin contenido (204).</p>
+<p>Cuando el controlador responde a una petición, no solo puede devolver datos JSON: también envía un <strong>código de estado HTTP</strong>. Ese código permite al cliente, como Postman, saber si la operación se ha realizado correctamente y qué tipo de resultado ha producido.</p>
+<p><strong><code>HttpStatus</code> es un <code>enum</code> de Spring</strong> que proporciona nombres descriptivos para esos códigos. Por ejemplo, <code>HttpStatus.CREATED</code> representa el código <strong>201</strong>. No realiza la operación ni comprueba los datos: lo utilizamos para indicar el estado de la respuesta.</p>
+<p>En <code>ComarcaController</code> lo combinamos con <strong><code>@ResponseStatus</code></strong>, que establece el código de una respuesta correcta del método:</p>
+<table>
+<thead>
+<tr>
+<th>Método del controlador</th>
+<th>Estado de la respuesta correcta</th>
+<th>Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>obtenerPorId</code> y los listados</td>
+<td><strong>200 OK</strong></td>
+<td>Devuelven los datos consultados. En estos métodos Spring utiliza 200 por defecto, sin añadir <code>@ResponseStatus</code>.</td>
+</tr>
+<tr>
+<td><code>crear</code></td>
+<td><strong>201 CREATED</strong></td>
+<td>Informa de que se ha creado un recurso y devuelve su DTO. Lo indicamos con <code>@ResponseStatus(HttpStatus.CREATED)</code>.</td>
+</tr>
+<tr>
+<td><code>actualizar</code></td>
+<td><strong>200 OK</strong></td>
+<td>Devuelve el DTO con los datos actualizados. No necesitamos cambiar el estado predeterminado.</td>
+</tr>
+<tr>
+<td><code>eliminar</code></td>
+<td><strong>204 NO_CONTENT</strong></td>
+<td>Informa de que el borrado se ha realizado correctamente, sin enviar un cuerpo de respuesta. Lo indicamos con <code>@ResponseStatus(HttpStatus.NO_CONTENT)</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>La anotación <code>@PostMapping</code> indica <strong>qué petición recibe</strong> el método; <code>@ResponseStatus</code> indica <strong>con qué estado responde</strong> cuando termina correctamente. Son funciones distintas: utilizar POST no establece automáticamente una respuesta 201.</p>
+<p>Esta configuración pertenece al controlador porque forma parte de la comunicación HTTP con el cliente. El servicio se encarga de realizar la operación. Si se produce un error, el componente <code>ErroresApi</code> que hemos creado devuelve el estado correspondiente, como 400, 404 o 409, en lugar del estado de éxito.</p>
+</details>
+<h2 id="probar-con-postman">Probar con Postman<a class="headerlink" href="#probar-con-postman" title="Permanent link">&para;</a></h2>
+<p>Arranca la aplicación. En Postman crea una colección para guardar las peticiones. Para POST y PUT, selecciona <strong>Body → raw → JSON</strong>; así se envía el tipo de contenido <code>application/json</code>.</p>
+<ol>
+<li>
+<p>Envía <strong>POST</strong> a <code>http://localhost:8080/api/comarcas</code> con este cuerpo:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="nt">"nomC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ComarcaPrueba"</span><span class="p">,</span><span class="w"> </span><span class="nt">"provincia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alacant"</span><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Consulta con <strong>GET</strong> <code>http://localhost:8080/api/comarcas/ComarcaPrueba</code>.</p>
+</li>
+<li>
+<p>Envía <strong>PUT</strong> a esa misma dirección con:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="nt">"provincia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Valencia"</span><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Repite GET y comprueba la nueva provincia.</p>
+</li>
+<li>Envía <strong>DELETE</strong> a esa misma dirección. Usa una comarca de prueba sin poblaciones asociadas.</li>
+<li>Repite GET: debe devolver 404 con un mensaje.</li>
+</ol>
+<p>Comprueba también un POST con nombre vacío (400) y un POST con un nombre ya existente (409).</p>
+<p>Los endpoints HTML de <code>/comarcas</code> siguen siendo independientes. Esta sección amplía solamente <code>/api/comarcas</code>.</p>
+<p>Referencias: <a href="https://spring.io/guides/gs/rest-service/">controladores REST de Spring</a> y <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">transacciones con @Transactional</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Alicia Salvador — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"> Licencia CC BY-NC-SA 4.0 </a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["toc.follow", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.indexes", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view", "header.autohide"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../../js/lightbox.js"></script>
+      
+    
+  </body>
+</html>

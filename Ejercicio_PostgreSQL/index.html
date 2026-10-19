@@ -1,0 +1,1463 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://asalvadorc.github.io/AD_BD_Relacionales_/Ejercicio_PostgreSQL/">
+      
+      
+        <link rel="prev" href="../Transacciones/">
+      
+      
+      
+      <link rel="icon" href="../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>📝 Ejercicio obligatorio de PostgreSQL - AD - Bases de Datos Relacionales</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ejercicio-obligatorio-gestion-de-institutos-con-postgresql" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="AD - Bases de Datos Relacionales" class="md-header__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AD - Bases de Datos Relacionales
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              📝 Ejercicio obligatorio de PostgreSQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartir" aria-label="Compartir" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+    
+  
+  🏠 Inicio
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Entorno/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  T5. BD relacionales
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AD - Bases de Datos Relacionales" class="md-nav__button md-logo" aria-label="AD - Bases de Datos Relacionales" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    AD - Bases de Datos Relacionales
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href=".." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    🏠 Inicio
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            🏠 Inicio
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RA_CE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹RA y CE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Guia_estudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Guía de estudio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    T5. BD relacionales
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            T5. BD relacionales
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entorno/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y ubicación de los ejemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Introducción
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹JDBC
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            🔹JDBC
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conectores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sentencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Peticiones a la BD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹SQLite
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            🔹SQLite
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entorno_SQlite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD Tienda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Operaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Objetos_Kotlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ejercicio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de SQLite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹PostgreSQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            🔹PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker_instrucciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Entorno y la BD geo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Conectores_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Conexión a PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Operaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Objetos_Kotlin_PostgreSQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹DataClass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Procedimientos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Funciones y procedimientos almacenados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔹Recursos, errores y transacciones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            🔹Recursos, errores y transacciones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Recursos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Gestión de recursos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Transacciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔹Transacciones y control de errores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de PostgreSQL
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    📝 Ejercicio obligatorio de PostgreSQL
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enunciado" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Enunciado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-de-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Menú de la aplicación
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operaciones-que-debes-realizar" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Operaciones que debes realizar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condiciones-y-comprobacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Condiciones y comprobación
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      📩 Entrega
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Rúbrica de evaluación
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enunciado" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Enunciado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-de-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Menú de la aplicación
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operaciones-que-debes-realizar" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Operaciones que debes realizar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condiciones-y-comprobacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Condiciones y comprobación
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      📩 Entrega
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Rúbrica de evaluación
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ejercicio-obligatorio-gestion-de-institutos-con-postgresql">📝 Ejercicio obligatorio: gestión de institutos con PostgreSQL<a class="headerlink" href="#ejercicio-obligatorio-gestion-de-institutos-con-postgresql" title="Permanent link">&para;</a></h1>
+<h2 id="enunciado">📋 Enunciado<a class="headerlink" href="#enunciado" title="Permanent link">&para;</a></h2>
+<p>Utilizando la base de datos <strong><code>geo</code></strong> preparada en clase, desarrolla un programa en <strong>Kotlin con JDBC</strong> que consulte y gestione institutos. Puedes reutilizar el objeto <code>DatabaseLocal</code> y apoyarte en los ejemplos del tema.</p>
+<p>Organiza el código en funciones e invócalas desde un <strong>menú interactivo de consola</strong> en <code>main</code>. Solicita al usuario los datos necesarios para cada operación y pásalos como parámetros a las funciones.</p>
+<h2 id="menu-de-la-aplicacion">Menú de la aplicación<a class="headerlink" href="#menu-de-la-aplicacion" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>===== GESTIÓN DE INSTITUTOS =====
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>1. Consultar institutos de una población
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>2. Añadir un instituto de prueba
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>3. Eliminar un instituto de prueba
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>4. Consultar institutos de una comarca
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>5. Cambiar la dirección de un instituto
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>6. Insertar dos institutos en una transacción
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>0. Salir
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Selecciona una opción:
+</span></code></pre></div>
+<p>El menú debe repetirse hasta seleccionar <strong>0</strong> y volver a mostrarse después de cada operación. Si se introduce una opción inexistente, muestra un mensaje y vuelve al menú. No se exige una validación completa de los datos introducidos.</p>
+<p>En la opción <strong>6</strong> puedes utilizar datos de prueba definidos en el código. No necesitas un submenú ni un sistema de pruebas automáticas.</p>
+<h2 id="operaciones-que-debes-realizar">🛠️ Operaciones que debes realizar<a class="headerlink" href="#operaciones-que-debes-realizar" title="Permanent link">&para;</a></h2>
+<h3 id="1-consultar-institutos">1. Consultar institutos<a class="headerlink" href="#1-consultar-institutos" title="Permanent link">&para;</a></h3>
+<p>Dado el código de una población, consulta sus institutos y muestra su <strong>código, nombre y dirección</strong>, ordenados por nombre. Guarda los resultados en una lista de objetos de una <strong><code>data class Institut</code></strong> y contempla los campos que puedan contener <code>NULL</code>.</p>
+<h3 id="2-anadir-y-eliminar-un-instituto">2. Añadir y eliminar un instituto<a class="headerlink" href="#2-anadir-y-eliminar-un-instituto" title="Permanent link">&para;</a></h3>
+<p>Inserta un instituto de prueba con código nuevo, nombre, dirección y código de una población existente. Más adelante, después de probar el cambio de dirección del apartado 4, elimínalo. Muestra el número de filas afectadas que devuelve <code>executeUpdate()</code>. Utiliza datos válidos: el código del instituto admite hasta ocho caracteres. No necesitas programar comprobaciones previas de las claves o las longitudes.</p>
+<h3 id="3-utilizar-una-funcion-almacenada">3. Utilizar una función almacenada<a class="headerlink" href="#3-utilizar-una-funcion-almacenada" title="Permanent link">&para;</a></h3>
+<p>Utiliza la función <strong><code>instituts_de_comarca(p_nom_c TEXT)</code></strong> del apartado de funciones almacenadas de los apuntes. Puedes reutilizar su definición SQL. Solicita el nombre de una comarca, invoca la función desde Kotlin mediante <code>SELECT * FROM instituts_de_comarca(?)</code> y muestra los resultados recorriendo el <code>ResultSet</code>, como en el ejemplo. No necesitas convertir esta consulta en otra lista de objetos.</p>
+<h3 id="4-utilizar-un-procedimiento-almacenado">4. Utilizar un procedimiento almacenado<a class="headerlink" href="#4-utilizar-un-procedimiento-almacenado" title="Permanent link">&para;</a></h3>
+<p>Crea el procedimiento <strong><code>cambiar_direccion_institut</code></strong>, que reciba el código de un instituto y su nueva dirección y la actualice. Invócalo desde Kotlin mediante <code>CallableStatement</code> y comprueba el cambio con una consulta.</p>
+<p>No se exigen parámetros de salida ni validaciones dentro del procedimiento. La actualización mediante este procedimiento completa el CRUD: no necesitas repetirla con un <code>UPDATE</code> directo desde Kotlin.</p>
+<h3 id="5-crear-una-transaccion">5. Crear una transacción<a class="headerlink" href="#5-crear-una-transaccion" title="Permanent link">&para;</a></h3>
+<p>Crea una función que inserte <strong>dos institutos de prueba dentro de una misma transacción</strong>. Deben guardarse los dos o no guardarse ninguno.</p>
+<ul>
+<li>Utiliza la <strong>misma conexión JDBC</strong> para ambas inserciones y desactiva la confirmación automática con <code>autoCommit = false</code>.</li>
+<li>Emplea códigos nuevos de hasta ocho caracteres y códigos de poblaciones existentes. Puedes escribir las dos inserciones dentro de la propia función, siguiendo los ejemplos de transacciones de los apuntes.</li>
+<li>Si ambas inserciones se completan correctamente, confirma los cambios con <strong><code>commit()</code></strong>.</li>
+<li>Si alguna falla, captura el error y deshaz toda la operación con <strong><code>rollback()</code></strong>. No confirmes la primera inserción por separado.</li>
+<li>Abre la conexión con <code>DatabaseLocal.getConnection().use</code> y restablece <code>autoCommit = true</code> en un bloque <code>finally</code>, como en el ejemplo de los apuntes.</li>
+</ul>
+<p>Comprueba desde la opción de consulta del menú que se han guardado los dos institutos. Puedes utilizar la opción de eliminación para borrarlos después. No se exige provocar un error ni programar comprobaciones o limpieza automáticas; sí debe estar incluido el <code>rollback()</code> en el bloque <code>catch</code>.</p>
+<h2 id="condiciones-y-comprobacion">✅ Condiciones y comprobación<a class="headerlink" href="#condiciones-y-comprobacion" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Utiliza <strong>parámetros JDBC</strong> para los valores variables y <strong><code>use</code></strong> para cerrar los recursos.</li>
+<li>Gestiona los errores con <code>try/catch</code> y muestra mensajes comprensibles.</li>
+<li>Crea la función y el procedimiento en PostgreSQL antes de invocarlos desde Kotlin.</li>
+<li>Trabaja únicamente con registros de prueba para las modificaciones y el borrado.</li>
+<li>Comprueba manualmente las opciones del menú. Para probar la modificación y el borrado, utiliza el instituto que hayas insertado previamente.</li>
+<li>Ejecuta la transacción y consulta los dos institutos insertados. Las comprobaciones pueden hacerse utilizando las opciones del propio menú.</li>
+</ul>
+<h2 id="entrega">📩 Entrega<a class="headerlink" href="#entrega" title="Permanent link">&para;</a></h2>
+<p>Entrega un ZIP con:</p>
+<ul>
+<li>El proyecto Kotlin.</li>
+<li>Un archivo SQL con la función utilizada y tu procedimiento.</li>
+<li>Un breve <code>README.md</code> con la configuración de conexión y los pasos para ejecutar el programa, indicando que primero hay que crear la función y el procedimiento. No se exige un informe de pruebas ni capturas de cada operación.</li>
+</ul>
+<p>Utilizamos la base <code>geo</code> de clase: no necesitas volver a entregar sus scripts de creación y carga ni la configuración de Docker.</p>
+<h2 id="rubrica-de-evaluacion">📊 Rúbrica de evaluación<a class="headerlink" href="#rubrica-de-evaluacion" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th style="text-align: right;">Puntos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conexión JDBC</td>
+<td style="text-align: right;">0,5</td>
+</tr>
+<tr>
+<td>Menú interactivo</td>
+<td style="text-align: right;">0,5</td>
+</tr>
+<tr>
+<td>Consulta parametrizada y lista de objetos</td>
+<td style="text-align: right;">1,5</td>
+</tr>
+<tr>
+<td>Inserción y eliminación</td>
+<td style="text-align: right;">1,5</td>
+</tr>
+<tr>
+<td>Función almacenada e invocación desde Kotlin</td>
+<td style="text-align: right;">1,5</td>
+</tr>
+<tr>
+<td>Procedimiento de actualización e invocación desde Kotlin</td>
+<td style="text-align: right;">1,5</td>
+</tr>
+<tr>
+<td>Transacción</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>Gestión de errores y cierre de recursos</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>Comprobaciones y documentación de la entrega</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="../Transacciones/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: 🔹Transacciones y control de errores">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                🔹Transacciones y control de errores
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Alicia Salvador — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"> Licencia CC BY-NC-SA 4.0 </a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["toc.follow", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.indexes", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view", "header.autohide"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../js/lightbox.js"></script>
+      
+    
+  </body>
+</html>
