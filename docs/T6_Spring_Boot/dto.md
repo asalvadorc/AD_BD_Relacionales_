@@ -1,141 +1,175 @@
-# Servicios y DTO
+# Separar responsabilidades: servicios y DTO
 
-Hasta ahora, los ejemplos mostraban cómo devolver directamente las entidades desde el controlador. Aunque esto funciona, no es una buena práctica en aplicaciones reales, ya que expone el modelo de la base de datos y puede provocar problemas de seguridad y mantenimiento.
+Hasta ahora, los controladores consultan directamente el repositorio. Vamos a separar **cómo recibimos una petición**, **qué operaciones realizamos** y **qué datos devolvemos**. No cambiamos la base de datos: reorganizamos el código de la aplicación.
 
-En este ejemplo se introduce el uso de DTO (Data Transfer Object) para separar las entidades JPA de los datos que se envían al cliente.
+## Qué es un DTO
 
-En los primeros ejemplos el controlador llamaba al repositorio. Recuperamos ahora la capa de servicio que ya utilizamos en Ficheros: concentra la lógica de negocio y puede transformar entidades en DTO. Un servicio es útil aunque no utilicemos DTO.
-En resumen, el repositorio sigue trabajando con entidades, el servicio transforma esas entidades en DTO y el controlador devuelve los DTO al cliente.
+**DTO** significa **Data Transfer Object**, es decir, **objeto de transferencia de datos**. Es un objeto cuya función es agrupar los datos que queremos enviar o recibir. En Kotlin podemos representarlo con una `data class` sencilla.
 
-**Hasta ahora el Controller**|**Con Service + DTO**, el objetivo es
------------------------------|------------------------------------
-- Accede directamente al Repository|- El controller solo gestiona peticiones y vistas
-- Trabaja con entidades JPA|- La lógica de negocio y transformación va al Service
-- Decide qué datos se muestran en la vista|
- BD → Entity → Repository → Controller → Vista| BD → Entity → Repository → Service → DTO → Controller → Vista
+En nuestra API, el cliente es quien realiza la petición, por ejemplo el navegador o Postman. Hasta ahora devolvíamos directamente las entidades obtenidas del repositorio. Con un DTO, elegimos qué datos de esas entidades queremos incluir en la respuesta.
 
-**Cuándo utilizar DTO en las operaciones CRUD**{.azul}
+Por ejemplo, para mostrar un instituto podríamos necesitar solo su nombre y el nombre de su población. No tendríamos que enviar todas sus columnas ni el objeto completo de la población: podríamos preparar un DTO con esos dos valores.
 
-Los DTO se utilizan para leer y comunicar datos, no para persistirlos:
+**Un DTO no es una tabla nueva ni una consulta**. Contiene datos en memoria, pero no se conecta a PostgreSQL ni guarda cambios por sí mismo. Tampoco es el JSON: es el objeto Kotlin que Spring Web puede convertir en JSON al enviar la respuesta.
 
-| Operación | Uso de DTO | Explicación |
-|----------|-----------|-------------|
-| ➕ CREATE | ⚠️ A veces | Normalmente se puede usar directamente la **entidad**. El **DTO solo es necesario** si el formulario no coincide con la entidad. |
-| 🔍 READ | ✅ Sí | Al listar o mostrar datos es **recomendable usar DTO**, ya que los datos salen de la aplicación hacia el exterior. |
-| ✏️ UPDATE | ⚠️ A veces | Se utiliza DTO cuando **no queremos permitir modificar todos los campos** de la entidad. |
-| 🗑️ DELETE | ❌ No | No se usa DTO, ya que únicamente se envía el **identificador** del objeto a eliminar. |
+### Diferencia entre entidad y DTO
 
+| Entidad JPA | DTO |
+|---|---|
+| Representa datos persistentes y su relación con la base de datos. | Representa los datos que queremos intercambiar con el cliente. |
+| Utiliza anotaciones de mapeo como `@Entity`, `@Id` y `@Column`. | No necesita anotaciones de mapeo JPA. |
+| Puede tener relaciones con otras entidades. | Puede incluir solo los valores necesarios, incluso procedentes de varias entidades. |
+| Es el tipo con el que trabaja el repositorio. | Es el tipo que utilizaremos para recibir datos o devolver respuestas desde la API. |
 
+En este primer ejemplo, `ComarcaDTO` tendrá los mismos campos que `Comarca`: `nomC` y `provincia`. Aunque la respuesta JSON se vea igual, serán clases con responsabilidades distintas. Más adelante podremos cambiar los datos de la respuesta sin modificar el mapeo de la tabla.
 
-**Cambios que se introducen en cada capa**{.azul}
+### Para qué lo utilizaremos
 
-👉**Paquetes que <span style="color:blue">NO</span> cambian al usar DTO**
+- **Como salida:** para decidir qué información devolvemos, sin enviar directamente toda la entidad.
+- **Como entrada:** para definir qué campos puede enviar el cliente al crear o modificar un registro. Por ejemplo, un DTO de actualización puede omitir la clave primaria para no permitir cambiarla.
 
-- **model** → Las entidades JPA (@Entity) siguen siendo las mismas.
+Un DTO ayuda a separar la API del modelo de persistencia, pero **no valida los datos ni garantiza la seguridad por sí solo**: las comprobaciones deben programarse. Primero veremos DTO de salida; los de entrada se utilizarán al escribir datos desde la API.
 
-- **repository** → Continúa trabajando con entidades y Spring Data JPA.
+## Qué papel tiene el servicio
 
-👉**Paquetes que <span style="color:blue">SÍ</span> cambian al usar DTO**
+Un **servicio** reúne las operaciones y comprobaciones de negocio. En este ejemplo también se encargará de **transformar las entidades del repositorio en DTO**: leerá sus propiedades y construirá los objetos de respuesta.
 
+Son conceptos distintos: el servicio realiza operaciones y el DTO transporta los datos. Un servicio puede existir sin utilizar DTO.
 
-- **dto** (nuevo paquete) → No depende de JPA y No tiene anotaciones
+## Qué cambia en el proyecto
 
-**ComarcaDTO.kt**
+| Elemento | Qué haremos |
+|---|---|
+| `model/Comarca.kt` | Se conserva: es la entidad que representa la tabla. |
+| `repository/ComarcaRepository.kt` | Se conserva: sigue trabajando con entidades. |
+| `dto/ComarcaDTO.kt` | Se crea: define los datos de salida. |
+| `service/ComarcaService.kt` | Se crea: consulta el repositorio y transforma los resultados. |
+| `controller/ComarcaRestController.kt` | Se sustituye: ahora llama al servicio. |
+| Controlador MVC y plantillas | Se conservan; este paso modifica solo la API JSON. |
 
-        package org.example.springjpa.dto
+Crea los paquetes `dto` y `service` dentro de `org.example.springjpa` si no existen. No son carpetas generadas automáticamente.
 
-        data class ComarcaDTO(
-            val nomC: String,         //Cambiamos nom_c → nomC (más claro para la API)
-            val provincia: String?
-        )
+```text
+Petición HTTP → Controlador REST → Servicio → Repositorio → Base de datos
+Respuesta JSON ← DTO ← Transformación de la entidad
+```
 
+## Definir los datos de salida
 
+Crea **`dto/ComarcaDTO.kt`**:
 
-- **service** (nuevo paquete) → Aquí es donde introducimos DTO correctamente.
+```kotlin
+package org.example.springjpa.dto
 
-**ComarcaService.kt**
+data class ComarcaDTO( // (1)!
+    val nomC: String,
+    val provincia: String?
+)
+```
 
-        package org.example.springjpa.service
+1. El DTO es una `data class`, sin `@Entity` ni mapeo de columnas. Aquí tiene los mismos campos que la entidad para mantener el ejemplo sencillo, pero permite decidir qué información enviamos sin exponer directamente la entidad.
 
-        import org.example.springjpa.dto.ComarcaDTO
-        import org.example.springjpa.repository.ComarcaRepository
-        import org.springframework.stereotype.Service
+No estamos renombrando `nom_c` aquí: la propiedad de la entidad ya se llama `nomC`. El mapeo entre columna y propiedad se definió con `@Column`.
 
-        @Service
-        class ComarcaService(
-            private val comarcaRepository: ComarcaRepository //inyecta el Repository
-        ) {
+## Crear el servicio
 
-            /**
-            * Devuelve el listado completo de comarcas.
-            * Se define en la capa Service para separar la lógica de negocio
-            * del controller y devolver los datos ya transformados en DTO,
-            * evitando que la vista trabaje directamente con entidades.
-            */
-            fun obtenerComarcas(): List<ComarcaDTO> {   //los datos van a salir hacia la vista
-                return comarcaRepository.findAll()
-                    .map { comarca ->     //Se usa map para transformar cada entidad en un DTO
-                        ComarcaDTO(       //Se seleccionan solo los campos necesarios
-                            nomC = comarca.nomC, //Se pueden renombrar campos
-                            provincia = comarca.provincia
-                        )
-                    }
-            }
+### Por qué utilizamos @Transactional
 
+Una **transacción** agrupa operaciones de base de datos en una unidad de trabajo. En JDBC gestionábamos la confirmación y la reversión con `commit()` y `rollback()`. Con Spring podemos declarar ese límite mediante **`@Transactional`**, sin escribir esas llamadas manualmente.
 
-            // Método específico para buscar comarcas por provincia.
-            //Se define para que el controller no acceda al repository
-            // y para centralizar la conversión Entity → DTO.
+**No es obligatorio añadirla a todos los métodos.** Muchos métodos heredados de `JpaRepository` ya tienen su propia configuración transaccional. La utilizamos en el servicio para que todas las llamadas al repositorio que forman una misma operación compartan una transacción.
 
-            fun obtenerComarcasPorProvincia(provincia: String): List<ComarcaDTO> {
-                return comarcaRepository.findByProvincia(provincia)
-                    .map {
-                        ComarcaDTO(
-                            nomC = it.nomC,
-                            provincia = it.provincia ?: ""
-                        )
-                    }
-             }
+En este ejemplo solo consultamos datos, por lo que anotamos la clase con **`@Transactional(readOnly = true)`**. Así establecemos la configuración predeterminada de lectura para sus métodos. Es una indicación que puede permitir optimizaciones, **no una protección que impida cualquier escritura**.
+
+Más adelante, al añadir métodos que modifiquen datos, utilizaremos esta distinción:
+
+| Dónde se coloca | Configuración | Para qué se utiliza |
+|---|---|---|
+| En la clase | `@Transactional(readOnly = true)` | Configuración predeterminada para listar, buscar y consultar. |
+| En un método de escritura | `@Transactional` | Sustituye la configuración de la clase por una transacción de lectura y escritura para crear, actualizar o eliminar. |
+
+Por ejemplo, **consultar una comarca → modificar su provincia → guardar** formará una sola operación en el servicio. Spring confirma al terminar correctamente y, por defecto, revierte si sale del método una excepción no comprobada (`RuntimeException`) o un `Error`. Nuestra excepción `ErrorOperacion`, que veremos después, será de ese tipo.
+
+La gestión transaccional se aplica cuando el controlador llama al servicio gestionado por Spring. No necesitamos repetir la anotación en cada método de lectura: hereda la configuración de la clase.
+
+### Código del servicio
+
+Crea **`service/ComarcaService.kt`**:
+
+```kotlin
+package org.example.springjpa.service
+
+import org.example.springjpa.dto.ComarcaDTO
+import org.example.springjpa.repository.ComarcaRepository
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+@Service // (1)!
+@Transactional(readOnly = true) // (2)!
+class ComarcaService(private val comarcaRepository: ComarcaRepository) {
+    fun obtenerComarcas(): List<ComarcaDTO> =
+        comarcaRepository.findAll().map { comarca -> // (3)!
+            ComarcaDTO(comarca.nomC, comarca.provincia)
         }
 
-
-
-- **controller** → Cambiamo sel conrolador. Ahora devuelve DTO
-
-**ComarcaRestController.kt**
-
-        package org.example.springjpa.controller
-
-        import org.example.springjpa.dto.ComarcaDTO
-        import org.example.springjpa.service.ComarcaService
-        import org.springframework.web.bind.annotation.*
-
-        @RestController
-        @RequestMapping("/api/comarcas")
-        class ComarcaController(
-            private val comarcaService: ComarcaService
-        ) {
-
-            // Listado general
-            @GetMapping
-            fun obtenerComarcas(): List<ComarcaDTO> =
-                comarcaService.obtenerComarcas()
-
-            // Búsqueda por provincia
-            @GetMapping("/buscar")
-            fun obtenerComarcasPorProvincia(
-                @RequestParam provincia: String
-            ): List<ComarcaDTO> =
-                comarcaService.obtenerComarcasPorProvincia(provincia)
+    fun obtenerComarcasPorProvincia(provincia: String): List<ComarcaDTO> =
+        comarcaRepository.findByProvincia(provincia).map { comarca ->
+            ComarcaDTO(comarca.nomC, comarca.provincia) // (4)!
         }
+}
+```
 
-![alt text](img/image-35.png)
+1. Spring detecta el servicio y puede proporcionarlo al controlador mediante el constructor, igual que hacía con el repositorio.
+2. Las llamadas al servicio se ejecutan en una transacción de lectura. Importamos la anotación de Spring. No es una validación de permisos ni una garantía de que sea imposible escribir.
+3. `map` crea una nueva lista: transforma cada entidad en un DTO. Una lista vacía se transforma en otra lista vacía.
+4. Mantenemos `null` cuando la provincia no tiene valor, igual que en el listado general. No cambiamos arbitrariamente un dato ausente por una cadena vacía.
 
-!!!Tip ""
-    El DTO no afecta a cómo se accede a la aplicación, sino a qué información se devuelve y cómo se presenta.
+## Utilizar el servicio desde el controlador
 
------------
+**Sustituye** el contenido de **`controller/ComarcaRestController.kt`**, manteniendo la clase `ComarcaController` del primer ejemplo. No crees otro controlador para las mismas rutas.
 
+```kotlin
+package org.example.springjpa.controller
 
+import org.example.springjpa.dto.ComarcaDTO
+import org.example.springjpa.service.ComarcaService
+import org.springframework.web.bind.annotation.*
 
-Sustituye la versión anterior del controlador REST; no mantengas dos controladores para `/api/comarcas`. En las operaciones de escritura del proyecto utiliza DTO de entrada con los campos permitidos y coloca `@Transactional` en los métodos de servicio que deban ejecutarse como una unidad.
+@RestController
+@RequestMapping("/api/comarcas")
+class ComarcaController(private val comarcaService: ComarcaService) { // (1)!
+    @GetMapping
+    fun obtenerComarcas(): List<ComarcaDTO> =
+        comarcaService.obtenerComarcas()
+
+    @GetMapping("/buscar")
+    fun obtenerComarcasPorProvincia(
+        @RequestParam provincia: String // (2)!
+    ): List<ComarcaDTO> =
+        comarcaService.obtenerComarcasPorProvincia(provincia)
+}
+```
+
+1. El controlador ya no depende del repositorio: recibe el servicio y devuelve sus DTO. Spring Web transforma la respuesta a JSON.
+2. Lee el parámetro de la URL, por ejemplo `/api/comarcas/buscar?provincia=Alacant`. Si no se envía, Spring responde con un error de petición.
+
+## Comprobar el cambio
+
+Abre [todas las comarcas](http://localhost:8080/api/comarcas) y [la búsqueda por provincia](http://localhost:8080/api/comarcas/buscar?provincia=Alacant). Prueba también una provincia inexistente: recibirás `[]`.
+
+El JSON puede ser igual al anterior: lo que cambia es la organización interna. Comprueba en el código el recorrido controlador → servicio → repositorio.
+
+## DTO de entrada y de salida
+
+Un DTO también puede describir **qué datos aceptamos** al crear o modificar un registro. No necesita coincidir con la entidad ni con el DTO de respuesta.
+
+| Operación | Datos que podemos intercambiar |
+|---|---|
+| Crear | DTO de entrada con los campos permitidos. |
+| Consultar | DTO de salida con la información que queremos mostrar. |
+| Modificar | DTO de entrada con los campos editables, sin permitir cambiar la clave. |
+| Eliminar por identificador | El identificador de la URL suele ser suficiente; no hace falta un cuerpo JSON. |
+
+No es obligatorio utilizar DTO en toda aplicación, pero en el proyecto de este tema los usaremos para separar la API del modelo de persistencia. En el siguiente apartado veremos cómo recibir JSON, validar datos y escribir mediante el servicio.
+
+Referencia: [transacciones declarativas de Spring](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html).

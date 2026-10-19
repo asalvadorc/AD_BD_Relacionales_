@@ -65,7 +65,6 @@ Comprueba desde la opción de consulta del menú que se han guardado los dos ins
 - Comprueba manualmente las opciones del menú. Para probar la modificación y el borrado, utiliza el instituto que hayas insertado previamente.
 - Ejecuta la transacción y consulta los dos institutos insertados. Las comprobaciones pueden hacerse utilizando las opciones del propio menú.
 
-El menú y la transacción son **obligatorios**. Las consultas adicionales quedan como ampliación opcional.
 
 ## 📩 Entrega
 
@@ -81,18 +80,16 @@ Utilizamos la base `geo` de clase: no necesitas volver a entregar sus scripts de
 
 | Criterio | Puntos |
 |---|---:|
-| Conexión JDBC y organización en funciones | 0,5 |
-| Menú interactivo, entrada de datos y navegación | 0,5 |
-| Consulta parametrizada y lista de objetos `Institut` | 1,5 |
-| Inserción y eliminación con comprobación de resultados | 1,5 |
+| Conexión JDBC  | 0,5 |
+| Menú interactivo | 0,5 |
+| Consulta parametrizada y lista de objetos  | 1,5 |
+| Inserción y eliminación  | 1,5 |
 | Función almacenada e invocación desde Kotlin | 1,5 |
 | Procedimiento de actualización e invocación desde Kotlin | 1,5 |
-| Transacción con dos inserciones, `commit()` y `rollback()` en caso de error | 1 |
+| Transacción  | 1 |
 | Gestión de errores y cierre de recursos | 1 |
 | Comprobaciones y documentación de la entrega | 1 |
 | **Total** | **10** |
 
-Las ampliaciones son voluntarias y no son necesarias para obtener la puntuación máxima.
 
-Las comprobaciones se realizan manualmente: no se requieren pruebas automáticas. Un mismo error no se penalizará dos veces en distintos criterios de la rúbrica.
 

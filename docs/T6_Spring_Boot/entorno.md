@@ -2,6 +2,10 @@
 
 ## Base de datos
 
+En este tema trabajaremos con la base de datos **`geo`** de PostgreSQL, que contiene información sobre comarcas, poblaciones e institutos en las tablas `comarca`, `poblacio` e `institut`. Sobre estos datos construiremos una aplicación con **Spring Boot y Spring Data JPA**.
+
+Es la misma base de datos que utilizamos en el T5 con JDBC. Mantener las tablas y los datos nos permitirá centrarnos en cómo cambia el acceso a la información: pasaremos de escribir las sentencias SQL y transformar sus resultados manualmente a trabajar con entidades y repositorios.
+
 Reutiliza la base de datos **`geo`** del T5 y comprueba que el servidor PostgreSQL está arrancado y tiene datos en `comarca`, `poblacio` e `institut`. Si todavía no la tienes, sigue la [preparación de PostgreSQL y geo](../Docker_instrucciones.md).
 
 ## Crear la aplicación desde IntelliJ IDEA
@@ -21,12 +25,26 @@ En Ficheros creamos el proyecto con Gradle desde la web de Spring Initializr. En
 | Artifact | `springjpa` |
 | Package name | `org.example.springjpa` |
 | Packaging | Jar |
-| JDK y Java | La versión indicada por el profesor, compatible con la versión de Spring Boot elegida. |
+| JDK y Java | **JDK 21**. Selecciona Java 21 al crear el proyecto y utiliza ese mismo JDK como Project SDK y para ejecutar Maven en IntelliJ. Todos los proyectos deben compilarse y ejecutarse con esta versión. |
+
+![alt text](image.png)
+
 
 4. En la selección de dependencias, añade **Spring Web**, **Spring Data JPA**, **PostgreSQL Driver**, **Thymeleaf** y **Validation**.
 5. Finaliza la creación y espera a que IntelliJ importe el proyecto y descargue sus dependencias.
 
-El asistente utiliza Spring Initializr internamente, pero realizamos los pasos desde IntelliJ. Si tu instalación no muestra la opción Spring Boot, puedes generar el mismo proyecto en [Spring Initializr](https://start.spring.io/), seleccionando **Maven y Kotlin**, y abrir su `pom.xml` en IntelliJ.
+Seleccionamos todas las dependencias desde el principio porque es más sencillo hacerlo con el asistente que incorporarlas manualmente al `pom.xml` más adelante. Así reducimos los errores de configuración y dejamos preparado el proyecto para todo el tema. **No las utilizaremos todas de inmediato**: iremos explicando su función conforme avancemos.
+
+| Dependencia | Para qué la utilizaremos |
+|---|---|
+| Spring Web | En la [primera aplicación](primera_aplicacion.md), para atender peticiones HTTP desde un controlador. |
+| Spring Data JPA | Para trabajar con entidades y repositorios y acceder a los datos. |
+| PostgreSQL Driver | Para conectar la aplicación con PostgreSQL. |
+| Thymeleaf | En el apartado de [vistas](vistas.md), para generar páginas HTML. |
+| Validation | Cuando utilicemos validaciones con anotaciones como `@NotBlank` o `@Valid`. No es necesaria para las comprobaciones manuales con condicionales. |
+
+!!!Note "Spring Initializr"
+    El asistente utiliza Spring Initializr internamente, pero realizamos los pasos desde IntelliJ. Si tu instalación no muestra la opción Spring Boot, puedes generar el mismo proyecto en [Spring Initializr](https://start.spring.io/), seleccionando **Maven y Kotlin**, y abrir su `pom.xml` en IntelliJ.
 
 ## El archivo pom.xml
 
@@ -48,10 +66,43 @@ Por ejemplo, al seleccionar Spring Data JPA y PostgreSQL se incorporan estas dep
 
 No las añadas otra vez si ya están presentes. Spring Boot gestiona sus versiones. Cuando modifiques el `pom.xml`, utiliza **Reload All Maven Projects** en la ventana de Maven para actualizar el proyecto.
 
-### Kotlin y JPA
 
-Comprueba que el proyecto generado contiene **`kotlin-maven-plugin`** y los plugins de compilador `spring` y `jpa`. Estos adaptan las clases Kotlin a las necesidades de Spring y JPA, como los constructores sin argumentos de las entidades. Desde Kotlin 2.3.20, el plugin `jpa` también incorpora la apertura de las clases JPA; conserva la configuración generada para tu versión.
+### El plugin de Kotlin
 
+Busca **`kotlin-maven-plugin`** en `pom.xml` con **Ctrl+F**. Debe estar dentro de **`<build>` → `<plugins>`**, no en el bloque de dependencias de la aplicación. Dentro de su configuración encontrarás los plugins de compilador `spring` y `jpa`.
+
+Este fragmento muestra dónde se sitúa cada elemento. Es un **esquema orientativo**, no un `pom.xml` completo: conserva las versiones, dependencias, ejecuciones y demás opciones que haya generado el asistente.
+
+```xml
+<build>
+    <plugins>
+        <!-- Aqui puede haber otros plugins, como el de Spring Boot -->
+
+        <plugin>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-plugin</artifactId>
+
+            <configuration>
+                <!-- Conserva las demas opciones de compilacion -->
+                <compilerPlugins>
+                    <plugin>spring</plugin>
+                    <plugin>jpa</plugin>
+                </compilerPlugins>
+            </configuration>
+
+            <!-- Conserva las dependencias y ejecuciones de este plugin -->
+        </plugin>
+    </plugins>
+</build>
+```
+
+- **`kotlin-maven-plugin`** permite compilar el código Kotlin con Maven.
+- **`spring` y `jpa`** son plugins del compilador Kotlin, configurados dentro de `compilerPlugins`; no son dependencias de la aplicación.
+- Si el plugin contiene su propio bloque **`<dependencies>`**, déjalo dentro del plugin. No lo confundas con el bloque de dependencias general donde están Spring Data JPA y PostgreSQL.
+- Si estos elementos ya existen, **no los dupliques ni sustituyas el plugin completo por este fragmento**. Después de cualquier cambio, recarga el proyecto Maven.
+
+Los plugins de compilador adaptan las clases Kotlin a las necesidades de Spring y JPA, como los constructores sin argumentos de las entidades. Desde Kotlin 2.3.20, el plugin `jpa` también incorpora la apertura de las clases JPA; conserva la configuración generada para tu versión.
+<!--
 ??? note "Si utilizas una versión anterior de Kotlin"
     Puede ser necesario configurar explícitamente `all-open` para las entidades. Integra estos elementos en el plugin Kotlin existente, conservando sus demás opciones y ejecuciones:
 
@@ -85,10 +136,22 @@ Comprueba que el proyecto generado contiene **`kotlin-maven-plugin`** y los plug
     Estas dependencias pertenecen al plugin Kotlin, dentro de `<build><plugins>`, no al bloque de dependencias de la aplicación. No dupliques elementos que el asistente ya haya generado.
 
 Referencias: [asistente de Spring Boot en IntelliJ](https://www.jetbrains.com/help/idea/spring-initializr-project-wizard.html), [plugin JPA de Kotlin](https://kotlinlang.org/docs/no-arg-plugin.html) y [cambios de Kotlin 2.3.20](https://kotlinlang.org/docs/whatsnew2320.html).
-
+-->
 ## Organización
 
-En la raíz encontrarás `pom.xml` y el wrapper de Maven (`mvnw` y `mvnw.cmd`). El código se organiza así:
+En la raíz encontrarás `pom.xml` y el wrapper de Maven (`mvnw` y `mvnw.cmd`). Dentro de `src/main`, la estructura inicial básica incluye la clase de arranque y el archivo de configuración:
+
+```text
+src/main/
+├── kotlin/org/example/springjpa/
+│   └── SpringjpaApplication.kt
+└── resources/
+    └── application.properties
+```
+
+Los paquetes **`model`, `repository`, `controller`, `service` y `dto` no los genera automáticamente Spring**. Los crearás tú dentro de `org.example.springjpa` conforme los necesites en los siguientes apartados. También crearás la carpeta `templates` dentro de `resources` cuando trabajemos con las vistas, si todavía no existe.
+
+El siguiente esquema muestra la **organización que iremos construyendo a lo largo del tema**, no la estructura que debes encontrar al crear el proyecto. No necesitas crear todos estos paquetes ahora:
 
 ```text
 src/main/
@@ -104,7 +167,7 @@ src/main/
     └── templates/
 ```
 
-Mantén la clase de arranque generada en `org.example.springjpa` y los componentes dentro de sus subpaquetes. Los paquetes `service` y `dto` se utilizarán más adelante.
+Mantén la clase de arranque generada en `org.example.springjpa` y crea los componentes dentro de sus subpaquetes. Cada apartado indicará qué archivos y paquetes necesitas añadir.
 
 ## Conexión a PostgreSQL
 
@@ -118,20 +181,20 @@ spring.datasource.password=postgres
 spring.jpa.hibernate.ddl-auto=none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
-spring.thymeleaf.cache=false
 ```
 
-Son las credenciales del entorno local del T5; adapta los valores si tu instalación es diferente. `ddl-auto=none` evita que Hibernate cree o modifique las tablas. `show-sql` permite observar el SQL generado. Spring configura las conexiones a partir de estas propiedades: en este proyecto no copiamos el objeto JDBC `DatabaseLocal`.
+Son las credenciales del entorno local del T5; adapta los valores si tu instalación es diferente.  Spring configura las conexiones a partir de estas propiedades.
+
+* `ddl-auto=none` evita que Hibernate cree o modifique las tablas. 
+* `show-sql` permite observar el SQL generado. 
 
 ## Puesta en marcha
 
-Ejecuta la clase de arranque generada. Con el controlador del siguiente apartado podrás abrir `http://localhost:8080/api/comarcas`. Si la aplicación no arranca, revisa el puerto 5432, la existencia de `geo`, las credenciales y las dependencias.
+El asistente ya ha creado la clase de arranque **`SpringjpaApplication`**, anotada con `@SpringBootApplication`, y la función `main`. Al ejecutar esa función se inicia la aplicación y Spring configura sus componentes. La clase no se crea al arrancar: forma parte del código generado al preparar el proyecto. Conserva el nombre que haya generado tu asistente.
+
+![alt text](image-1.png)
+
+Ejecuta la clase de arranque y comprueba en la consola que Spring inicia sin errores de conexión a PostgreSQL.
 
 
-También puedes ejecutar la aplicación desde el terminal de IntelliJ, situado en la raíz del proyecto:
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-En Linux o macOS utiliza `./mvnw spring-boot:run`.
+Como ya hemos incluido Spring Web, se inicia el servidor web integrado, que escucha por defecto en el puerto **8080**. Todavía no hemos creado controladores ni páginas, por lo que abrir la dirección raíz en el navegador puede mostrar una página de error 404; esto no significa que el arranque haya fallado. En la primera aplicación crearemos una ruta y probaremos el acceso por HTTP.
