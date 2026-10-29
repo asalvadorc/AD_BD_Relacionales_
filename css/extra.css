@@ -1,0 +1,1254 @@
+
+
+/* =========================================================
+   🌿 TEMA VERDE PROFESIONAL (ESTABLE + RESPONSIVE REAL)
+   ========================================================= */
+
+/* ===================== MODO CLARO ===================== */
+
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color: #154360;
+    --md-primary-fg-color--light: #2980b9;
+    --md-primary-fg-color--dark: #1a5276;
+    --md-accent-fg-color: #2980b9;
+
+    --md-default-bg-color: #ffffff;
+    --md-default-fg-color: #1a1a1a;
+    --md-default-fg-color--light: #555;
+    --md-default-fg-color--lighter: #888;
+
+    --md-sidebar-bg: #f2f7f6;
+    --md-code-bg-color: #f5f5f5;
+}
+
+/* ===================== MODO OSCURO ===================== */
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #2980b9;
+    --md-primary-fg-color--light: #5dade2;
+    --md-primary-fg-color--dark: #21618c;
+    --md-accent-fg-color: #5dade2;
+
+    --md-default-bg-color: #0f1f1d;
+
+    --md-default-fg-color: #e6f1ef;
+    --md-default-fg-color--light: #b8c7c4;
+    --md-default-fg-color--lighter: #7f9a95;
+
+    --md-sidebar-bg: #132826;
+    --md-code-bg-color: #1b2e2c;
+}
+
+/* =========================================================
+   🧱 SIDEBAR (SIN ROMPER FUNCIONAMIENTO)
+   ========================================================= */
+
+.md-sidebar__scrollwrap,
+.md-sidebar__inner,
+.md-nav {
+    background-color: var(--md-sidebar-bg) !important;
+}
+
+
+/* =========================================================
+   🧭 MENÚ LATERAL
+   ========================================================= */
+
+
+[data-md-color-scheme="slate"] .md-nav__link {
+    color: #ebf5fb !important;
+}
+
+/* Hover claro */
+[data-md-color-scheme="default"] .md-nav__link:hover {
+    background-color: rgba(21, 67, 96, 0.08) !important;
+    color: #154360 !important;
+}
+
+/* Hover oscuro */
+[data-md-color-scheme="slate"] .md-nav__link:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.md-nav__item--active > .md-nav__link {
+    background-color: rgba(21, 67, 96, 0.12) !important;
+    border-left: 3px solid #154360 !important;
+    font-weight: 600;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--active,
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link[aria-current="true"],
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link {
+    background-color: rgba(21, 67, 96, 0.18) !important;
+    border-left: 4px solid #154360 !important;
+    border-radius: 0.35rem;
+    box-shadow: inset 0 0 0 1px rgba(21, 67, 96, 0.08);
+    color: #154360 !important;
+    font-weight: 700;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--active:hover,
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link[aria-current="true"]:hover,
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link:hover {
+    background-color: rgba(21, 67, 96, 0.18) !important;
+    border-left: 4px solid #154360 !important;
+    border-radius: 0.35rem;
+    box-shadow: inset 0 0 0 1px rgba(21, 67, 96, 0.08);
+    color: #154360 !important;
+    font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .md-nav__item--active > .md-nav__link {
+    color: #85c1e9 !important;
+}
+
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link--active,
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link[aria-current="true"],
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link {
+    background-color: rgba(133, 193, 233, 0.16) !important;
+    border-left: 4px solid #85c1e9 !important;
+    border-radius: 0.35rem;
+    box-shadow: inset 0 0 0 1px rgba(133, 193, 233, 0.12);
+    color: #85c1e9 !important;
+    font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link--active:hover,
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link[aria-current="true"]:hover,
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link:hover {
+    background-color: rgba(133, 193, 233, 0.16) !important;
+    border-left: 4px solid #85c1e9 !important;
+    border-radius: 0.35rem;
+    box-shadow: inset 0 0 0 1px rgba(133, 193, 233, 0.12);
+    color: #85c1e9 !important;
+    font-weight: 700;
+}
+
+.md-nav__icon {
+    margin-left: auto;
+}
+
+/* =========================================================
+   🔝 HEADER
+   ========================================================= */
+.md-header {
+    background: #154360 !important;
+    color: #ffffff !important;
+    box-shadow: none;
+}
+
+/* =========================================================
+   🔗 LINKS
+   ========================================================= */
+.md-typeset a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+.md-typeset a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Headings with clear size hierarchy */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+    color: var(--md-default-fg-color);
+    font-weight: 600;
+}
+
+.md-typeset h1 { font-size: 2rem; }
+.md-typeset h2 { font-size: 1.65rem; }
+.md-typeset h3 { font-size: 1.35rem; }
+.md-typeset h4 { font-size: 1.05rem; }
+.md-typeset h5 { font-size: 1rem; }
+.md-typeset h6 { font-size: 0.9rem; }
+
+/* Prefix symbols removed for cleaner look */
+
+/* =========================================================
+   📝 TIPOGRAFÍA
+   ========================================================= */
+body,
+p,
+li,
+ul,
+ol,
+blockquote,
+pre,
+code,
+table {
+    font-size: 15px !important;
+    line-height: 1.7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+p {
+    text-align: justify;
+}
+
+
+
+
+/* =========================================================
+   🧾 TABLAS
+   ========================================================= */
+.md-typeset table {
+    border-collapse: collapse;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.md-typeset th {
+    background-color: rgba(21, 67, 96, 0.08);
+}
+
+/* Image pair table without visible header */
+.md-typeset .image-pair-table table thead {
+    display: none;
+}
+
+.md-typeset .image-pair-table table td {
+    border-top: none;
+}
+
+.md-typeset .image-pair-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    margin: 1rem 0;
+}
+
+.md-typeset .image-pair-grid .image-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.md-typeset .image-pair-grid img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .md-typeset .image-pair-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   🧠 DETALLES EXTRA
+   ========================================================= */
+
+.md-typeset .solution-card {
+    margin: 1rem 0 1.25rem;
+    border: 1px solid rgba(21, 67, 96, 0.18);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .solution-card {
+    background: rgba(15, 31, 29, 0.96);
+    border-color: rgba(93, 173, 226, 0.25);
+}
+
+.md-typeset .solution-card__header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: 0.7rem 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(90deg, #154360 0%, #2980b9 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .solution-card__header {
+    background: linear-gradient(90deg, #2980b9 0%, #5dade2 100%);
+}
+
+.md-typeset .solution-card__body {
+    padding: 0.75rem 0.9rem 0.9rem;
+}
+
+.md-typeset .solution-card__body img {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+.md-typeset img {
+    display: block;
+    margin: 1rem auto;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+    height: auto;
+}
+
+.md-typeset img[role="button"] {
+    cursor: zoom-in;
+}
+
+.md-typeset .infografia-ejercicio {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    margin: 1rem auto;
+}
+
+.md-typeset img:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.md-typeset img[role="button"]:focus-visible {
+    outline: 3px solid var(--md-accent-fg-color);
+    outline-offset: 3px;
+}
+
+body.lightbox-open {
+    overflow: hidden;
+}
+
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.lightbox-overlay.is-open {
+    display: flex;
+}
+
+.lightbox-dialog {
+    position: relative;
+    max-width: min(96vw, 1200px);
+    max-height: min(96vh, 900px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    background: #fff;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #154360;
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.lightbox-close:hover {
+    background: #ffffff;
+}
+
+.lightbox-close:focus-visible {
+    outline: 3px solid var(--md-accent-fg-color);
+    outline-offset: 3px;
+}
+
+.md-typeset img.img-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.img-text-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.img-text-row > div {
+    flex: 1 1 45%;
+    min-width: 280px;
+}
+
+.img-text-row img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+    .img-text-row {
+        flex-direction: column;
+    }
+}
+
+.tables-side-by-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    margin: 1rem 0 1.5rem;
+}
+
+.tables-side-by-side > div {
+    background: rgba(21, 67, 96, 0.03);
+    border: 1px solid rgba(21, 67, 96, 0.2);
+    border-radius: 8px;
+    padding: 0.9rem;
+    overflow-x: auto;
+}
+
+.tables-side-by-side.equal-height {
+    align-items: stretch;
+}
+
+.tables-side-by-side.equal-height > div {
+    height: 100%;
+}
+
+.case-card {
+    background: rgba(21, 67, 96, 0.03);
+    border: 1px solid rgba(21, 67, 96, 0.2);
+    border-radius: 8px;
+    padding: 0.9rem;
+    margin: 1rem 0 1.5rem;
+    overflow-x: auto;
+}
+
+.md-typeset .case-badge {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(21, 67, 96, 0.35);
+    background: rgba(21, 67, 96, 0.12);
+    color: #154360;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    vertical-align: middle;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .case-badge {
+    border-color: rgba(93, 173, 226, 0.55);
+    background: rgba(93, 173, 226, 0.18);
+    color: #dffaf6;
+}
+
+@media (max-width: 900px) {
+    .tables-side-by-side {
+        grid-template-columns: 1fr;
+    }
+}
+
+.md-typeset pre > code {
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Keep solution-section headers visible while scrolling the infographic */
+.md-typeset details.solution-infografia-block {
+    margin-top: 1rem;
+    overflow: visible;
+}
+
+.md-typeset details.solution-infografia-block > summary {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #154360 0%, #2980b9 100%);
+    color: #ffffff;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    padding: 0.7rem 0.9rem;
+}
+
+.md-typeset details.solution-infografia-block[open] > summary {
+    margin-bottom: 0.5rem;
+}
+
+.md-typeset details.solution-infografia-block .infografia-ejercicio {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset details.solution-infografia-block > summary {
+    background: linear-gradient(90deg, #2980b9 0%, #5dade2 100%);
+}
+
+/* Make quote admonitions look like a clear gray box */
+.md-typeset .admonition.quote,
+.md-typeset details.quote {
+    background-color: #f5f5f5;
+    border: 1px solid #cfcfcf;
+    border-left: 4px solid #9a9a9a;
+}
+
+/* Keep quote boxes readable in dark mode */
+[data-md-color-scheme="slate"] .md-typeset .admonition.quote,
+[data-md-color-scheme="slate"] .md-typeset details.quote {
+    background-color: #263231;
+    border: 1px solid #4f6462;
+    border-left: 4px solid #7d9390;
+    color: #e6f1ef;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.quote > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset details.quote > summary {
+    background-color: rgba(230, 241, 239, 0.08);
+    color: #e6f1ef;
+}
+
+/* Admonition custom border removed to restore Material default colors */
+
+/* Semantic tags for relational constraints */
+.md-typeset .tag-no-nulo,
+.md-typeset .tag-cascade,
+.md-typeset .tag-unico {
+    display: inline-block;
+    padding: 0.08rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    vertical-align: baseline;
+    margin-left: 0.2rem;
+}
+
+.md-typeset .tag-no-nulo {
+    color: #214a00;
+    background: #e7f7cc;
+    border: 1px solid #8ebf4f;
+}
+
+.md-typeset .tag-cascade {
+    color: #7a2f00;
+    background: #ffe2cc;
+    border: 1px solid #e39a63;
+}
+
+.md-typeset .tag-unico {
+    color: #073b5b;
+    background: #d7f1ff;
+    border: 1px solid #5bb6e8;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tag-no-nulo {
+    color: #dcffc0;
+    background: rgba(82, 123, 33, 0.34);
+    border: 1px solid #9cd463;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tag-cascade {
+    color: #ffd7bf;
+    background: rgba(122, 60, 24, 0.4);
+    border: 1px solid #f0ab78;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tag-unico {
+    color: #caeeff;
+    background: rgba(16, 78, 112, 0.42);
+    border: 1px solid #6dc8ff;
+}
+
+/* Colored chips for Normalizacion full example steps */
+.md-typeset .example-chip {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.82em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}
+
+.md-typeset .example-chip.chip-inicial {
+    color: #2e2400;
+    background: #ffefb3;
+    border: 1px solid #d8b84d;
+}
+
+.md-typeset .example-chip.chip-grafo {
+    color: #00384e;
+    background: #d9f3ff;
+    border: 1px solid #65bde7;
+}
+
+.md-typeset .example-chip.chip-norm {
+    color: #254400;
+    background: #e1f6cc;
+    border: 1px solid #89bf4f;
+}
+
+.md-typeset .example-chip.chip-solucion {
+    color: #4d1a00;
+    background: #ffe0cf;
+    border: 1px solid #df9468;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .example-chip.chip-inicial {
+    color: #ffeebd;
+    background: rgba(133, 106, 17, 0.42);
+    border: 1px solid #d9bc56;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .example-chip.chip-grafo {
+    color: #d0f2ff;
+    background: rgba(18, 87, 117, 0.44);
+    border: 1px solid #73c8ef;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .example-chip.chip-norm {
+    color: #def9c7;
+    background: rgba(66, 106, 29, 0.42);
+    border: 1px solid #96cf59;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .example-chip.chip-solucion {
+    color: #ffdaca;
+    background: rgba(132, 56, 21, 0.42);
+    border: 1px solid #f0aa7f;
+}
+
+/* Align icon + text headings on the same baseline/height */
+.md-typeset .heading-with-icon,
+.md-typeset .exercise-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+}
+
+.md-typeset .heading-icon,
+.md-typeset .exercise-icon {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* Reusable framed boxes for definitions and key notes */
+.md-typeset .definition-box,
+.md-typeset .info-box {
+    border-left: 6px solid #1b6ca8;
+    background: linear-gradient(180deg, #eef7ff 0%, #f7fbff 100%);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 12px 0 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .definition-box .box-title,
+.md-typeset .info-box .box-title {
+    color: #0f4f7a;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+/* Colored tags for setup blocks used across Ficheros docs */
+.md-typeset .setup-tag {
+    display: inline-block;
+    margin-right: 0.35rem;
+    margin-bottom: 0.2rem;
+    padding: 0.14rem 0.52rem;
+    border-radius: 999px;
+    border: 1px solid #6ea6c7;
+    background: #e8f4fc;
+    color: #0a4e77;
+    font-size: 0.74em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+.md-typeset .setup-tag.setup-tag-ide {
+    border-color: #6da9d6;
+    background: #e3f2fd;
+    color: #0a4a72;
+}
+
+.md-typeset .setup-tag.setup-tag-paquetes {
+    border-color: #8ec267;
+    background: #eaf7dd;
+    color: #2f5b0d;
+}
+
+.md-typeset .setup-tag.setup-tag-carpetas {
+    border-color: #d4aa5f;
+    background: #fff3dc;
+    color: #6b4302;
+}
+
+.md-typeset .setup-tag.setup-tag-recursos {
+    border-color: #c990cf;
+    background: #f6e8f8;
+    color: #5f2a66;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .setup-tag {
+    border-color: #6aa7cf;
+    background: rgba(20, 74, 106, 0.5);
+    color: #d5efff;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .setup-tag.setup-tag-ide {
+    border-color: #76b5de;
+    background: rgba(16, 80, 122, 0.45);
+    color: #d9f2ff;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .setup-tag.setup-tag-paquetes {
+    border-color: #9bd17a;
+    background: rgba(52, 92, 28, 0.45);
+    color: #e6f8d7;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .setup-tag.setup-tag-carpetas {
+    border-color: #dfbb78;
+    background: rgba(104, 73, 22, 0.45);
+    color: #ffecc7;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .setup-tag.setup-tag-recursos {
+    border-color: #d6a8de;
+    background: rgba(94, 44, 104, 0.45);
+    color: #f4def7;
+}
+
+/* Framed RA sections (RA_CE) */
+.md-typeset .ra-frame {
+    margin: 1rem 0 1.4rem;
+    padding: 1rem 1.1rem;
+    border: 2px solid rgba(21, 67, 96, 0.28);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(21, 67, 96, 0.05) 0%, rgba(21, 67, 96, 0.02) 100%);
+    box-shadow: 0 2px 8px rgba(21, 67, 96, 0.08);
+}
+
+.md-typeset .ra-cycle {
+    margin: 0 0 0.35rem;
+    color: #154360;
+    letter-spacing: 0.02em;
+}
+
+.md-typeset .ra-title {
+    margin: 0 0 0.55rem;
+}
+
+.md-typeset .ra-criteria-title {
+    margin: 0.35rem 0 0.45rem;
+}
+
+.md-typeset .ra-frame ul {
+    margin-top: 0.3rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .ra-frame {
+    border-color: rgba(93, 173, 226, 0.42);
+    background: linear-gradient(180deg, rgba(93, 173, 226, 0.16) 0%, rgba(93, 173, 226, 0.08) 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .ra-cycle {
+    color: #dffaf6;
+}
+
+
+
+/* =========================================================
+   🌐 RESPONSIVE REAL (SIN ROMPER NADA)
+   ========================================================= */ 
+
+   /* Más ancho */
+.md-grid {
+    max-width: 1500px;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 5rem 1rem 3rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    max-width: 850px;
+    margin: auto;
+}
+
+
+
+/* Layout general */
+.md-grid {
+    max-width: 1700px;
+}
+
+/* Contenido */
+.md-typeset {
+    max-width: 1350px;
+    margin: 0 auto;
+}
+
+/* Padding */
+.md-content__inner {
+    max-width: 100% !important;
+    padding: 2rem 4rem !important;
+}
+
+/* Cards */
+.grid.cards {
+    margin-top: 3rem;
+}
+
+.grid.cards > ul > li {
+    border-radius: 18px;
+    transition: 0.2s ease;
+}
+
+.grid.cards > ul > li:hover {
+    transform: translateY(-4px);
+}
+
+.grid.cards > ul > li {
+
+    background: linear-gradient(
+        145deg,
+        rgba(21,67,96,0.05),
+        rgba(21,67,96,0.09)
+    );
+
+    border: 1px solid rgba(21,67,96,0.08);
+
+    border-radius: 22px;
+
+    transition: all .25s ease;
+}
+
+.grid.cards > ul > li:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.08);
+}
+
+/* Optional 2-column card grid for specific pages */
+.grid.cards.cards-2col > ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.grid.cards.cards-2col > ul > li {
+    min-width: 0;
+}
+
+.grid.cards.cards-2col pre,
+.grid.cards.cards-2col pre code {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+@media (max-width: 900px) {
+    .grid.cards.cards-2col > ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ocultar TOC vacío */
+.md-sidebar--secondary:empty {
+    display: none;
+}
+
+/* =========================================================
+   📑 TABS
+   ========================================================= */
+
+.tabbed-set {
+    border: 2px solid rgba(21, 67, 96, 0.3);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(21, 67, 96, 0.15);
+}
+
+.tabbed-set .tabbed-labels {
+    display: flex;
+    border-bottom: 2px solid rgba(21, 67, 96, 0.3);
+    background-color: rgba(21, 67, 96, 0.05);
+}
+
+.tabbed-set .tabbed-labels label {
+    flex: 1;
+    margin: 0;
+    border-radius: 0;
+}
+
+.tabbed-set .tabbed-labels label:first-child {
+    border-top-left-radius: 24px;
+}
+
+.tabbed-set .tabbed-labels label:last-child {
+    border-top-right-radius: 24px;
+}
+
+.tabbed-set .tabbed-labels label a {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    color: var(--md-primary-fg-color) !important;
+    font-size: 1.5em !important;
+    font-weight: 600 !important;
+}
+
+.tabbed-set .tabbed-labels label:hover {
+    background-color: rgba(21, 67, 96, 0.1);
+}
+
+.tabbed-set > .tabbed-content {
+    border-top: none;
+    padding: 1.5rem;
+}
+
+.tabbed-set .tabbed-content img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* Highlighted copy-ready IA prompt block */
+.md-typeset .ia-prompt-box {
+    margin: 1rem 0 1.5rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 2px solid rgba(21, 67, 96, 0.28);
+    background: linear-gradient(135deg, rgba(21, 67, 96, 0.06), rgba(21, 67, 96, 0.12));
+    box-shadow: 0 6px 16px rgba(21, 67, 96, 0.10);
+}
+
+.md-typeset .ia-prompt-box::before {
+    content: "PROMPT PARA COPIAR";
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    padding: 0.16rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(21, 67, 96, 0.28);
+    background: rgba(21, 67, 96, 0.10);
+    color: #154360;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.md-typeset .ia-prompt-box pre {
+    margin: 0;
+    border: 1px solid rgba(21, 67, 96, 0.22);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .ia-prompt-box {
+    border-color: rgba(20, 184, 166, 0.45);
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.18), rgba(10, 79, 72, 0.24));
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .ia-prompt-box::before {
+    border-color: rgba(20, 184, 166, 0.55);
+    background: rgba(20, 184, 166, 0.20);
+    color: #dffaf6;
+}
+
+.md-typeset .tabbed-set .tabbed-content h2,
+.md-typeset .tabbed-set .tabbed-content h3 {
+    color: var(--md-primary-fg-color) !important;
+    font-size: 1.35em !important;
+    font-weight: 700 !important;
+    margin-top: 1.4rem;
+}
+
+.md-typeset .tabbed-set .tabbed-content h3 {
+    font-size: 1.15em !important;
+    margin-top: 1rem;
+}
+
+.no_toc {
+    display: block;
+}
+
+.md-nav__link[href*="titulo-oculto"] {
+    display: none !important;
+}
+
+/* Forzar menú izquierdo visible en escritorio/tablet ancho (Material drawer) */
+@media screen and (min-width: 60em) {
+    [data-md-toggle="drawer"] {
+        display: none;
+    }
+
+    .md-sidebar--primary,
+    .md-sidebar--primary[hidden],
+    .md-toggle[data-md-toggle="drawer"] ~ .md-container .md-sidebar--primary,
+    .md-toggle[data-md-toggle="drawer"] ~ .md-container .md-sidebar--primary[hidden],
+    .md-toggle[data-md-toggle="drawer"]:not(:checked) ~ .md-container .md-sidebar--primary,
+    .md-toggle[data-md-toggle="drawer"]:not(:checked) ~ .md-container .md-sidebar--primary[hidden] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        left: 0 !important;
+        transform: none !important;
+    }
+}
+
+/* Forzar menú derecho visible en ancho medio/alto para mantener el apartado activo visible */
+@media screen and (min-width: 56em) {
+    .md-sidebar--secondary:not([hidden]) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* =========================================================
+   📱 AJUSTES PARA MÓVIL
+   ========================================================= */
+@media screen and (max-width: 59.984375em) {
+    .md-content__inner {
+        padding: 1.25rem 1rem 2rem !important;
+    }
+
+    .md-typeset {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .md-typeset p,
+    .md-typeset li {
+        text-align: left;
+    }
+
+    .md-typeset h1 {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        line-height: 1.2;
+        overflow-wrap: break-word;
+    }
+
+    .md-typeset h2 {
+        font-size: 1.45rem;
+        line-height: 1.25;
+    }
+
+    .md-typeset h3 {
+        font-size: 1.2rem;
+    }
+
+    .md-typeset__table {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .md-typeset__table table,
+    .md-typeset table {
+        width: max-content;
+        min-width: 100%;
+        overflow: visible;
+    }
+
+    .md-typeset .highlight,
+    .md-typeset .codehilite,
+    .md-typeset pre {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .md-typeset img,
+    .md-typeset svg,
+    .md-typeset .mermaid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .md-typeset .admonition,
+    .md-typeset details {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Ajusta el diagrama de Spring Web al ancho disponible en la página. */
+.md-typeset .spring-web-secuencia {
+    max-width: 100%;
+    padding-bottom: 0.75rem;
+}
+
+.md-typeset .spring-web-secuencia svg {
+    width: 100%;
+    max-width: 100% !important;
+    height: auto;
+}
+
+.md-typeset .spring-web-secuencia .mermaid {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Reserva espacio para las palabras clave completas de Spring Data JPA. */
+.md-typeset .tabla-palabras-clave th:first-child,
+.md-typeset .tabla-palabras-clave td:first-child {
+    min-width: 9rem;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Mantiene completas las anotaciones de la columna de configuración. */
+.md-typeset .tabla-transacciones th:nth-child(2),
+.md-typeset .tabla-transacciones td:nth-child(2) {
+    min-width: 17rem;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Reserva un ancho moderado para las propiedades de configuración de Spring. */
+.md-typeset .tabla-propiedades-spring th:first-child,
+.md-typeset .tabla-propiedades-spring td:first-child {
+    min-width: 12rem;
+    width: 28%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* Clases anteriores */
+.md-typeset .conexion-dbeaver {
+    container-type: inline-size;
+    margin: 1rem 0;
+}
+
+.md-typeset .conexion-dbeaver__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+    gap: 1rem;
+}
+
+.md-typeset .conexion-dbeaver__layout table {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    font-size: 0.72rem;
+}
+
+.md-typeset .conexion-dbeaver__layout th,
+.md-typeset .conexion-dbeaver__layout td {
+    padding: 0.5rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.md-typeset .conexion-dbeaver__layout img {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+@container (max-width: 540px) {
+    .md-typeset .conexion-dbeaver__layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.rojo { color: #e53935 !important; font-weight: 600; }
+.azul { color: #2980B9 !important; font-size: 18px; }
+.verde { color: var(--md-primary-fg-color) !important; font-weight: 600; font-size: 16px; }
+.pagetitle-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.md-typeset .portada-inicio {
+    width: 100%;
+    max-width: 360px;
+    max-height: 40vh;
+    object-fit: contain;
+    margin: 0.75rem auto 0;
+}
+
+.md-typeset .portada-banner {
+    text-align: center;
+    padding: 1.2rem 1.5rem 1.4rem;
+    margin: 1rem 0 1.5rem;
+    border-radius: 10px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #154360 0%, #2980b9 100%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.md-typeset .portada-banner h1 {
+    color: #ffffff !important;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.md-typeset .portada-banner .portada-inicio {
+    margin-bottom: 0;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .portada-banner {
+    background: linear-gradient(90deg, #2980b9 0%, #5dade2 100%);
+}
