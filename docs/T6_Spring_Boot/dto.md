@@ -23,12 +23,29 @@ Por ejemplo, para mostrar un instituto podríamos necesitar solo su nombre y el 
 
 En este primer ejemplo, `ComarcaDTO` tendrá los mismos campos que `Comarca`: `nomC` y `provincia`. Aunque la respuesta JSON se vea igual, serán clases con responsabilidades distintas. Más adelante podremos cambiar los datos de la respuesta sin modificar el mapeo de la tabla.
 
-### Para qué lo utilizaremos
+### DTO de entrada y de salida
 
 - **Como salida:** para decidir qué información devolvemos, sin enviar directamente toda la entidad.
 - **Como entrada:** para definir qué campos puede enviar el cliente al crear o modificar un registro. Por ejemplo, un DTO de actualización puede omitir la clave primaria para no permitir cambiarla.
 
+El DTO de entrada no necesita coincidir con la entidad ni con el DTO de respuesta:
+
+| Operación | Datos que podemos intercambiar |
+|---|---|
+| Crear | DTO de entrada con los campos permitidos. |
+| Consultar | DTO de salida con la información que queremos mostrar. |
+| Modificar | DTO de entrada con los campos editables, sin permitir cambiar la clave. |
+| Eliminar por identificador | El identificador de la URL suele ser suficiente; no hace falta un cuerpo JSON. |
+
+No es obligatorio utilizar DTO en toda aplicación, pero en el proyecto de este tema los usaremos para separar la API del modelo de persistencia. **En este apartado construiremos un DTO de salida: `ComarcaDTO`.**
+
 Un DTO ayuda a separar la API del modelo de persistencia, pero **no valida los datos ni garantiza la seguridad por sí solo**: las comprobaciones deben programarse. Primero veremos DTO de salida; los de entrada se utilizarán al escribir datos desde la API.
+
+
+!!! question "¿Seguimos utilizando JDBC cuando trabajamos con JPA?"
+    ??? success "Ver respuesta"
+        Sí. Hibernate utiliza el driver JDBC para comunicarse con PostgreSQL. Lo que cambia es el nivel de abstracción: escribimos entidades y repositorios en lugar de preparar cada sentencia y recorrer manualmente cada `ResultSet`.
+
 
 ## Qué papel tiene el servicio
 
@@ -83,10 +100,14 @@ En este ejemplo solo consultamos datos, por lo que anotamos la clase con **`@Tra
 
 Más adelante, al añadir métodos que modifiquen datos, utilizaremos esta distinción:
 
+<div class="tabla-transacciones" markdown="1">
+
 | Dónde se coloca | Configuración | Para qué se utiliza |
 |---|---|---|
 | En la clase | `@Transactional(readOnly = true)` | Configuración predeterminada para listar, buscar y consultar. |
 | En un método de escritura | `@Transactional` | Sustituye la configuración de la clase por una transacción de lectura y escritura para crear, actualizar o eliminar. |
+
+</div>
 
 Por ejemplo, **consultar una comarca → modificar su provincia → guardar** formará una sola operación en el servicio. Spring confirma al terminar correctamente y, por defecto, revierte si sale del método una excepción no comprobada (`RuntimeException`) o un `Error`. Nuestra excepción `ErrorOperacion`, que veremos después, será de ese tipo.
 
@@ -155,21 +176,16 @@ class ComarcaController(private val comarcaService: ComarcaService) { // (1)!
 
 ## Comprobar el cambio
 
-Abre [todas las comarcas](http://localhost:8080/api/comarcas) y [la búsqueda por provincia](http://localhost:8080/api/comarcas/buscar?provincia=Alacant). Prueba también una provincia inexistente: recibirás `[]`.
+Abre [todas las comarcas](http://localhost:8080/api/comarcas) y [la búsqueda por provincia (Alacant)](http://localhost:8080/api/comarcas/buscar?provincia=Alacant). Prueba también una provincia inexistente: recibirás `[]`.
 
-El JSON puede ser igual al anterior: lo que cambia es la organización interna. Comprueba en el código el recorrido controlador → servicio → repositorio.
+El JSON puede ser igual al anterior: lo que cambia es la organización interna. Comprueba en el código el recorrido:  
+ controlador → servicio → repositorio.
 
-## DTO de entrada y de salida
-
-Un DTO también puede describir **qué datos aceptamos** al crear o modificar un registro. No necesita coincidir con la entidad ni con el DTO de respuesta.
-
-| Operación | Datos que podemos intercambiar |
-|---|---|
-| Crear | DTO de entrada con los campos permitidos. |
-| Consultar | DTO de salida con la información que queremos mostrar. |
-| Modificar | DTO de entrada con los campos editables, sin permitir cambiar la clave. |
-| Eliminar por identificador | El identificador de la URL suele ser suficiente; no hace falta un cuerpo JSON. |
-
-No es obligatorio utilizar DTO en toda aplicación, pero en el proyecto de este tema los usaremos para separar la API del modelo de persistencia. En el siguiente apartado veremos cómo recibir JSON, validar datos y escribir mediante el servicio.
+En el [siguiente apartado](api_crud.md) utilizaremos DTO de entrada para recibir y validar los datos al crear o modificar comarcas.
 
 Referencia: [transacciones declarativas de Spring](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html).
+
+
+!!! question "¿Una entidad y un DTO cumplen la misma función?"
+    ??? success "Ver respuesta"
+        No. La entidad participa en el mapeo y la persistencia; el DTO contiene los datos que queremos intercambiar. Una entidad puede tener relaciones que no conviene enviar directamente al cliente.

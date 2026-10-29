@@ -1118,6 +1118,51 @@ body.lightbox-open {
     }
 }
 
+/* Ajusta el diagrama de Spring Web al ancho disponible en la página. */
+.md-typeset .spring-web-secuencia {
+    max-width: 100%;
+    padding-bottom: 0.75rem;
+}
+
+.md-typeset .spring-web-secuencia svg {
+    width: 100%;
+    max-width: 100% !important;
+    height: auto;
+}
+
+.md-typeset .spring-web-secuencia .mermaid {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Reserva espacio para las palabras clave completas de Spring Data JPA. */
+.md-typeset .tabla-palabras-clave th:first-child,
+.md-typeset .tabla-palabras-clave td:first-child {
+    min-width: 9rem;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Mantiene completas las anotaciones de la columna de configuración. */
+.md-typeset .tabla-transacciones th:nth-child(2),
+.md-typeset .tabla-transacciones td:nth-child(2) {
+    min-width: 17rem;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Reserva un ancho moderado para las propiedades de configuración de Spring. */
+.md-typeset .tabla-propiedades-spring th:first-child,
+.md-typeset .tabla-propiedades-spring td:first-child {
+    min-width: 12rem;
+    width: 28%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
 /* Clases anteriores */
 .md-typeset .conexion-dbeaver {
     container-type: inline-size;

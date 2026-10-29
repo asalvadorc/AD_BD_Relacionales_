@@ -8,11 +8,11 @@ Antes de empezar, conviene distinguir tres conceptos que utilizaremos a lo largo
 - **Hibernate** es la implementación de JPA que utilizaremos. Es un **ORM** (mapeo objeto-relacional): genera las sentencias SQL y transforma los resultados en objetos a partir del mapeo de las entidades.
 - **Spring Data JPA** facilita el acceso a los datos mediante repositorios. Se apoya en JPA y, en nuestro proyecto, en Hibernate; no es un conector ni un ORM por sí mismo.
 
-Por ejemplo, al llamar a `findAll()` en un repositorio, Hibernate genera la consulta SQL necesaria para recuperar los registros como entidades. Por eso veremos su nombre en los mensajes de la consola, aunque nuestro código trabaje con repositorios de Spring Data JPA.
+
 
 ## Qué vamos a construir
 
-Comenzaremos consultando comarcas de la base de datos **geo**, mediante una API REST. Después añadiremos búsquedas, páginas HTML con Thymeleaf y formularios para crear, editar y eliminar registros. Separaremos las responsabilidades con servicios y DTO, aprenderemos a [escribir datos desde la API](api_crud.md) y ampliaremos el modelo a poblaciones e institutos.
+Comenzaremos consultando comarcas de la base de datos **geo**, mediante una API REST. Después añadiremos búsquedas, páginas HTML con Thymeleaf y formularios para crear, editar y eliminar registros. Separaremos las responsabilidades con servicios y DTO, aprenderemos a escribir datos desde la API  y ampliaremos el modelo a poblaciones e institutos.
 
 ```text
 Petición HTTP → Controlador → Servicio → Repositorio → JPA / Hibernate → PostgreSQL

@@ -115,16 +115,17 @@ nav:
   - 📝 Ejercicio obligatorio de PostgreSQL: Ejercicio_PostgreSQL.md
 
 
-#- T6. Spring Boot con BD relacionales:
-#  - 🔹Introducción: T6_Spring_Boot/intro.md
-#  - 🔹Entorno y proyecto: T6_Spring_Boot/entorno.md
-#  - 🔹Anotaciones JPA: T6_Spring_Boot/anotaciones.md
-#  - 🔹Primera aplicación Web: T6_Spring_Boot/primera_aplicacion.md
-#  - 🔹Consultas con Spring Data JPA: T6_Spring_Boot/consultas.md
-#  - 🔹Vistas y búsquedas con Thymeleaf: T6_Spring_Boot/vistas.md
-#  - 🔹Crear, editar y eliminar desde formularios: T6_Spring_Boot/crud.md
-#  - 🔹Separar responsabilidades con servicios y DTO: T6_Spring_Boot/dto.md
-#  - 🔹Crear y modificar datos desde la API: T6_Spring_Boot/api_crud.md
-#  - 🔹Relaciones entre entidades: T6_Spring_Boot/relaciones.md
-#  - 🔹Repaso y comprobaciones: T6_Spring_Boot/resumen.md
-#  - 📝 Proyecto obligatorio: T6_Spring_Boot/ejercicios.md
+- T6. Spring Boot con BD relacionales:
+  - 🔹Introducción: T6_Spring_Boot/intro.md 
+  - 🔹Preparación del proyecto: T6_Spring_Boot/entorno.md
+  - 🔹Creación y actualización de la Base de Datos: T6_Spring_Boot/creacion_bd.md
+  - 🔹Anotaciones JPA: T6_Spring_Boot/anotaciones.md
+  - 🔹Primera aplicación Web: T6_Spring_Boot/primera_aplicacion.md
+  - 🔹Consultas con Spring Data JPA: T6_Spring_Boot/consultas.md
+  - 🔹Vistas y búsquedas con Thymeleaf: T6_Spring_Boot/vistas.md
+  - 🔹Crear, editar y eliminar (CRUD) desde formularios: T6_Spring_Boot/crud.md
+  - 🔹Separar responsabilidades con servicios y DTO: T6_Spring_Boot/dto.md
+  - 🔹Crear y modificar datos desde la API: T6_Spring_Boot/api_crud.md
+  - 🔹Relaciones entre entidades: T6_Spring_Boot/relaciones.md
+  #- 🔹Repaso y comprobaciones: T6_Spring_Boot/resumen.md
+  - 📝 Proyecto obligatorio: T6_Spring_Boot/ejercicios.md

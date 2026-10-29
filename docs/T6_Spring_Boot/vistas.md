@@ -1,6 +1,6 @@
 # Vistas y búsquedas con Thymeleaf
 
-Hasta ahora vemos datos JSON en el navegador. Ahora queremos una **página con una tabla y un formulario de búsqueda**. Para construirla utilizaremos Thymeleaf: toma una plantilla HTML y los datos que prepara el controlador y genera la página que recibe el navegador.
+Hasta ahora hemos visto los datos JSON en el navegador. Ahora queremos una página con una tabla y un formulario de búsqueda. Para construirla utilizaremos **Thymeleaf**: toma una plantilla HTML y los datos que prepara el controlador y genera la página que recibe el navegador.
 
 El controlador REST devuelve datos; el controlador MVC devuelve el nombre de una plantilla. Las rutas `/comarcas` (HTML) y `/api/comarcas` (JSON) pueden coexistir porque son diferentes. No cambiaremos la entidad ni el repositorio.
 

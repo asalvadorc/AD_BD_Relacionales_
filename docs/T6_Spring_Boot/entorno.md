@@ -2,15 +2,17 @@
 
 ## Base de datos
 
-En este tema trabajaremos con la base de datos **`geo`** de PostgreSQL, que contiene información sobre comarcas, poblaciones e institutos en las tablas `comarca`, `poblacio` e `institut`. Sobre estos datos construiremos una aplicación con **Spring Boot y Spring Data JPA**.
+En este tema trabajaremos con la base de datos **`geo`** de PostgreSQL, con la que ya hemos trabajado en el tema 5 con JDBC, y que contiene información sobre comarcas, poblaciones e institutos. Sobre estos datos construiremos una aplicación con **Spring Boot y Spring Data JPA**.
 
-Es la misma base de datos que utilizamos en el T5 con JDBC. Mantener las tablas y los datos nos permitirá centrarnos en cómo cambia el acceso a la información: pasaremos de escribir las sentencias SQL y transformar sus resultados manualmente a trabajar con entidades y repositorios.
+Mantener las tablas y los datos nos permitirá centrarnos en cómo cambia el acceso a la información: pasaremos de escribir las sentencias SQL y transformar sus resultados manualmente a trabajar con entidades y repositorios.
 
 Reutiliza la base de datos **`geo`** del T5 y comprueba que el servidor PostgreSQL está arrancado y tiene datos en `comarca`, `poblacio` e `institut`. Si todavía no la tienes, sigue la [preparación de PostgreSQL y geo](../Docker_instrucciones.md).
 
+![alt text](image-5.png)
+
 ## Crear la aplicación desde IntelliJ IDEA
 
-En Ficheros creamos el proyecto con Gradle desde la web de Spring Initializr. En este tema utilizaremos **Maven y el asistente de Spring Boot integrado en IntelliJ IDEA**, para conocer otra forma de preparar una aplicación. El lenguaje seguirá siendo **Kotlin**: Maven se encarga de las dependencias, la compilación y el empaquetado.
+En el tema 4, sobre Ficheros, creamos el proyecto con Gradle desde la web de Spring Initializr. En este tema utilizaremos **Maven y el asistente de Spring Boot integrado en IntelliJ IDEA**, para conocer otra forma de preparar una aplicación. El lenguaje seguirá siendo **Kotlin**: Maven se encarga de las dependencias, la compilación y el empaquetado.
 
 1. Abre **File → New → Project**.
 2. Selecciona **Spring Boot** en el asistente.
@@ -187,6 +189,8 @@ Son las credenciales del entorno local del T5; adapta los valores si tu instalac
 
 * `ddl-auto=none` evita que Hibernate cree o modifique las tablas. 
 * `show-sql` permite observar el SQL generado. 
+
+En [Creación y actualización de las tablas](creacion_bd.md) se explican las opciones `none`, `validate`, `update`, `create` y `create-drop`, y cómo inicializar una base con scripts SQL. En este tema conservamos `none` porque reutilizamos `geo`.
 
 ## Puesta en marcha
 

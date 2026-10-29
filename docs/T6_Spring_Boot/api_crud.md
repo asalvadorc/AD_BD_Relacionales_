@@ -8,10 +8,12 @@ Seguimos con `Comarca` para no introducir todavía relaciones nuevas. **No se cr
 
 | Petición | Operación | Respuesta correcta |
 |---|---|---|
-| `GET /api/comarcas/{id}` | Consultar una comarca | 200 y DTO |
-| `POST /api/comarcas` | Crear una comarca | 201 y DTO |
-| `PUT /api/comarcas/{id}` | Cambiar la provincia | 200 y DTO |
-| `DELETE /api/comarcas/{id}` | Eliminar una comarca | 204, sin cuerpo |
+| `GET /api/comarcas/{id}` | Consultar una comarca | `200 OK` + datos de la comarca en JSON |
+| `POST /api/comarcas` | Crear una comarca | `201 Created` + datos de la comarca creada en JSON |
+| `PUT /api/comarcas/{id}` | Cambiar la provincia | `200 OK` + datos de la comarca actualizada en JSON |
+| `DELETE /api/comarcas/{id}` | Eliminar una comarca | `204 No Content`, sin cuerpo de respuesta |
+
+La columna **Respuesta correcta** indica el código de estado HTTP y, cuando corresponde, los datos que recibe el cliente si la operación termina bien. El controlador devuelve un `ComarcaDTO` que Spring convierte en el JSON de la respuesta. Al eliminar, solo se envía el código de estado, sin datos en el cuerpo.
 
 !!! note "Navegador y Postman"
     La barra de direcciones del navegador sirve para las consultas GET, pero no para enviar estos cuerpos JSON con POST o PUT. Utilizaremos Postman al final.

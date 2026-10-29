@@ -1,99 +1,84 @@
-# 📝 Proyecto obligatorio: entrega final de la aplicación del tema
+# 📝 Proyecto obligatorio: API de institutos
 
-## Objetivo
+Continúa en **`SpringJPA`**, sobre la base de datos **`geo`**. El trabajo consiste en **adaptar el CRUD de comarcas a institutos** y completar su relación con una población existente. Reutiliza las entidades, repositorios, servicios y controladores del tema; completa los que ya tienes.
 
-Este proyecto es la **entrega final e integrada de la aplicación que hemos ido desarrollando a lo largo del T6** con Kotlin, Maven, Spring Boot, Spring Data JPA y PostgreSQL sobre la base **`geo`**. **No tienes que comenzar otro proyecto ni repetir desde cero los ejemplos realizados.** Continúa trabajando sobre tu proyecto `SpringJPA`.
+Trabaja en los **tres hitos siguientes** y comprueba cada uno antes de continuar. La entrega final reúne los tres en la misma aplicación.
 
-El objetivo es reunir lo aprendido en una aplicación funcional, organizada en **controlador, servicio y repositorio**, con entidades, DTO y gestión de errores. La parte obligatoria que se evaluará es la **API de gestión de institutos** descrita a continuación.
+## Hito 1. Consultar institutos
 
-## Del trabajo del tema a la entrega
+Revisa `Institut`, `Poblacio` y su relación. Utiliza el recorrido **controlador → servicio → repositorio** y reutiliza `InstitutDTO` como DTO de salida, con código, nombre, dirección y código o nombre de la población. Puedes conservar sus campos adicionales; la API no debe devolver entidades JPA directamente.
 
-| Trabajo desarrollado en los ejemplos | Qué debes revisar para la entrega |
-|---|---|
-| Preparación de `SpringJPA` y conexión a `geo` | Reutiliza el proyecto y comprueba que arranca correctamente. |
-| Consultas, entidades y repositorios | Conserva lo realizado e integra las consultas de institutos requeridas. |
-| CRUD de comarcas mediante la API | Adapta las operaciones a los campos de los institutos. |
-| Servicios, DTO y errores HTTP | Aplica esa organización al conjunto de operaciones de institutos. |
-| Relaciones y ejemplo de alta con población existente | Integra la asociación de la población en el alta, junto con las validaciones y los DTO. |
-| Pruebas con Postman | Guarda y completa las peticiones que demuestran el funcionamiento de la entrega. |
+| Petición | Operación | Respuesta correcta |
+|---|---|---|
+| `GET /api/instituts` | Listar todos los institutos. | `200` + lista JSON |
+| `GET /api/instituts/{codigo}` | Consultar uno por su código. | `200` + JSON |
+| `GET /api/instituts/buscar?poblacion=12028` | Filtrar por código de población. | `200` + lista JSON |
 
-Los ejemplos proporcionan las técnicas y gran parte del código, pero algunos pasos se han mostrado por separado o sobre comarcas. Tu tarea final es **integrar, adaptar y completar lo que falte**, no entregar fragmentos independientes. Si ya has implementado una operación requerida, basta con revisarla y probarla: no debes volver a escribirla.
+Las rutas son orientativas. También puedes integrar el filtro en el listado mediante un parámetro opcional. Utiliza una consulta derivada por nombre para filtrar por población.
 
-Puedes conservar las páginas HTML, las operaciones de comarcas y las consultas adicionales realizadas durante el tema. No es necesario eliminarlas ni ampliarlas para esta entrega. Evita clases duplicadas y controladores con las mismas rutas. La demostración servirá también para comprobar que comprendes el código reutilizado.
+**Comprueba en Postman:** listado, consulta de un código existente y filtro por población. Un listado o filtro sin coincidencias devuelve `200` con `[]`; consultar un código inexistente devuelve `404`.
 
-## Requisitos
+## Hito 2. Crear un instituto
 
-Utiliza los siguientes requisitos como **lista de comprobación de la versión final**. Puedes apoyarte en los ejemplos de [servicios y DTO](dto.md), [escritura desde la API](api_crud.md) y [relaciones de geo](relaciones.md). No se exige incorporar otras bibliotecas ni aprender una arquitectura diferente.
+Implementa **`POST /api/instituts`**. En el paquete `dto`, crea **`InstitutCrearDTO`** con `codi`, `nom`, `adreca` y `codigoPoblacion` para recibir este JSON:
 
-### 1. Proyecto y entidades
+```json
+{
+  "codi": "PRUEBA01",
+  "nom": "Institut de prova",
+  "adreca": "Carrer Major, 1",
+  "codigoPoblacion": 12028
+}
+```
 
-- Conserva el proyecto creado desde IntelliJ con **Kotlin, Maven y JDK 21** y revisa la conexión en `application.properties`.
-- Organiza el código en `model`, `repository`, `service`, `dto` y `controller`.
-- Revisa las entidades **`Institut` y `Poblacio`**, sus repositorios y la relación `@ManyToOne` de instituto a población que hemos trabajado en el tema.
-- Respeta las claves, los tipos y la nulabilidad de las tablas existentes. No es necesario mapear todas las columnas. Puedes conservar la entidad `Comarca` y su relación, aunque no se exige utilizarlas en las operaciones obligatorias. Conserva el esquema de `geo` sin regenerarlo desde JPA.
+Utiliza un código de instituto nuevo y sustituye `12028` si necesitas otro código de población existente. En Postman selecciona **Body → raw → JSON**.
 
-### 2. Operaciones de la API
+En el servicio, valida los datos, recupera una **`Poblacio` existente** por su código y asígnala a `Institut.poblacio`. Guarda el instituto y devuelve `InstitutDTO`. La respuesta será **`201 Created` con los datos en JSON**. El alta del ejemplo de relaciones sirve como punto de partida.
 
-Comprueba que la API incluye estas operaciones y completa las que todavía no hayas integrado:
+**Comprueba en Postman:** crea el instituto, consúltalo y verifica su población. Prueba también un código duplicado (`409`) y una población inexistente (`400`).
 
-| Método y ruta orientativa | Operación |
-|---|---|
-| `GET /api/instituts` | Listar institutos. |
-| `GET /api/instituts/{codigo}` | Consultar un instituto por su código. |
-| `GET /api/instituts?poblacion=12028` | Filtrar los institutos por el código de población. |
-| `POST /api/instituts` | Crear un instituto de prueba. |
-| `PUT /api/instituts/{codigo}` | Modificar su nombre y dirección. |
-| `DELETE /api/instituts/{codigo}` | Eliminarlo. |
+## Hito 3. Modificar, eliminar y completar los errores
 
-Puedes resolver el listado y el filtro con un único método de controlador que reciba un parámetro `poblacion` opcional. Para filtrar, utiliza un método del repositorio derivado por nombre; no es obligatorio escribir una consulta con `@Query`.
+Implementa **`PUT /api/instituts/{codigo}`**. Crea **`InstitutActualizarDTO`** con `nom` y `adreca` para recibir este JSON:
 
-También puedes usar una ruta de búsqueda separada, como `GET /api/instituts/buscar?poblacion=12028`, siguiendo el ejemplo de comarcas. Ambas soluciones son válidas; no se exige manejar parámetros opcionales para resolver la práctica.
+```json
+{
+  "nom": "Institut actualizado",
+  "adreca": "Carrer Nou, 2"
+}
+```
 
-Las poblaciones ya existen: **no se pide un CRUD de poblaciones**. Utiliza registros de prueba para modificar y eliminar institutos.
+El código se obtiene de la URL. Cambia solo nombre y dirección, conservando el código y la población; devuelve **`200 OK` con el `InstitutDTO` actualizado**.
 
-### 3. Componentes y DTO
+Implementa **`DELETE /api/instituts/{codigo}`** y devuelve **`204 No Content`, sin cuerpo**. Si el instituto no existe al consultar, modificar o eliminar, devuelve **`404`**.
 
-- El **controlador** recibe las peticiones y devuelve las respuestas.
-- El **servicio** comprueba los datos y realiza las operaciones utilizando los repositorios.
-- Los **repositorios** se encargan del acceso a la base de datos.
-- Utiliza DTO de entrada y salida sencillos. El alta debe recibir código, nombre, dirección y código de población; la actualización, nombre y dirección. La respuesta mostrará los datos del instituto y el código o nombre de su población.
+**Comprueba en Postman:** modifica el instituto de prueba, consulta los cambios, elimínalo y verifica que consultarlo después devuelve `404`.
 
-No devuelvas directamente las entidades JPA desde la API ni permitas cambiar el código del instituto mediante la actualización.
+## Reglas comunes
 
-### 4. Validación y errores
+- Organiza el código en `model`, `repository`, `service`, `dto` y `controller`. El servicio valida y transforma las entidades en DTO. Aplica `@Transactional` a las operaciones de escritura.
+- Código obligatorio, de un máximo de **8 caracteres**, y sin duplicados al crear.
+- Nombre obligatorio, de un máximo de **60 caracteres**; dirección de un máximo de **100 caracteres**.
+- Reutiliza `ErrorOperacion` y `ErroresApi`: **400** para datos incorrectos o población inexistente, **409** para código duplicado y **404** para instituto inexistente. Puedes validar con condicionales.
 
-Comprueba que el código no esté vacío y tenga como máximo ocho caracteres, que el nombre sea obligatorio y que la población indicada exista. Respeta las longitudes de los campos de la base de datos.
+Conserva los tipos, claves, nulabilidad y esquema de `geo`, sin regenerar las tablas desde JPA. No se pide CRUD de poblaciones ni ampliar las páginas HTML. Puedes conservar el resto del trabajo del tema.
 
-Puedes realizar estas comprobaciones con condicionales y usar el manejo de errores del ejemplo de comarcas. No es obligatorio utilizar anotaciones de Validation. Para asociar la población, recupera la entidad existente desde su repositorio; no crees una población nueva.
+## Entrega
 
-Devuelve mensajes comprensibles para entradas incorrectas, códigos duplicados e institutos inexistentes, con estados HTTP adecuados, por ejemplo **400**, **409** y **404**, respectivamente. Un listado sin coincidencias debe devolver una lista vacía, no un error.
+Guarda las peticiones de los tres hitos en una **colección de Postman**. Utiliza institutos de prueba para las modificaciones y el borrado.
 
-## Pruebas y entrega
+Entrega **un ZIP** con:
 
-Prueba con **Postman** el listado, el filtro y esta secuencia: **crear → consultar → modificar → consultar → eliminar**. Comprueba también un código duplicado, una población inexistente y la consulta de un instituto inexistente.
+- El proyecto Maven completo, con `pom.xml` y wrapper, **sin `target`**.
+- La colección de Postman.
+- Un breve `README.md` con la conexión, los pasos de ejecución y los resultados esperados.
 
-Sigue los pasos de Postman del [ejemplo de escritura REST](api_crud.md). Las comprobaciones son manuales: no se exige una batería de pruebas automáticas.
+Mantén Kotlin, Maven y JDK 21, como en el proyecto del tema. No hace falta entregar de nuevo la base `geo` ni Docker, ni crear pruebas automáticas.
 
-Entrega un único ZIP con la versión final del trabajo del tema:
+En la demostración explica el recorrido **controlador → servicio → repositorio**, la diferencia entre entidad y DTO y qué trabajo de JDBC sustituye JPA.
 
-- El proyecto Maven completo e integrado, incluido `pom.xml` y el wrapper de Maven. No entregues un proyecto separado por cada ejemplo ni únicamente archivos `.kt` sueltos.
-- Una colección de Postman con las peticiones utilizadas.
-- Un breve `README.md` con la configuración de conexión, los pasos de ejecución y los resultados esperados de las pruebas.
+Puedes apoyarte en [servicios y DTO](dto.md), [escritura desde la API](api_crud.md) y [relaciones](relaciones.md).
 
-Utiliza la base `geo` de clase: no es necesario volver a entregar sus scripts ni Docker. No incluyas la carpeta `target`.
-
-En la demostración explica el recorrido **controlador → servicio → repositorio**, la diferencia entre entidad y DTO y qué trabajo manual de JDBC sustituye ahora JPA.
-
-Se permite reutilizar y adaptar el código de los apuntes: forma parte del desarrollo progresivo del proyecto. Debes poder explicar cómo funciona y mostrar las pruebas de tu aplicación.
-<!--
-## Ampliaciones opcionales
-
-- Mostrar los datos con Thymeleaf.
-- Crear una población y su instituto en una única transacción y comprobar el rollback.
-- Añadir consultas por comarca o provincia, o utilizar `@Query`.
-
-Estas ampliaciones **no son necesarias para obtener la puntuación máxima**.
--->
 ## Rúbrica
 
 La rúbrica se aplica a la aplicación final integrada y a su demostración, no a la cantidad de código nuevo escrito después de terminar los ejemplos.

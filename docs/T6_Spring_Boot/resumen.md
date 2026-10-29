@@ -29,12 +29,6 @@ Comprueba que puedes listar comarcas en JSON y HTML, filtrar por provincia, crea
 
 Realiza las modificaciones solo sobre registros de prueba. Para las peticiones con JSON, utiliza los pasos de [Postman](api_crud.md).
 
-!!! question "¿Seguimos utilizando JDBC cuando trabajamos con JPA?"
-    ??? success "Ver respuesta"
-        Sí. Hibernate utiliza el driver JDBC para comunicarse con PostgreSQL. Lo que cambia es el nivel de abstracción: escribimos entidades y repositorios en lugar de preparar cada sentencia y recorrer manualmente cada `ResultSet`.
 
-!!! question "¿Una entidad y un DTO cumplen la misma función?"
-    ??? success "Ver respuesta"
-        No. La entidad participa en el mapeo y la persistencia; el DTO contiene los datos que queremos intercambiar. Una entidad puede tener relaciones que no conviene enviar directamente al cliente.
 
 Continúa con el [proyecto obligatorio](ejercicios.md).

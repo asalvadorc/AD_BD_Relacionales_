@@ -9,6 +9,7 @@ En `geo`, una comarca puede tener muchas poblaciones y una población puede tene
 ```text
 Institut -- cod_m --> Poblacio -- nom_c --> Comarca
 ```
+![](image-6.png)
 
 En Kotlin representaremos esas referencias como propiedades de tipo `Poblacio?` y `Comarca?`. La anotación `@ManyToOne` significa «muchos registros pueden apuntar al mismo registro relacionado». `@JoinColumn` indica la columna de la clave foránea en la tabla de origen.
 
@@ -567,7 +568,7 @@ Añade este método **dentro de la clase**, antes de su llave final. Utiliza `Er
 
 ```kotlin
 @Transactional // (1)!
-fun crearEjemplo(
+fun crearInstituto(
     codigo: String,
     nombre: String,
     direccion: String,
@@ -597,7 +598,7 @@ El recorrido que debes comprender es:
 ```text
 Código recibido → buscar Poblacio → asignarla a Institut.poblacio → guardar Institut
 ```
-
+<!--
 !!! note "Cómo trasladarlo al proyecto"
     Este método no recibe un DTO ni devuelve uno y presupone que los demás datos son válidos. En el proyecto, integra estos pasos en tu método de alta: recibe el DTO, valida los campos y comprueba el código duplicado, recupera la población, guarda el instituto y construye el DTO de respuesta. No añadas un endpoint de pruebas que omita esas comprobaciones.
 
@@ -610,4 +611,60 @@ Compara las consultas con las del T5. Comprueba un filtro con resultados y otro 
 Prueba también [institutos por provincia en JSON](http://localhost:8080/api/instituts/provincia?provincia=Alacant). En los DTO, `null` indica que falta una relación o un dato; no se sustituye por un texto inventado.
 
 Para el proyecto final, estas lecturas son una referencia: amplía el servicio y el controlador de institutos con las operaciones aprendidas sobre comarcas. No añadas otro controlador con las mismas rutas.
+
+-->
+
+## Endpoint para comprobar el alta
+
+Para probar `crearEjemplo`, añade el siguiente método **dentro de tu `InstitutRestController` existente**, que ya tiene la ruta base `/api/instituts` y recibe `InstitutService`. Conserva sus métodos de consulta.
+
+Añade también este import al controlador:
+
+```kotlin
+import org.springframework.http.ResponseEntity
+```
+
+```kotlin
+@PostMapping("/CrearInstituto")
+fun crearEjemplo(
+    @RequestParam codigo: String,
+    @RequestParam nombre: String,
+    @RequestParam direccion: String,
+    @RequestParam codigoPoblacion: Int
+): ResponseEntity<Void> {
+    institutService.crearInstituto(codigo, nombre, direccion, codigoPoblacion)
+    return ResponseEntity.status(201).build()
+}
+```
+
+Este endpoint de prueba recibe **parámetros de petición**, sin cuerpo JSON. Llama al servicio, que recupera la población y guarda el instituto asociado. Si termina correctamente, devuelve **`201 Created`, sin cuerpo de respuesta**, porque `crearEjemplo` no devuelve un DTO.
+
+### Probarlo con Postman
+
+Primero consulta en DBeaver un código de población existente:
+
+```sql
+SELECT cod_m, nom FROM poblacio ORDER BY nom;
+```
+
+En Postman, selecciona **POST**, introduce `http://localhost:8080/api/instituts/CrearInstituto` y añade estos valores en la pestaña **Params**:
+
+| Parámetro | Valor de prueba |
+|---|---|
+| `codigo` | `TEST01` (comprueba antes que no exista) |
+| `nombre` | `Institut de prova` |
+| `direccion` | `Carrer Major, 1` |
+| `codigoPoblacion` | Un `cod_m` real obtenido en la consulta anterior |
+
+Pulsa **Send**. Debes recibir **`201 Created`**. Comprueba en DBeaver que se ha guardado el instituto con el código de población elegido:
+
+```sql
+SELECT i.codi, i.nom, i.adreca, i.cod_m, p.nom AS poblacion
+FROM institut i
+JOIN poblacio p ON p.cod_m = i.cod_m
+WHERE i.codi = 'TEST01';
+```
+
+Para comprobar el error de la relación, repite la petición con **otro código de instituto** y un `codigoPoblacion` que hayas comprobado que no existe. Con `ErroresApi` del apartado anterior, recibirás **`400 Bad Request`** y el mensaje `La poblacion indicada no existe`; no se guardará ese instituto.
+
 

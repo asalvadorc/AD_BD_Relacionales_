@@ -38,6 +38,22 @@ findByProvincia
 
 Esto significa **«buscar comarcas cuya provincia sea igual al valor recibido»**. No significa buscar una tabla llamada `Provincia`: la entidad consultada ya viene indicada en `JpaRepository<Comarca, String>`.
 
+Un ejemplo completo permite reconocer todas las partes de la tabla. Las barras `|` separan las piezas para leerlas; **no se escriben en el nombre del método**.
+
+```text
+findBy | Provincia | And | NomC | Containing | OrderBy | NomC | Desc
+```
+
+El nombre final es `findByProvinciaAndNomCContainingOrderByNomCDesc`:
+
+- `findBy` inicia la búsqueda.
+- `Provincia` filtra por igualdad sobre la propiedad `provincia`.
+- `And` exige que también se cumpla la siguiente condición.
+- `NomC` + `Containing` busca un texto dentro de la propiedad `nomC`.
+- `OrderBy` + `NomC` + `Desc` ordena por nombre de forma descendente.
+
+En los apartados siguientes veremos cómo declarar estos métodos, pasarles valores, combinar condiciones y ordenar los resultados.
+
 ### Declarar el método y pasarle un valor
 
 En la primera aplicación ya dejamos declarado este método:
@@ -54,8 +70,6 @@ interface ComarcaRepository : JpaRepository<Comarca, String> {
 ```
 
 1. `findBy` indica una búsqueda y `Provincia` hace referencia a la propiedad `provincia` de la entidad. El argumento contiene el valor que buscamos. Devuelve una lista vacía si no hay coincidencias.
-
-No añadas otra declaración si el método ya existe. Tampoco necesitas escribir su cuerpo ni crear una clase que implemente el repositorio.
 
 Desde un controlador que tenga inyectado el repositorio, podríamos llamarlo así:
 
@@ -148,8 +162,10 @@ ORDER BY nom_c ASC;
 
 ## Palabras clave habituales
 
+<div class="tabla-palabras-clave" markdown="1">
+
 | Palabra | Significado | Ejemplo de método en `ComarcaRepository` | Argumentos |
-|---|---|---|---|
+|----|---|---|---|
 | Sin operador | Igual a | `findByProvincia` | Una provincia |
 | `Containing` | Contiene un texto | `findByNomCContaining` | Un texto |
 | `StartingWith` | Empieza por un texto | `findByNomCStartingWith` | Un texto |
@@ -157,6 +173,8 @@ ORDER BY nom_c ASC;
 | `IsNull` | No tiene valor | `findByProvinciaIsNull` | Ninguno |
 | `And` | Deben cumplirse ambas condiciones | `findByProvinciaAndNomC` | Provincia y nombre, en ese orden |
 | `Or` | Debe cumplirse al menos una condición | `findByProvinciaOrNomC` | Provincia y nombre, en ese orden |
+
+</div>
 
 Estos nombres son ejemplos de consulta, no métodos que debas añadir todos al proyecto. Operadores como `GreaterThan`, `LessThan` o `Between` permiten comparar números o fechas; se utilizan con propiedades cuyos tipos admitan esas comparaciones.
 
@@ -367,7 +385,7 @@ Los valores de los enlaces son ejemplos: comprueba los nombres existentes en tu 
 
 Para las búsquedas sencillas de comarcas, la convención de nombres es suficiente. Utilizaremos `@Query` cuando ayude a expresar la consulta con mayor claridad.
 
-Las consultas que recorren varias entidades se verán en [Relaciones de geo](relaciones.md), después de definir las relaciones entre comarcas, poblaciones e institutos. Por ahora no necesitas añadir esos métodos al proyecto.
+Las consultas que recorren varias entidades se verán en [Relaciones entre entidades](relaciones.md), después de definir las relaciones entre comarcas, poblaciones e institutos. Por ahora no necesitas añadir esos métodos al proyecto.
 
 En el siguiente apartado conectaremos la búsqueda por provincia con una página HTML, para introducir el filtro desde el navegador.
 

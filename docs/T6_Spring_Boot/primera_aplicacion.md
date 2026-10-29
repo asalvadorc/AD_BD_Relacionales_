@@ -1,14 +1,41 @@
 # Primera aplicación Web
 
-Partimos del [proyecto y la conexión local](entorno.md). Nuestro objetivo es **consultar las comarcas de la base de datos desde el navegador**: al abrir `http://localhost:8080/api/comarcas`, la aplicación devolverá los datos en formato JSON. De momento no construiremos una página HTML; veremos directamente la respuesta con los datos.
+Partimos de [Preparación del proyecto](entorno.md). Nuestro objetivo es **consultar las comarcas de la base de datos desde el navegador**: al abrir `http://localhost:8080/api/comarcas`, la aplicación devolverá los datos en formato JSON. De momento no construiremos una página HTML; veremos directamente la respuesta con los datos.
 
-Para conseguirlo, representaremos la tabla `comarca` mediante una entidad JPA, crearemos un repositorio para recuperar los registros y un controlador para atender la petición del navegador. La clave primaria `nom_c` es de texto y ya existe.
+Para conseguirlo, representaremos la tabla `comarca` mediante una entidad JPA, crearemos un repositorio para recuperar los registros y un controlador para atender la petición del navegador.
 
 ## Spring Web en nuestra aplicación
 
 **JPA se ocupa de la persistencia, pero no de recibir peticiones del navegador. Para esa parte utilizaremos Spring Web.** Al abrir la dirección anterior, el navegador enviará una petición HTTP de tipo GET. Spring Web permitirá dirigirla al método del controlador que consulta el repositorio y devolver su resultado como una respuesta JSON.
 
 La dirección `/api/comarcas` será nuestro **endpoint**: el punto de acceso a esa operación de la aplicación. Spring Web es necesaria aquí porque hemos elegido ofrecer la consulta por HTTP; no es un requisito para utilizar JPA en una aplicación sin interfaz web.
+
+El siguiente gráfico muestra el recorrido de una petición en nuestra aplicación:
+
+<div class="spring-web-secuencia" markdown="1">
+
+```mermaid
+%%{init: {'sequence': {'useMaxWidth': true, 'actorFontSize': 28, 'messageFontSize': 28, 'noteFontSize': 28, 'wrap': true, 'width': 175, 'height': 65, 'actorMargin': 10, 'diagramMarginX': 0, 'diagramMarginY': 4, 'messageMargin': 20, 'wrapPadding': 2, 'mirrorActors': false}}}%%
+sequenceDiagram
+    participant N as Navegador
+    participant W as Spring Web<br/>puerto 8080
+    participant C as Comarca<br/>Controller
+    participant R as ComarcaRepository<br/>JPA
+    participant B as PostgreSQL<br/>tabla comarca
+
+    N->>W: 1. GET /api/comarcas
+    W->>C: 2. obtenerComarcas()
+    C->>R: 3. findAll()
+    R->>B: 4. Hibernate ejecuta SQL
+    B-->>R: Filas de comarca
+    R-->>C: List<Comarca>
+    C-->>W: 5. List<Comarca>
+    W-->>N: 6. HTTP 200 · JSON (Jackson)
+```
+
+</div>
+
+**Spring Web recibe la petición y envía la respuesta JSON; Spring Data JPA e Hibernate recuperan los datos de PostgreSQL.** El navegador muestra ese JSON con las propiedades `nomC` y `provincia` de cada comarca.
 
 **Spring Web ya está incluida** porque la seleccionamos al crear el proyecto desde IntelliJ IDEA. Incorporamos todas las dependencias al principio para simplificar la preparación y evitar tener que añadirlas manualmente al `pom.xml` durante el tema.
 
@@ -100,7 +127,7 @@ class ComarcaController(private val comarcaRepository: ComarcaRepository) { // (
 5. `findAll()` recupera todas las comarcas como entidades. Hibernate genera la consulta SQL y el método devuelve la lista, que se enviará al navegador como JSON.
 
 
-`JpaRepository<Comarca, String>` indica el tipo de entidad y el tipo de su identificador. `findAll()` recupera las entidades; ya no escribimos el bucle del `ResultSet`. La clase del controlador se llama `ComarcaController` aunque el archivo se denomine `ComarcaRestController.kt`.
+`JpaRepository<Comarca, String>` indica el tipo de entidad y el tipo de su identificador. `findAll()` recupera las entidades; ya no escribimos el bucle del `ResultSet`.
 
 
 ## Probar la aplicación

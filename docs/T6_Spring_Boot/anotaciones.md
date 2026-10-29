@@ -1,6 +1,6 @@
 # Anotaciones JPA
 
-**Spring utiliza anotaciones para configurar la aplicación e indicar la función de sus componentes**. Las anotaciones son marcas que comienzan por `@` y añaden información a las clases, propiedades o métodos. Spring interpreta las que le corresponden para gestionar los componentes y su comportamiento, reduciendo la configuración que debemos escribir manualmente.
+En el T4 ya vimos que **Spring utiliza anotaciones** para configurar la aplicación e indicar la función de sus componentes. Las anotaciones son marcas que comienzan por `@` y añaden información a las clases, propiedades o métodos. Spring interpreta las que le corresponden para gestionar los componentes y su comportamiento, reduciendo la configuración que debemos escribir manualmente.
 
 Por ejemplo, `@SpringBootApplication` identifica la clase principal de configuración de una aplicación Spring Boot. Otras anotaciones que utilizaremos son `@RestController`, para definir controladores que atienden peticiones HTTP y devuelven datos, y `@Service`, para identificar clases que contienen la lógica de negocio.
 
@@ -37,7 +37,7 @@ La siguiente tabla reúne las principales anotaciones de **JPA**, junto con otra
 
 
 
-## Las cuatro anotaciones para empezar
+## Anotaciones para empezar
 
 En la primera aplicación utilizaremos estas cuatro. El fragmento es una referencia; crearemos el archivo completo en el siguiente apartado.
 
@@ -59,7 +59,7 @@ class Comarca(
 3. Señala la propiedad que identifica de forma única cada comarca.
 4. Relaciona una propiedad Kotlin con su columna SQL. Es especialmente importante cuando los nombres son distintos, como `nomC` y `nom_c`.
 
-Estas anotaciones se importan desde **`jakarta.persistence`**. No confundas `@Id` de JPA con otras anotaciones de igual nombre de bibliotecas diferentes.
+<!--
 
 !!! note "No todas las claves se generan automáticamente"
     En `geo` los códigos y nombres que actúan como clave ya vienen dados. No añadiremos `@GeneratedValue` a estas entidades. Esa anotación corresponde a modelos cuya clave se genera automáticamente.
@@ -82,5 +82,7 @@ No necesitas añadir todas las anotaciones de la tabla al proyecto. En particula
     - `@Rollback` se utiliza en pruebas transaccionales de Spring; no es la anotación que gestiona las transacciones ordinarias de nuestro servicio.
 
 Estas ampliaciones no son requisitos del ejercicio final.
+
+-->
 
 
